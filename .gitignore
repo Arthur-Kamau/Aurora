@@ -1,0 +1,39 @@
+/.gradle
+/.idea
+/out
+/build
+*.iml
+*.ipr
+*.iws
+
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directories
+*/node_modules/*
+node_modules/*/**
+node_modules/
+jspm_packages/
+
+# TypeScript v1 declaration files
+typings/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+#dist
+*/build/*
+*/build/*/**
+build/*/**
+
+*/bin/*
+*/bin/*/**
+bin/*/**
+
+*/dist/*
+
+
