@@ -1,7 +1,21 @@
 # Aurora App
-This App is a component of tyhe main app in the app folder.
+The react app.
+Its ejected from react.
 
-#   Rembeber
+
+##   Get started
+Run
+1. `code .` .
+2. `yarn install`.
+3. `yarn app`
+
+---
+### Folder structure 
+* The src holds the source code.
+* The dist holds generated binary files.
+* The public holds the avatars and the index html file.
+
+### Remove dist from commit
 remove unecessary files huge files ie the binary generated 
 ~ `git gc --prune=now --aggressive`
 
