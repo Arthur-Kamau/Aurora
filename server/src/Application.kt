@@ -92,7 +92,7 @@ fun Application.module(testing: Boolean = false) {
         post("/schema-to-json") {
 
             val strContents = " int name ; String name ; String animal; int age ; String location"
-            ToJsonOperations().generateJson(strContents)
+            ToJsonOperations().generateJsonFromString(strContents)
             call.respondText("Dope!", contentType = ContentType.Text.Plain)
         }
 

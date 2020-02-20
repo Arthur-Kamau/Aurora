@@ -9,7 +9,7 @@ class WebSocketAction{
   fun  takAction( payload: WebSocketPayloadModel) :String {
     return  when (payload.action){
         WebSocketActions.schemaToJSON ->{
-            ToJsonOperations().generateJson(payload.payload)
+            ToJsonOperations().generateJsonFromString(payload.payload)
         }
         else ->{
             Println.green("Alert web sockets action plan last clause")
