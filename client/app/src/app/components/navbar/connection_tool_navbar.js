@@ -5,6 +5,8 @@ class ConnectionToolAppBar extends Component {
     super(props);
     this.state = {}
   }
+
+  
   render() {
     return (<nav className="navbar col-lg-12 col-12 p-lg-0 fixed-top d-flex flex-row">
       <div className="navbar-menu-wrapper d-flex align-items-center justify-content-between">

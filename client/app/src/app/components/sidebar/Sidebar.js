@@ -100,8 +100,8 @@ class Sidebar extends Component {
             </Link>
           </li>
 
-          <li className={this.isPathActive('/json_generator') ? 'nav-item active' : 'nav-item'}>
-            <Link className="nav-link" to="/json_generator">
+          <li className={this.isPathActive('/generator') ? 'nav-item active' : 'nav-item'}>
+            <Link className="nav-link" to="/generator">
               <i className="mdi mdi-sort-variant menu-icon"></i>
               <span className="menu-title">Json Operations</span>
             </Link>
@@ -128,6 +128,8 @@ class Sidebar extends Component {
               <span className="menu-title">Settings</span>
             </Link>
           </li>
+
+     
         </ul>
       </nav>
     );

@@ -13,6 +13,11 @@ import Sidebar from './components/sidebar/Sidebar';
 import Footer from './components/footer/Footer';
 import EditorHomePage from './components/editor/editor_home';
 
+import JsonGeneratorNavBar from './components/navbar/json_generator_navbar';
+import SchemaGeneratorNavBar from './components/navbar/schema_generetor_navbar';
+
+
+
 
 class App extends Component {
 
@@ -42,6 +47,10 @@ class App extends Component {
 
     if (window.location.pathname == "/aurora/dump_server") {
       navbarTwo = <DumpServerNavbar></DumpServerNavbar>
+    }  else  if (window.location.pathname == "/aurora/generator/tojson") {
+      navbarTwo = <JsonGeneratorNavBar></JsonGeneratorNavBar>
+    }  else  if (window.location.pathname == "/aurora/generator/toschema") {
+      navbarTwo = <SchemaGeneratorNavBar></SchemaGeneratorNavBar>
     } else  if (window.location.pathname == "/aurora/connection_tool") {
       navbarTwo = <ConnectionToolAppBar></ConnectionToolAppBar>
     } else 

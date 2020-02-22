@@ -12,6 +12,7 @@ const DumpServerPage = lazy(() => import('./components/dump_server/dump_server')
 const SettingsPage = lazy(() => import('./components/settings/settings'));
 
 const EditorHomePage = lazy(() => import('./components/editor/editor_home'));
+const AppGenerator = lazy(() => import('./components/generator/generator'));
 
 
 
@@ -24,6 +25,7 @@ class AppRoutes extends Component {
                     <Redirect to="/project" />
                     </Route>
                     <Route exact path="/project" component={EditorHomePage} />
+                    <Route  path="/generator" component={AppGenerator} />
                     <Route exact path="/dump_server" component={DumpServerPage} />
                     <Route exact path="/connection_tool" component={ConnectionTool} />
                     <Route exact path="/505" component={Error500Page} />
