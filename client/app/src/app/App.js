@@ -5,8 +5,8 @@ import ReactNotifications from 'react-notifications-component';
 import AppRoutes from './AppRoutes';
 import './App.scss';
 import Navbar from './components/navbar/Navbar';
-import JsonGeneratorNavBar from './components/navbar/json_generator_navbar';
-import SchemaGeneratorNavBar from './components/navbar/schema_generetor_navbar';
+import DumpServerNavbar from './components/navbar/dump_server_navbar';
+import ConnectionToolAppBar from './components/navbar/connection_tool_navbar';
 import EditorNavBar from './components/navbar/editor_navbar';
 
 import Sidebar from './components/sidebar/Sidebar';
@@ -40,11 +40,12 @@ class App extends Component {
 
     let navbarTwo = ''
 
-    if (window.location.pathname == "/aurora/json_generator") {
-      navbarTwo = <SchemaGeneratorNavBar></SchemaGeneratorNavBar>
-    } else if (window.location.pathname == "/aurora/schema_generator") {
-      navbarTwo = <JsonGeneratorNavBar></JsonGeneratorNavBar>
-    } else if (window.location.pathname == "/aurora/editor" || window.location.pathname == "/aurora/project" || window.location.pathname == "/aurora/") {
+    if (window.location.pathname == "/aurora/dump_server") {
+      navbarTwo = <DumpServerNavbar></DumpServerNavbar>
+    } else  if (window.location.pathname == "/aurora/connection_tool") {
+      navbarTwo = <ConnectionToolAppBar></ConnectionToolAppBar>
+    } else 
+    if (window.location.pathname == "/aurora/editor" || window.location.pathname == "/aurora/project" || window.location.pathname == "/") {
       navbarTwo = <EditorNavBar></EditorNavBar>
     } else { navbarTwo = ''; }
 

@@ -8,7 +8,7 @@ import "ace-builds/src-noconflict/theme-kuroir";
 import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-twilight";
 import AppUrls from "../../url/url";
-import StoreContext  from '../../store/store';
+// import StoreContext  from '../../store/store';
 
 
 class ToJsonPage extends Component {
@@ -77,7 +77,7 @@ class ToJsonPage extends Component {
     }
   }
   componentDidMount() {
-    this.state.store = React.useContext(StoreContext)
+    // this.state.store = React.useContext(StoreContext)
 
   }
 

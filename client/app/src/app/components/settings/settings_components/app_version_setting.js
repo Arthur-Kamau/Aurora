@@ -11,7 +11,7 @@ class AppVersion extends Component {
     };
   }
 
-  closeNotification = event => {};
+  closeNotification = event => { };
   restartApp = event => {
     ipcRenderer.send("restart_app");
   };
@@ -55,7 +55,16 @@ class AppVersion extends Component {
           <li class="list-group-item">Araizen Aurora App</li>
           <li class="list-group-item">Build : Prelease </li>
           <li class="list-group-item"> You app is {this.state.version}</li>
+          <li class="list-group-item">    
+            <div className="form-check">
+                     <label className="form-check-label">
+              <input type="checkbox" defaultChecked className="form-check-input" />
+              <i className="input-helper"></i>
+              Do not Get notified of minor versions
+            </label>
+          </div></li>
         </ul>
+
         <div className="align-content-lg-end">
           <div id={style.notification} className={style.hidden}>
             <p id="message"></p>

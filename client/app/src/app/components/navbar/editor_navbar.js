@@ -22,6 +22,7 @@ class EditorNavBar extends Component {
                         <a className="nav-link" href="#">Help</a>
                     </li>
 
+                  
                 </ul>
             </nav>
         );

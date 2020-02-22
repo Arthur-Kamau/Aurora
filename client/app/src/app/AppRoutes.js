@@ -7,13 +7,11 @@ const Error404Page = lazy(() => import('./components/error/error_404'));
 const Error500Page = lazy(() => import('./components/error/error_500'));
 
 
-const SchemaGeneratorPage = lazy(() => import('./components/schema_generator/schema_generator'));
-const JsonGeneratorPage = lazy(() => import('./components/json_generator/json_generator'));
+const ConnectionTool = lazy(() => import('./components/connection_tool/connection_tool'));
+const DumpServerPage = lazy(() => import('./components/dump_server/dump_server'));
 const SettingsPage = lazy(() => import('./components/settings/settings'));
 
 const EditorHomePage = lazy(() => import('./components/editor/editor_home'));
-
-
 
 
 
@@ -22,10 +20,12 @@ class AppRoutes extends Component {
         return (
             <Suspense fallback={<Spinner />}>
                 <Switch>
-                    <Route exact path="/" component={EditorHomePage} />
+                    <Route exact path='/'>
+                    <Redirect to="/project" />
+                    </Route>
                     <Route exact path="/project" component={EditorHomePage} />
-                    <Route exact path="/json_generator" component={JsonGeneratorPage} />
-                    <Route exact path="/schema_generator" component={SchemaGeneratorPage} />
+                    <Route exact path="/dump_server" component={DumpServerPage} />
+                    <Route exact path="/connection_tool" component={ConnectionTool} />
                     <Route exact path="/505" component={Error500Page} />
                     <Route exact path="/404" component={Error404Page} />
                     <Route exact path="/settings" component={ SettingsPage} />

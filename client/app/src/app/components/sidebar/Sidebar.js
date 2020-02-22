@@ -40,7 +40,7 @@ class Sidebar extends Component {
     win.setTitle("");
     win.loadURL(
       isDev
-        ? "http://localhost:3000/create_tool"
+        ? "http://localhost:4040/create_tool"
         : `file://${path.join(__dirname, "../build/index.html")}`
     );
 
@@ -103,14 +103,22 @@ class Sidebar extends Component {
           <li className={this.isPathActive('/json_generator') ? 'nav-item active' : 'nav-item'}>
             <Link className="nav-link" to="/json_generator">
               <i className="mdi mdi-sort-variant menu-icon"></i>
-              <span className="menu-title">Json Generator</span>
+              <span className="menu-title">Json Operations</span>
             </Link>
           </li>
 
-          <li className={this.isPathActive('/schema_generator') ? 'nav-item active' : 'nav-item'}>
-            <Link className="nav-link" to="/schema_generator">
+          <li className={this.isPathActive('/connection_tool') ? 'nav-item active' : 'nav-item'}>
+            <Link className="nav-link" to="/connection_tool">
               <i className="mdi  mdi-pound menu-icon"></i>
-              <span className="menu-title">Schema Generator</span>
+              <span className="menu-title">Connection  tool</span>
+            </Link>
+          </li>
+
+
+          <li className={this.isPathActive('/dump_server') ? 'nav-item active' : 'nav-item'}>
+            <Link className="nav-link" to="/dump_server">
+              <i className="mdi   mdi-server menu-icon"></i>
+              <span className="menu-title">Dump  server</span>
             </Link>
           </li>
 

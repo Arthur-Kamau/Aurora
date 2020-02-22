@@ -22,16 +22,16 @@ import ReactNotifications from 'react-notifications-component';
 
 
 import { useLocalStore, useObserver } from "mobx-react";
-import StoreContext  from '../store/store';
+// import StoreContext  from '../store/store';
 
 
-const StoreProvider = ({ children }) => {
+// const StoreProvider = ({ children }) => {
 
-  const store = useLocalStore(() => ({
-toJsonRawSchema : "class animal{}",toJsonDataString : "hey"
-  }));
-  return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-};
+//   const store = useLocalStore(() => ({
+// toJsonRawSchema : "class animal{}",toJsonDataString : "hey"
+//   }));
+//   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+// };
 
 class App extends Component {
   constructor(props) {
@@ -92,16 +92,16 @@ class App extends Component {
                 marginLeft: `5px`,
                 marginTop: `5px`,
               }}>
-                <StoreProvider>
-                  <AppRoutes /></StoreProvider>
+                
+                  <AppRoutes />
               </div>
               {footerComponent}
             </div>
             :
             <div className="main-panel" style={{ padding: `0`, margin: `0` }}  >
               <div className="content-wrapper" style={{ padding: `0`, margin: `0` }}>
-                <StoreProvider>
-                  <AppRoutes /></StoreProvider>
+                
+                  <AppRoutes />
               </div>
             </div>
 

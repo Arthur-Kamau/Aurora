@@ -1,4 +1,4 @@
 import React, { Component } from 'react';
 
 
-export  default  StoreContext = React.createContext();
+// export  default  StoreContext = React.createContext();

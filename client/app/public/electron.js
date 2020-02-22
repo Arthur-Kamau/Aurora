@@ -19,7 +19,7 @@ function createWindow() {
   mainWindow.setMenuBarVisibility(false);
   mainWindow.loadURL(
     isDev
-      ? "http://localhost:3000"
+      ? "http://localhost:4040"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.once('ready-to-show', () => {
