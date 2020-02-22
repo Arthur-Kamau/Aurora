@@ -318,7 +318,7 @@
       max-height: auto;
 
       .nav {
-        max-height: calc(100vh - #{$navbar-height});
+        // max-height: calc(100vh - #{$navbar-height});
         overflow: auto;
         position: relative;
 

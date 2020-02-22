@@ -78,6 +78,7 @@ class Sidebar extends Component {
                 </button>
               </div>
               <div className="col-md-9">
+                {/* <span className="menu-title"><h3>Aurora Tool </h3></span> */}
                 <span className="menu-title"><h3>Aurora Tool </h3></span>
               </div>
             </div>
@@ -89,30 +90,11 @@ class Sidebar extends Component {
 
         </div>
         <ul className="nav">
-          <li className="nav-item nav-profile not-navigation-link">
-            <div className="nav-link">
-              <div className="nav-link user-switch-dropdown-toggler p-0 toggle-arrow-hide bg-transparent border-0 w-100">
-                <div className="d-flex justify-content-between align-items-start">
-                  <div className="profile-image">
-                    <img src={require("../../../assets/images/faces/face8.jpg")} alt="profile" />
-                  </div>
-                  <div className="text-left ml-3">
-                    <p className="profile-name">Richard V.Welsh</p>
-                    <small className="designation text-muted text-small">Manager</small>
-                    <span className="status-indicator online"></span>
-                  </div>
-                </div>
-              </div>
-              <br></br>
-              <button onClick={this.ShowNewModal} className="btn btn-success btn-block">
-                New
-                 <i className="mdi mdi-plus"></i></button>
-            </div>
-          </li>
+         
 
 
-          <li className={this.isPathActive('/projects') ? 'nav-item active' : 'nav-item'}>
-            <Link className="nav-link" to="/projects">
+          <li className={this.isPathActive('/project') ? 'nav-item active' : 'nav-item'}>
+            <Link className="nav-link" to="/project">
               <i className="mdi mdi-television menu-icon"></i>
               <span className="menu-title">Application</span>
             </Link>

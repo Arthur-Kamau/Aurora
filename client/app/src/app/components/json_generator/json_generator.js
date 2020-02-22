@@ -68,13 +68,6 @@ onChange = (newValue) => {
           className="col-xl-6 col-lg-6 col-sm-6"
           style={{ margin: 0, padding: 0 }}
         >
-          {/* <input onChange={(event)=>this.onChange(event.target.value)}></input> */}
-
-          {/* <Editor
-        language="javascript"
-        theme="vs-dark"
-        // config={config.options}
-      /> */}
 
           <MonacoEditor
         language="javascript"
@@ -84,30 +77,6 @@ onChange = (newValue) => {
         onChange={this.onChange}
         // editorDidMount={this.editorDidMount}
       />
-          {/* <AceEditor
-            mode="csharp"
-            theme="twilight"
-            style={{
-              width: `100%`,
-              height: `100%`,
-              padding: `0`,
-              margin: `0`
-            }}
-            onChange={this.onChange}
-            setOptions={{
-              showGutter: true,
-              enableBasicAutocompletion: true,
-              enableSnippets: true,
-              enableLiveAutocompletion: true,
-              navigateToFileEnd: true,
-              // value: this.props.user
-            }}
-
-            name="1"
-            editorProps={{
-              $blockScrolling: true
-            }}
-          /> */}
         </div>
 
         <div

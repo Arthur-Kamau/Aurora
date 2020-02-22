@@ -7,9 +7,11 @@ import './App.scss';
 import Navbar from './components/navbar/Navbar';
 import JsonGeneratorNavBar from './components/navbar/json_generator_navbar';
 import SchemaGeneratorNavBar from './components/navbar/schema_generetor_navbar';
+import EditorNavBar from './components/navbar/editor_navbar';
 
 import Sidebar from './components/sidebar/Sidebar';
 import Footer from './components/footer/Footer';
+import EditorHomePage from './components/editor/editor_home';
 
 
 class App extends Component {
@@ -34,7 +36,7 @@ class App extends Component {
   }
 
   diplayAppropriateAppBAr(starRating) {
-    let navbarOne = !this.state.isFullPageLayout ? <Navbar /> : '';
+    // let navbarOne = !this.state.isFullPageLayout ? <Navbar /> : '';
 
     let navbarTwo = ''
 
@@ -42,12 +44,14 @@ class App extends Component {
       navbarTwo = <SchemaGeneratorNavBar></SchemaGeneratorNavBar>
     } else if (window.location.pathname == "/aurora/schema_generator") {
       navbarTwo = <JsonGeneratorNavBar></JsonGeneratorNavBar>
+    } else if (window.location.pathname == "/aurora/editor" || window.location.pathname == "/aurora/project" || window.location.pathname == "/aurora/") {
+      navbarTwo = <EditorNavBar></EditorNavBar>
     } else { navbarTwo = ''; }
 
     return navbarTwo;
   }
 
- 
+
 
   render() {
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar /> : '';
@@ -60,23 +64,24 @@ class App extends Component {
         <div className="container-fluid page-body-wrapper">
           {sidebarComponent}
 
-          {window.location.pathname != "/create_tool" ?
+          {window.location.pathname != "/aurora/project" ?
 
             <div className="main-panel"    >
-              <div className="content-wrapper" style={{
-                marginLeft: `5px`,
-                marginTop: `5px`,
-              }}>
-                
-                  <AppRoutes />
+              <div className="content-wrapper"
+                style={{
+                  marginLeft: `5px`,
+                  marginTop: `5px`,
+                }}
+              >
+
+                <AppRoutes />
               </div>
               {footerComponent}
             </div>
             :
-            <div className="main-panel" style={{ padding: `0`, margin: `0` }}  >
-              <div className="content-wrapper" style={{ padding: `0`, margin: `0` }}>
-                  <AppRoutes />
-              </div>
+            <div className="main-panel" style={{ margin:`2px, 0, 0,0`,  backgroundColor: `pink` }}  >
+              <EditorHomePage />
+              {footerComponent}
             </div>
 
           }
@@ -94,7 +99,7 @@ class App extends Component {
   onRouteChanged() {
     console.log("ROUTE CHANGED");
     window.scrollTo(0, 0);
-    const fullPageLayoutRoutes = ['/user-pages/login-2', '/user-pages/register-1', '/user-pages/register-2', '/user-pages/lockscreen', '/error-pages/error-404', '/error-pages/error-500', '/general-pages/landing-page'];
+    const fullPageLayoutRoutes = ['/aurora/project', '/aurora/', '/aurora/editor', '/aurora', '/error-pages/error-404', '/error-pages/error-500', '/general-pages/landing-page'];
     for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
       if (this.props.location.pathname === fullPageLayoutRoutes[i]) {
         this.setState({

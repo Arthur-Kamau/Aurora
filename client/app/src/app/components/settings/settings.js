@@ -48,7 +48,7 @@ export class SettingsPage extends Component {
               <div className="template-demo">
                 <div className="btn btn-light btn-lg" onClick={this.changePageToVersion} >            <i className="mdi mdi-compass icon-sm text-warning"></i> &emsp; App Version  </div>
                 <div className="btn btn-light btn-lg" onClick={this.changePageToAccount}>  <i className="mdi mdi-account icon-sm text-success"></i> &emsp; User Account  </div>
-                <div className="btn btn-light btn-lg" onClick={this.changePageToBilling}>  <i className="mdi  mdi-credit-card icon-sm text-info"></i> &emsp; User Billing  </div>
+                <div className="btn btn-light btn-lg" onClick={this.changePageToBilling}>  <i className="mdi  mdi-credit-card icon-sm text-info"></i> &emsp; User Billing &emsp;  </div>
                 <div className="btn btn-light btn-lg" onClick={this.changePageToTheme}>  <i className="mdi  mdi-invert-colors icon-sm text-primary"></i> &emsp; App Theme  </div>
               </div>
             </div>
