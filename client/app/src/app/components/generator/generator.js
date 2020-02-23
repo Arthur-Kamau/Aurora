@@ -44,15 +44,17 @@ class AppGenerator extends Component {
     }
 
     changeLocationToGenerateJson = () => {
-        this.setState({ activeItem: 0 })
+        this.setState({ activeItem: 1 })
         // window.location = "/generate/tojson"
     }
     changeLocationToGenerateSchema = () => {
-        this.setState({ activeItem: 1 })
+        this.setState({ activeItem: 0 })
         // window.location = "/generate/toschema"
     }
 
     render() {
+       var generateSchemaStyle =   this.state.activeItem == 0 ? ' list-group-item active' : 'list-group-item' ;
+       var generateJsonStyle =   this.state.activeItem == 1 ? ' list-group-item active' : 'list-group-item';
         return (
 
             <div style={{ height: `99%`, width: `100%`, backgroundColor: `black`, margin: `0px`, padding: `0px` }}>
@@ -61,16 +63,18 @@ class AppGenerator extends Component {
                     <ul class="list-group list-group-flush col-lg-2 col-md-4 " style={{ backgroundColor: `#f2f2f2`, margin: `0px`, padding: `0px`, height: `100%` }}>
 
                     {/* <div className={'list-group-item' + (this.state.something === "a" ? " anotherClass" : "")}></div> */}
+                    {/* + this.state.activeItem == 0 ? 'active' : ''  */}
                         <li
-                            // className={"list-group-item "  + this.state.activeItem == 0 ? 'active' : '' }
+                            className={generateSchemaStyle}
                             onClick={this.changeLocationToGenerateSchema} >
-                            Generate Schema
+                            Generate Schema 
                         </li>
 
+                        {/* + this.state.activeItem == 1 ? 'active' : '' */}
                         <li
-                            className={"list-group-item  "  + this.state.activeItem == 1 ? 'active' : '' }
-                            onClick={this.changeLocationToGenerateSchema} >
-                            Generate Json
+                            className={generateJsonStyle}
+                            onClick={this.changeLocationToGenerateJson} >
+                            Generate Json 
                         </li>
 
                     </ul>
