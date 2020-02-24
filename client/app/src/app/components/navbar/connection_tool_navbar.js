@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
+import { Form } from "react-bootstrap";
+
 class ConnectionToolAppBar extends Component {
   constructor(props) {
     super(props);
@@ -26,11 +30,20 @@ class ConnectionToolAppBar extends Component {
     this.setState({ modalIsOpen: false });
   }
 
-
+  onSelectConnectionMethod = (e) => {
+    console.log("evernt platform chosen" + e.value);
+  }
   render() {
-
-
-    const customStyles = { height: `200px`, width:`200px`,
+    const connectionPlatform = [
+      'Websockets', 'Mqtt',
+    ]
+    const connectionProtocal = [
+      'Http', 'udp', 'tcp'
+    ]
+    const defaultOptionConnectionPlatform = connectionPlatform[0];
+    const defaultOptionConnectionProtocal = connectionProtocal[0]
+    const customStyles = {
+      height: `200px`, width: `200px`,
       content: {
         top: '50%',
         left: '50%',
@@ -67,19 +80,47 @@ class ConnectionToolAppBar extends Component {
             contentLabel="Example Modal"
           >
 
-              <div class="card-body">
-                <div className="card-title  ">
-                  <div className="row">
-                    <div className="col-lg-6">
-                      Create a connection
+            <div class="card-body">
+              <div className="card-title  ">
+                <div className="row">
+                  <div className="col-lg-6">
+                    Create a connection
                     </div>
-                  </div>
-
                 </div>
 
-                <p class="card-text">Quick sample text to create the card title and make up the body of the card's content.</p>
-                <div className="card-footer  bg-transparent"> <button type="button" onClick={this.createThenCloseModal} class="btn btn-success">Create</button>
-                  &emsp; <button onClick={this.closeModal} type="button" class="btn btn-danger">Close</button></div>
+              </div>
+              <Dropdown options={connectionPlatform} onChange={this.onSelectConnectionMethod} value={defaultOptionConnectionPlatform} placeholder="Select an option" />
+              <br></br>
+
+              <div className="row">
+                <div className="col-lg-3">
+
+                  <Dropdown options={connectionProtocal} onChange={this.onSelectConnectionMethod} value={defaultOptionConnectionProtocal} placeholder="Select an option" />
+
+                </div>
+                <div className="col-lg-6">
+                  <Form.Group className="input-group input-group-md">
+
+                    <Form.Control type="text" className="form-control-lg" placeholder="Ip " aria-label="Username" />
+                  </Form.Group>
+                </div>
+                <div className="col-lg-3">
+                  <div className="input-group input-group-md">
+                    <Form.Control type="text" className="form-control-lg" placeholder="port " aria-label="port" />
+                  </div>
+                </div>
+              </div>
+
+
+              <div className="card-footer  bg-transparent">
+                <div className="float-right">
+                  <button type="button" onClick={this.createThenCloseModal} class="btn btn-success btn-lg">Create</button>
+                  &emsp;
+
+                   <button onClick={this.closeModal} type="button" class="btn btn-danger btn-lg ">Close</button>
+
+                </div>
+              </div>
             </div>
 
           </Modal>

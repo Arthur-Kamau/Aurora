@@ -180,7 +180,7 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-  onChangeConvertToSchemaShcema: convertToSchemaShcemaAction,
-  onChangeConvertJsonStringToSchema: convertJsonStringToSchemaAction
+  // onChangeConvertToSchemaShcema: convertToSchemaShcemaAction,
+  // onChangeConvertJsonStringToSchema: convertJsonStringToSchemaAction
 }
 export default connect(mapStateToProps, mapActionsToProps)(withRouter(App));
