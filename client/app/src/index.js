@@ -21,6 +21,18 @@ const store = createStore(
    {
        products : [{"name":"galaxy"}],
        user : 'kamau',
+       convertJsonStringToSchema : '',
+       convertToJsonRawShcema :'',
+     
+       convertToSchemaShcema : '',
+       convertToSchemaString :'',
+
+       userProfile : {
+           name : '',
+           email : '',
+           userAvater : '',
+           getNotifiedOfMinorUpdate: true
+       }
    },
    window.devToolsExtension && window.devToolsExtension()
 )

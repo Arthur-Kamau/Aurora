@@ -17,7 +17,7 @@ import GeneratorNavBar from './components/navbar/generator_navbar';
 import JsonGeneratorNavBar from './components/navbar/json_generator_navbar';
 import SchemaGeneratorNavBar from './components/navbar/schema_generetor_navbar';
 
-
+import { connect } from 'react-redux'
 
 
 class App extends Component {
@@ -27,10 +27,25 @@ class App extends Component {
     super(props);
     this.state = {
       appBarStyle: "",
-      location: ''
+      location: '',
+      ws: '',
     };
   }
 
+
+  onChange = (newValue) => {
+    console.log("change new value", newValue);
+    var obj = { action: "to-json", payload: newValue };
+    // Converting JS object to JSON string.
+    var json = JSON.stringify(obj);
+    try {
+
+      this.state.ws.send(json) //send data to the server
+    } catch (error) {
+      console.log(error) // catch error
+    }
+
+  }
 
 
   componentDidMount() {
@@ -39,6 +54,30 @@ class App extends Component {
 
     window.location.pathname == "/create_tool" ? this.setState({ appBarStyle: "no style" })
       : this.setState({ appBarStyle: "style" })
+
+
+    this.state.ws = new WebSocket("wss://echo.websocket.org")//AppUrls.toJsonWebSocket)
+    this.state.ws.onopen = () => {
+      // on connecting, do nothing but log it to the console
+      console.log('connected')
+    }
+
+    this.state.ws.onmessage = evt => {
+      // listen to data sent from the websocket server
+      const message = JSON.parse(evt.data)
+
+      // this.setState({ dataFromServer: evt.data })
+      console.log("message from websocket" + evt.data)
+
+
+
+    }
+
+    this.state.ws.onclose = () => {
+      console.log('disconnected')
+
+    }
+
   }
 
   diplayAppropriateAppBAr(starRating) {
@@ -48,17 +87,18 @@ class App extends Component {
 
     if (window.location.pathname == "/aurora/dump_server") {
       navbarTwo = <DumpServerNavbar></DumpServerNavbar>
-    }  else  if (window.location.pathname == "/aurora/generator") {  navbarTwo = <GeneratorNavBar></GeneratorNavBar>
-    }  else  if (window.location.pathname == "/aurora/generator/tojson") {
+    } else if (window.location.pathname == "/aurora/generator") {
+      navbarTwo = <GeneratorNavBar></GeneratorNavBar>
+    } else if (window.location.pathname == "/aurora/generator/tojson") {
       navbarTwo = <JsonGeneratorNavBar></JsonGeneratorNavBar>
-    }  else  if (window.location.pathname == "/aurora/generator/toschema") {
+    } else if (window.location.pathname == "/aurora/generator/toschema") {
       navbarTwo = <SchemaGeneratorNavBar></SchemaGeneratorNavBar>
-    } else  if (window.location.pathname == "/aurora/connection_tool") {
+    } else if (window.location.pathname == "/aurora/connection_tool") {
       navbarTwo = <ConnectionToolAppBar></ConnectionToolAppBar>
-    } else 
-    if (window.location.pathname == "/aurora/editor" || window.location.pathname == "/aurora/project" || window.location.pathname == "/") {
-      navbarTwo = <EditorNavBar></EditorNavBar>
-    } else { navbarTwo = ''; }
+    } else
+      if (window.location.pathname == "/aurora/editor" || window.location.pathname == "/aurora/project" || window.location.pathname == "/") {
+        navbarTwo = <EditorNavBar></EditorNavBar>
+      } else { navbarTwo = ''; }
 
     return navbarTwo;
   }
@@ -91,7 +131,7 @@ class App extends Component {
               {footerComponent}
             </div>
             :
-            <div className="main-panel" style={{ margin:`2px, 0, 0,0`,  backgroundColor: `pink` }}  >
+            <div className="main-panel" style={{ margin: `2px, 0, 0,0`, backgroundColor: `pink` }}  >
               <EditorHomePage />
               {footerComponent}
             </div>
@@ -131,4 +171,16 @@ class App extends Component {
 
 }
 
-export default withRouter(App);
+const mapStateToProps = state => ({
+  convertJsonStringToSchema: state.convertJsonStringToSchema,
+  convertToJsonRawShcema: state.convertToJsonRawShcema,
+
+  convertToSchemaShcema: state.convertToSchemaShcema,
+  convertToSchemaString: state.convertToSchemaString,
+});
+
+const mapActionsToProps = {
+  onChangeConvertToSchemaShcema: convertToSchemaShcemaAction,
+  onChangeConvertJsonStringToSchema: convertJsonStringToSchemaAction
+}
+export default connect(mapStateToProps, mapActionsToProps)(withRouter(App));
