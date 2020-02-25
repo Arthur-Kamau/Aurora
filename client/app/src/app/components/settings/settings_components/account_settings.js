@@ -7,7 +7,16 @@ class AccountSettings extends Component {
   constructor(props) {
     super(props);
     console.log("AccountSettings  "+ props);
-    this.state = {};
+    this.state = {
+      imageStatus: ''
+    };
+  }
+  handleImageLoaded = () => {
+    this.setState({ imageStatus: "loaded" });
+  }
+
+  handleImageErrored= () => {
+    this.setState({ imageStatus: "failed to load" });
   }
   //   mx-auto
   render() {
@@ -16,6 +25,8 @@ class AccountSettings extends Component {
         <div className="row">
           <img
             src={this.props.profile.userAvatar}
+            onLoad={this.handleImageLoaded}
+          onError={this.handleImageErrored}
             className="img-circle  col-lg-4  col-md-4 col-sm-4"
             alt="avatar"
           ></img>

@@ -54,11 +54,11 @@ class AppVersion extends Component {
   render() {
     return (
       <div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Araizen Aurora App</li>
-          <li class="list-group-item">Build : Prelease </li>
-          <li class="list-group-item"> You app is {this.state.version}</li>
-          <li class="list-group-item">    
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">Araizen Aurora App</li>
+          <li className="list-group-item">Build : Prelease </li>
+          <li className="list-group-item"> You app is {this.state.version}</li>
+          <li className="list-group-item">    
             <div className="form-check">
                      <label className="form-check-label">
               <input type="checkbox" defaultChecked className="form-check-input" />

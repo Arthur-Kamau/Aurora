@@ -10,11 +10,11 @@ class UserBilling extends Component {
     render() {
         return (<div>
 
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h3>Billing </h3></li>
-                <li class="list-group-item">Account balance: {this.props.account.accountType} </li>
-                <li class="list-group-item">User Plan :  {this.props.account.accountBalance} </li>
-                <li class="list-group-item">Current expense:  {this.props.account.accountExpendture}</li>
+            <ul className="list-group list-group-flush">
+                <li className="list-group-item"><h3>Billing </h3></li>
+                <li className="list-group-item">Account balance: {this.props.account.accountType} </li>
+                <li className="list-group-item">User Plan :  {this.props.account.accountBalance} </li>
+                <li className="list-group-item">Current expense:  {this.props.account.accountExpendture}</li>
             </ul>
         </div>);
     }
