@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import style from "./app_version_settings.css";
-const { ipcRenderer } = window.require("electron");
+// const { ipcRenderer } = window.require("electron");
 
 class AppVersion extends Component {
   constructor(props) {
@@ -13,40 +13,43 @@ class AppVersion extends Component {
 
   closeNotification = event => { };
   restartApp = event => {
-    ipcRenderer.send("restart_app");
+    // ipcRenderer.send("restart_app");
   };
 
   componentDidMount() {
-    ipcRenderer.send("app_version");
-    ipcRenderer.on("app_version", (event, arg) => {
-      ipcRenderer.removeAllListeners("app_version");
+    // ipcRenderer.send("app_version");
+    // ipcRenderer.on("app_version", (event, arg) => {
+    //   ipcRenderer.removeAllListeners("app_version");
 
-      this.setState({
-        version: "Version " + arg.version
-      });
-    });
+    //   this.setState({
+    //     version: "Version " + arg.version
+    //   });
+    // });
 
-    ipcRenderer.on("update_available", () => {
-      ipcRenderer.removeAllListeners("update_available");
-      //message.innerText = 'A new update is available. Downloading now...';
-      //notification.classList.remove('hidden');
-      alert("A new update is available. Downloading now...");
-    });
-    ipcRenderer.on("update_downloaded", () => {
-      ipcRenderer.removeAllListeners("update_downloaded");
-      // message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
-      //restartButton.classList.remove('hidden');
-      //notification.classList.remove('hidden');
+    // ipcRenderer.on("update_available", () => {
+    //   ipcRenderer.removeAllListeners("update_available");
+    //   //message.innerText = 'A new update is available. Downloading now...';
+    //   //notification.classList.remove('hidden');
+    //   alert("A new update is available. Downloading now...");
+    // });
 
-      var r = window.confirm(
-        "Update Downloaded. It will be installed on restart. Restart now?"
-      );
-      if (r == true) {
-        alert("Okay updating!");
-      } else {
-        alert("You can continue!");
-      }
-    });
+    // ipcRenderer.on("update_downloaded", () => {
+    //   ipcRenderer.removeAllListeners("update_downloaded");
+    //   // message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
+    //   //restartButton.classList.remove('hidden');
+    //   //notification.classList.remove('hidden');
+
+    //   var r = window.confirm(
+    //     "Update Downloaded. It will be installed on restart. Restart now?"
+    //   );
+    //   if (r == true) {
+    //     alert("Okay updating!");
+    //   } else {
+    //     alert("You can continue!");
+    //   }
+    // });
+
+    
   }
   render() {
     return (

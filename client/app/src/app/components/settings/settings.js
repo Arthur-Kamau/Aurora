@@ -4,6 +4,7 @@ import AccountSettings from "./settings_components/account_settings";
 import UserBilling from "./settings_components/billing_setting";
 import ThemeSettingsPage from "./settings_components/theme_settings";
 import BlackSettingsPage from "./settings_components/blank_settings";
+import FeedBackPage from "./settings_components/feedback_page";
 
 export class SettingsPage extends Component {
   constructor(props) {
@@ -11,6 +12,11 @@ export class SettingsPage extends Component {
     this.state = { pageActive: "" }
   }
 
+  changePageToFeedBackPage = (event) => {
+    this.setState({
+      pageActive: "feedback"
+    });
+  }
   changePageToAccount = (event) => {
     this.setState({
       pageActive: "account"
@@ -50,6 +56,7 @@ export class SettingsPage extends Component {
                 <div className="btn btn-light btn-lg" onClick={this.changePageToAccount}>  <i className="mdi mdi-account icon-sm text-success"></i> &emsp; User Account  </div>
                 <div className="btn btn-light btn-lg" onClick={this.changePageToBilling}>  <i className="mdi  mdi-credit-card icon-sm text-info"></i> &emsp; User Billing &emsp;  </div>
                 <div className="btn btn-light btn-lg" onClick={this.changePageToTheme}>  <i className="mdi  mdi-invert-colors icon-sm text-primary"></i> &emsp; App Theme  </div>
+                <div className="btn btn-light btn-lg" onClick={this.changePageToFeedBackPage}>  <i className="mdi  mdi-email icon-sm text-secondary"></i> &emsp;Feedback  </div>
               </div>
             </div>
           </div>
@@ -60,9 +67,14 @@ export class SettingsPage extends Component {
               {this.state.pageActive === "account" ?
                 <AccountSettings></AccountSettings>
                 : this.state.pageActive === "version" ?
-                  <AppVersion></AppVersion> : 
+                  <AppVersion></AppVersion> :
                   this.state.pageActive == "billing" ?
-                  <UserBilling></UserBilling> : this.state.pageActive == "theme" ? <ThemeSettingsPage></ThemeSettingsPage> : <BlackSettingsPage></BlackSettingsPage>}
+                    <UserBilling></UserBilling>
+                    : this.state.pageActive == "theme" ?
+                      <ThemeSettingsPage></ThemeSettingsPage>
+                      : this.state.pageActive == "feedback" ?
+                        <FeedBackPage></FeedBackPage>
+                        : <BlackSettingsPage></BlackSettingsPage>}
             </div>
           </div>
         </div>

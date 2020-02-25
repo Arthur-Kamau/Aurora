@@ -5,7 +5,17 @@ class BlackSettingsPage extends Component {
         this.state = {  }
     }
     render() { 
-        return ( <h1>Settings</h1> );
+        return ( 
+
+            <div>
+                <h1>Settings page</h1>
+                <br></br>
+                <br></br>
+                <p>Thank you for using Aurora</p>
+                <p>You are welcome to share you expirience with us.</p>
+                <p>Happy testing</p>
+            </div>
+         );
     }
 }
  

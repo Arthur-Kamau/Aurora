@@ -1,8 +1,12 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+import updateUser  from '../../../../actions/user_actions';
+
 
 class AccountSettings extends Component {
   constructor(props) {
     super(props);
+    console.log("AccountSettings  "+ props);
     this.state = {};
   }
   //   mx-auto
@@ -11,15 +15,15 @@ class AccountSettings extends Component {
       <div className="container">
         <div className="row">
           <img
-            src="https://picsum.photos/536/354"
-            class="img-circle  col-lg-4  col-md-4 col-sm-4"
+            src={this.props.profile.userAvatar}
+            className="img-circle  col-lg-4  col-md-4 col-sm-4"
             alt="avatar"
           ></img>
           <div className="col-lg-6 col-md-4 col-sm-4 ">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">Name: Cras justo odio</li>
-              <li class="list-group-item">Email: Dapibus ac facilisis in</li>
-              <li class="list-group-item">Location: Morbi leo risus</li>
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">Name: {this.props.profile.name}</li>
+              <li className="list-group-item">Email:{this.props.profile.email}</li>
+              <li className="list-group-item">Location: {this.props.profile.location}</li>
             </ul>
           </div>
         </div>
@@ -27,5 +31,12 @@ class AccountSettings extends Component {
     );
   }
 }
+const mapStateToProps = state =>({
+   profile : state.userProfile
+});
 
-export default AccountSettings;
+const mapActionsToProps = {
+onUpdateUser : updateUser
+};
+
+export default connect(mapStateToProps,mapActionsToProps)(AccountSettings);

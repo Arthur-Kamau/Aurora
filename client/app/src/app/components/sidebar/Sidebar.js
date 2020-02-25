@@ -26,23 +26,23 @@ class Sidebar extends Component {
   }
 
   ShowNewModal = (event) => {
-    const remote = window.require('electron').remote;
-    const path = window.require("path");
-    const isDev = window.require("electron-is-dev");
-    const BrowserWindow = remote.BrowserWindow;
-    const win = new BrowserWindow({
-      height: 150,
-      width: 700,
-      parent: remote.getCurrentWindow(),
-      modal: true
-    });
-    win.setMenuBarVisibility(false);
-    win.setTitle("");
-    win.loadURL(
-      isDev
-        ? "http://localhost:4040/create_tool"
-        : `file://${path.join(__dirname, "../build/index.html")}`
-    );
+    // const remote = window.require('electron').remote;
+    // const path = window.require("path");
+    // const isDev = window.require("electron-is-dev");
+    // const BrowserWindow = remote.BrowserWindow;
+    // const win = new BrowserWindow({
+    //   height: 150,
+    //   width: 700,
+    //   parent: remote.getCurrentWindow(),
+    //   modal: true
+    // });
+    // win.setMenuBarVisibility(false);
+    // win.setTitle("");
+    // win.loadURL(
+    //   isDev
+    //     ? "http://localhost:4040/create_tool"
+    //     : `file://${path.join(__dirname, "../build/index.html")}`
+    // );
 
   }
   onRouteChanged() {
@@ -93,12 +93,12 @@ class Sidebar extends Component {
          
 
 
-          <li className={this.isPathActive('/project') ? 'nav-item active' : 'nav-item'}>
+          {/* <li className={this.isPathActive('/project') ? 'nav-item active' : 'nav-item'}>
             <Link className="nav-link" to="/project">
               <i className="mdi mdi-television menu-icon"></i>
               <span className="menu-title">Application</span>
             </Link>
-          </li>
+          </li> */}
 
           <li className={this.isPathActive('/generator') ? 'nav-item active' : 'nav-item'}>
             <Link className="nav-link" to="/generator">

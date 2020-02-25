@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
 import { Form } from "react-bootstrap";
+import AceEditor from "react-ace";
+
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-csharp";
+import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/theme-kuroir";
+import "ace-builds/src-noconflict/theme-chrome";
+import "ace-builds/src-noconflict/theme-twilight";
 
 class ConnectionTool extends Component {
     constructor(props) {
@@ -43,27 +51,76 @@ class ConnectionTool extends Component {
                 <br></br>
                 {
                     this.state.activeColumn === "publish" ?
-                        <div>
-                            <form>
-                                <Form.Group>
-                                    <label htmlFor="exampleInputCity1">Topic</label>
-                                    <Form.Control type="text" className="form-control" id="exampleInputCity1" placeholder="Location" />
-                                </Form.Group>
-                                <Form.Group>
-                                    <label htmlFor="exampleTextarea1">Data</label>
-                                    <textarea className="form-control" id="exampleTextarea1" rows="4"></textarea>
-                                </Form.Group>
-                                <button type="submit" className="btn btn-primary mr-2">Submit</button>
-                            </form>
+                        <div className="row">
+                            <div className="col-md-6 col-lg-3">
+                            </div>
+                            <div className="col-md-8 col-lg-8">
+                                <form >
+                                    <Form.Group>
+                                        <label htmlFor="exampleInputCity1">Topic</label>
+                                        <Form.Control type="text" className="form-control" id="exampleInputCity1" placeholder="Location" />
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <label htmlFor="exampleTextarea1">Data</label>
+                                        <textarea className="form-control" id="exampleTextarea1" rows="4"></textarea>
+                                    </Form.Group>
+                                    <button type="submit" className="btn btn-primary mr-2">Submit</button>
+                                </form>
+                            </div>
+
                         </div>
                         :
                         this.state.activeColumn === "subscribe" ?
                             <div>
-                                <h1>Subscbive</h1>
+                                <div className="row">
+                                    <div className="col-md-3 col-lg-3">
+                                        <h4>Subscrbed topics</h4>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item list-group-item-action  border-top  border-bottom">topics/66</li>
+                                            <li class="list-group-item list-group-item-action border-top border-bottom">topics/333</li>
+                                        </ul>
+                                    </div>
+                                    <div className="col-md-3 col-lg-3 border-left border-right">
+                                    <h4>Topic  names</h4>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item list-group-item-action  border-top  border-bottom">Cras justo odio</li>
+                                            <li class="list-group-item list-group-item-action border-top border-bottom">Dapibus ac facilisis in</li>
+                                            <li class="list-group-item list-group-item-action border-top  border-bottom">Morbi leo risus</li>
+                                        </ul>
+                                    </div>
+                                    <div className="col-md-6 col-lg-6">
+                                        <h1>Message details</h1>
+
+
+
+                                        
+                                    </div>
+                                </div>
                             </div>
                             :
                             <div>
-                                <h1>Logs</h1>
+                                 <h4>Logs </h4>
+                                        <AceEditor
+
+                                            mode="java"
+                                            theme="twilight"
+                                            style={{
+                                                width: `100%`,
+                                                height: `100%`,
+                                                padding: `0`,
+                                                margin: `0`
+                                            }}
+                                            // setOptions={{
+                                            //     showGutter: false,
+                                            //     highlightActiveLine: true,
+                                            //     readOnly: false,
+                                            //     value: this.props.user
+                                            // }}
+                                            name="2"
+                                            editorProps={{
+                                                $blockScrolling: true
+                                            }}
+                                        />
                             </div>
 
                 }

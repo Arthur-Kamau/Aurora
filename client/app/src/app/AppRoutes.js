@@ -22,9 +22,9 @@ class AppRoutes extends Component {
             <Suspense fallback={<Spinner />}>
                 <Switch>
                     <Route exact path='/'>
-                    <Redirect to="/project" />
+                    <Redirect to="/generator" />
                     </Route>
-                    <Route exact path="/project" component={EditorHomePage} />
+                    {/* <Route exact path="/project" component={EditorHomePage} /> */}
                     <Route  path="/generator" component={AppGenerator} />
                     <Route exact path="/dump_server" component={DumpServerPage} />
                     <Route exact path="/connection_tool" component={ConnectionTool} />

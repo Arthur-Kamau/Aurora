@@ -1,8 +1,8 @@
 {
-  "name": "json-operations",
+  "name": "aurora-app",
   "version": "0.1.0",
   "private": true,
-  "description": "<your project description>",
+  "description": "Api tooling application",
   "author": "Arthur_kamau",
   "build": {
     "appId": "com.araizen.www",

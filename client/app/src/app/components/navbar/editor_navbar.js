@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
-import { Dropdown } from 'react-bootstrap';
+// import { Dropdown } from 'react-bootstrap';
+import { store } from 'react-notifications-component';
 
 class EditorNavBar extends Component {
     toggleOffcanvas() {
         document.querySelector('.sidebar-offcanvas').classList.toggle('active');
+    }
+    openHelpPage = (e) =>{
+        // window.require("shell").openExternal("http://www.google.com")
+    //     const shell = window.require('electron').shell;
+    //    shell.openExternal("http://www.google.com");
+
+
+
     }
     render() {
         return (
@@ -18,7 +27,7 @@ class EditorNavBar extends Component {
                     <li className="nav-item">
                         <a className="nav-link" href="#">Devtools</a>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item" onClick={this.openHelpPage}>
                         <a className="nav-link" href="#">Help</a>
                     </li>
 
