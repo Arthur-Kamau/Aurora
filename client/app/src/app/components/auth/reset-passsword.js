@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-class JsonGenerator extends Component {
+class ResetPasswordPage extends Component {
     constructor(props) {
         super(props);
         this.state = {  }
     }
     render() { 
-        return (  <h1>generate json </h1> );
+        return ( <h5>reste  passwor  page</h5> );
     }
 }
  
-export default JsonGenerator;
+export default ResetPasswordPage;

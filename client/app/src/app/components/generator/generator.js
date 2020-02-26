@@ -8,6 +8,9 @@ import "ace-builds/src-noconflict/theme-kuroir";
 import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-twilight";
 import MonacoEditor from 'react-monaco-editor';
+import {UnControlled as CodeMirror} from 'react-codemirror2'
+import Editor from "@monaco-editor/react";
+
 import { connect } from 'react-redux';
 import updateSchemaDataForGenerateSchema from '../../../actions/generate_schema_shema_data_action';
 import updateRawJsonForGenerateSchema from '../../../actions/generate_schema_raw_json_string_action';
@@ -23,13 +26,15 @@ class AppGenerator extends Component {
             activeItem: 'generate_schema',
             ws: '',
             userInput: '',
-            serverOuput: ''
+            serverOuput: '',
+            iuserInputWidth: ''
         }
+        this.myInput = React.createRef()
 
     }
     componentDidMount() {
         this.toggleOffcanvas();
-
+        
         this.state.ws = new WebSocket("wss://echo.websocket.org")//AppUrls.toJsonWebSocket)
         this.state.ws.onopen = () => {
             // on connecting, do nothing but log it to the console
@@ -50,11 +55,8 @@ class AppGenerator extends Component {
                 this.props.onupdateJsonForGenerateJson(evt.data);
             }
 
-
-
-
-
-
+console.log("side bar width "+this.myInput.current.offsetWidth);
+this.setState({ iuserInputWidth: this.myInput.current.offsetWidth });
         }
 
         this.state.ws.onclose = () => {
@@ -85,7 +87,8 @@ class AppGenerator extends Component {
     }
 
 
-    userInput = (newValue, e) => {
+    // userInput = (newValue, e) => {
+    userInput = (editor, data, newValue) => {
         var input = newValue;
         var data = JSON.stringify({ data: input });
         console.log("user input " + input)
@@ -102,7 +105,9 @@ class AppGenerator extends Component {
         const userEditorOptions = {
             selectOnLineNumbers: true
         };
-
+        var sampleDiv = {
+            backgroundColor: `red`, width: this.state.iuserInputWidth,
+        }
         return (
 
             <div style={{ height: `99%`, width: `100%`, backgroundColor: `black`, margin: `0px`, padding: `0px` }}>
@@ -123,17 +128,26 @@ class AppGenerator extends Component {
 
                     </ul>
                     <div className="col-lg-10 col-md-8 col-xs-12 " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `white` }}>
-                        <div className="row " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `black` }}>
-                            <div className="col-lg-6 col-md-12 col-xs-12     " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `yellow` }} >
+                        <div className="row " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `black` }} >
+                            <div ref={this.myInput} className="col-lg-6 col-md-12 col-xs-12" style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `green` }}  >
 
-                                <MonacoEditor
-                                    width="600"
-                                    height="100vh"
+                                {/* <MonacoEditor
+                                    // width='100%' //{this.state.iuserInputWidth }
+                                    width={this.state.iuserInputWidth }
+                                    height="90vh"
                                     language="java"
                                     theme="vs-dark"
                                     options={userEditorOptions}
                                     onChange={this.userInput}
-                                />
+                                /> */}
+
+<Editor
+       width={this.state.iuserInputWidth }
+       height="90vh"
+       language="java"
+       theme="vs-dark"
+        value={"// write your code here"}
+      />
                             </div>
                             <div className="col-lg-6 col-md-12 col-xs-12 m-0 p-0">
                                 {this.state.activeItem == 'generate_schema' ?
@@ -150,7 +164,8 @@ class AppGenerator extends Component {
                                             showGutter: false,
                                             highlightActiveLine: true,
                                             readOnly: true,
-                                            value: this.props.convertToSchemaShcema
+                                            value :    this.props.convertToSchemaShcema != null && this.props.convertToSchemaShcema.length > 0 ?
+                                            this.props.convertToSchemaShcema.data : this.props.convertToSchemaShcema
                                         }}
                                         name="3"
                                         editorProps={{
@@ -172,7 +187,9 @@ class AppGenerator extends Component {
                                             showGutter: false,
                                             highlightActiveLine: true,
                                             readOnly: true,
-                                            value: this.props.convertJsonJsonString
+                                            value:
+                                             this.props.convertJsonJsonString != null && this.props.convertJsonJsonString.length > 0 ?
+                                              this.props.convertJsonJsonString.data : this.props.convertJsonJsonString
                                         }}
                                         name="3"
                                         editorProps={{

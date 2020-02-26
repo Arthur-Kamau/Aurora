@@ -16,6 +16,7 @@ class AccountSettings extends Component {
   }
 
   logOutUser = () => {
+    window.location = "/logout"
   }
   handleImageErrored= () => {
     this.setState({ imageStatus: "failed to load" });
@@ -50,7 +51,7 @@ class AccountSettings extends Component {
               Logout
             </button>
             &nbsp;
-            
+
           </div>
         </div>
         </div>
