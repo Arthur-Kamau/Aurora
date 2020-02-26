@@ -1,54 +1,70 @@
 import React, { Component } from "react";
 import style from "./app_version_settings.css";
-// const { ipcRenderer } = window.require("electron");
+
 
 class AppVersion extends Component {
   constructor(props) {
     super(props);
     this.state = {
       startDate: new Date(),
-      version: ""
+      version: "",
+      isElectronApp: false,
     };
   }
 
-  closeNotification = event => { };
-  restartApp = event => {
-    // ipcRenderer.send("restart_app");
+  closeNotification = event => { 
+
   };
+  restartApp = event => {
+    var userAgent = navigator.userAgent.toLowerCase();
+if (userAgent.indexOf(' electron/') > -1) {
+   // Electron-specific code
+   const { ipcRenderer } = window.require("electron");
+   ipcRenderer.send("restart_app_install_update");
+ };
+}
+
 
   componentDidMount() {
-    // ipcRenderer.send("app_version");
-    // ipcRenderer.on("app_version", (event, arg) => {
-    //   ipcRenderer.removeAllListeners("app_version");
 
-    //   this.setState({
-    //     version: "Version " + arg.version
-    //   });
-    // });
+    var userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.indexOf(' electron/') > -1) {
+      this.setState({isElectronApp : true});
+    const { ipcRenderer } = window.require("electron");
+    ipcRenderer.send("app_version");
+    ipcRenderer.on("app_version", (event, arg) => {
+      ipcRenderer.removeAllListeners("app_version");
 
-    // ipcRenderer.on("update_available", () => {
-    //   ipcRenderer.removeAllListeners("update_available");
-    //   //message.innerText = 'A new update is available. Downloading now...';
-    //   //notification.classList.remove('hidden');
-    //   alert("A new update is available. Downloading now...");
-    // });
+      this.setState({
+        version: "Version " + arg.version
+      });
+    });
 
-    // ipcRenderer.on("update_downloaded", () => {
-    //   ipcRenderer.removeAllListeners("update_downloaded");
-    //   // message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
-    //   //restartButton.classList.remove('hidden');
-    //   //notification.classList.remove('hidden');
+    ipcRenderer.on("update_available", () => {
+      ipcRenderer.removeAllListeners("update_available");
+      //message.innerText = 'A new update is available. Downloading now...';
+      //notification.classList.remove('hidden');
+      alert("A new update is available. Downloading now...");
+    });
 
-    //   var r = window.confirm(
-    //     "Update Downloaded. It will be installed on restart. Restart now?"
-    //   );
-    //   if (r == true) {
-    //     alert("Okay updating!");
-    //   } else {
-    //     alert("You can continue!");
-    //   }
-    // });
+    ipcRenderer.on("update_downloaded", () => {
+      ipcRenderer.removeAllListeners("update_downloaded");
+      // message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
+      //restartButton.classList.remove('hidden');
+      //notification.classList.remove('hidden');
 
+      var r = window.confirm(
+        "Update Downloaded. It will be installed on restart. Restart now?"
+      );
+      if (r == true) {
+        alert("Okay updating!");
+      } else {
+        alert("You can continue!");
+      }
+    });
+  }else{
+    this.setState({isElectronApp : false});
+  }
     
   }
   render() {
@@ -68,6 +84,7 @@ class AppVersion extends Component {
           </div></li>
         </ul>
 
+{this.state.isElectronApp == true ? 
         <div className="align-content-lg-end">
           <div id={style.notification} className={style.hidden}>
             <p id="message"></p>
@@ -86,6 +103,10 @@ class AppVersion extends Component {
             </button>
           </div>
         </div>
+: <div></div>
+} 
+
+
       </div>
     );
   }

@@ -15,6 +15,8 @@ class AccountSettings extends Component {
     this.setState({ imageStatus: "loaded" });
   }
 
+  logOutUser = () => {
+  }
   handleImageErrored= () => {
     this.setState({ imageStatus: "failed to load" });
   }
@@ -24,9 +26,9 @@ class AccountSettings extends Component {
       <div className="container">
         <div className="row">
           <img
-            src={this.props.profile.userAvatar}
-            onLoad={this.handleImageLoaded}
-          onError={this.handleImageErrored}
+            src={this.props.profile.userAvatar == null || this.props.profile.userAvatar.length == 0 ? 'https://getdrawings.com/free-icon/create-account-icon-52.png' : this.props.profile.userAvatar }
+          //   onLoad={this.handleImageLoaded}
+          // onError={this.handleImageErrored}
             className="img-circle  col-lg-4  col-md-4 col-sm-4"
             alt="avatar"
           ></img>
@@ -37,6 +39,20 @@ class AccountSettings extends Component {
               <li className="list-group-item">Location: {this.props.profile.location}</li>
             </ul>
           </div>
+
+          <div className="align-content-lg-end">
+          <div >
+            <p id="message"></p>
+            <button
+              className="btn btn-success btn-md"
+              onClick={this.logOutUser}
+            >
+              Logout
+            </button>
+            &nbsp;
+            
+          </div>
+        </div>
         </div>
       </div>
     );

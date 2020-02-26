@@ -13,7 +13,7 @@ class GeneratorNavBar extends Component {
           {/* <ul className="navbar-nav navbar-nav-left header-links">
              <li className="nav-item d-none d-md-flex"> */}
             <h4>
-            Gson Operations
+            Json Operations
             </h4>
             {/* </li>
           </ul> */}

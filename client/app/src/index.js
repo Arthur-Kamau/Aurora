@@ -35,10 +35,10 @@ const store = createStore(
    {
        products : [{"name":"galaxy"}],
        user : 'kamau',
-       convertJsonJsonString : '// paste your schema on the left side panel \n // The generated json string will apear here ',
+       convertJsonJsonString : '// paste your schema on the left side panel \n// The generated json string will apear here ',
        convertToJsonRawShcema :'',
      
-       convertToSchemaShcema : '// paste your schema on the left side panel \n // The generated shema model will apear here ',
+       convertToSchemaShcema : '// paste your json on the left side panel \n// The generated shema model will apear here ',
        convertToSchemaJsonString :'',
 
        userAccount : {
