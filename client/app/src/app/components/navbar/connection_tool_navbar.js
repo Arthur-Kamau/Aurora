@@ -111,7 +111,8 @@ class ConnectionToolAppBar extends Component {
                 </div>
               </div>
 
-
+              <br></br>
+              <br></br>
               <div className="card-footer  bg-transparent">
                 <div className="float-right">
                   <button type="button" onClick={this.createThenCloseModal} class="btn btn-success btn-lg">Create</button>
@@ -123,6 +124,7 @@ class ConnectionToolAppBar extends Component {
               </div>
             </div>
 
+            <br></br>
           </Modal>
 
         </ul>

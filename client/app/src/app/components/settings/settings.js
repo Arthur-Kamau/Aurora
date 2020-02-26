@@ -4,6 +4,7 @@ import AccountSettings from "./settings_components/account_settings";
 import UserBilling from "./settings_components/billing_setting";
 import ThemeSettingsPage from "./settings_components/theme_settings";
 import BlackSettingsPage from "./settings_components/blank_settings";
+import DocumentationPageInSettings from "./settings_components/documentation";
 import FeedBackPage from "./settings_components/feedback_page";
 
 export class SettingsPage extends Component {
@@ -12,6 +13,20 @@ export class SettingsPage extends Component {
     this.state = { pageActive: "" }
   }
 
+  openDocumentationTab = (event) => {
+    this.setState({
+      pageActive: "docementation"
+    });
+    var userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.indexOf(' electron/') > -1) {
+    //  window.require("shell").openExternal("http://www.google.com")
+        const shell = window.require('electron').shell;
+       shell.openExternal("http://www.google.com");
+    }else{
+      var win = window.open("http://www.google.com", '_blank');
+      win.focus();
+    }
+  }
   changePageToFeedBackPage = (event) => {
     this.setState({
       pageActive: "feedback"
@@ -57,6 +72,7 @@ export class SettingsPage extends Component {
                 <div className="btn btn-light btn-lg" onClick={this.changePageToBilling}>  <i className="mdi  mdi-credit-card icon-sm text-info"></i> &emsp; User Billing &emsp;  </div>
                 <div className="btn btn-light btn-lg" onClick={this.changePageToTheme}>  <i className="mdi  mdi-invert-colors icon-sm text-primary"></i> &emsp; App Theme &emsp;  </div>
                 <div className="btn btn-light btn-lg" onClick={this.changePageToFeedBackPage}>  <i className="mdi  mdi-email icon-sm text-secondary"></i> &emsp;Feedback &emsp;   </div>
+                <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Dcoumentation &emsp;   </div>
               </div>
             </div>
           </div>
@@ -74,7 +90,7 @@ export class SettingsPage extends Component {
                       <ThemeSettingsPage></ThemeSettingsPage>
                       : this.state.pageActive == "feedback" ?
                         <FeedBackPage></FeedBackPage>
-                        : <BlackSettingsPage></BlackSettingsPage>}
+                        :    this.state.pageActive == "docementation" ? <DocumentationPageInSettings></DocumentationPageInSettings> : <BlackSettingsPage></BlackSettingsPage>}
             </div>
           </div>
         </div>
