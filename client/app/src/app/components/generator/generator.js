@@ -7,10 +7,8 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-kuroir";
 import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-twilight";
-import MonacoEditor from 'react-monaco-editor';
-import {UnControlled as CodeMirror} from 'react-codemirror2'
-import Editor from "@monaco-editor/react";
-
+import { ControlledEditor } from "@monaco-editor/react";
+// import WebsocketController from "./websocket_app";
 import { connect } from 'react-redux';
 import updateSchemaDataForGenerateSchema from '../../../actions/generate_schema_shema_data_action';
 import updateRawJsonForGenerateSchema from '../../../actions/generate_schema_raw_json_string_action';
@@ -24,44 +22,34 @@ class AppGenerator extends Component {
         super(props);
         this.state = {
             activeItem: 'generate_schema',
-            ws: '',
             userInput: '',
             serverOuput: '',
-            iuserInputWidth: ''
+            iuserInputWidth: '',
+            ws: '',
+            dataFromServer: '', 
         }
         this.myInput = React.createRef()
 
     }
     componentDidMount() {
         this.toggleOffcanvas();
-        
-        this.state.ws = new WebSocket("wss://echo.websocket.org")//AppUrls.toJsonWebSocket)
+        this.state.ws = new WebSocket("wss://echo.websocket.org")
         this.state.ws.onopen = () => {
-            // on connecting, do nothing but log it to the console
-            console.log('connected')
+          // on connecting, do nothing but log it to the console
+          console.log('connected')
         }
-
+    
         this.state.ws.onmessage = evt => {
-            // listen to data sent from the websocket server
-            const message = JSON.parse(evt.data)
-
-            console.log("message from websocket" + evt.data)
-            // this.setState({ serverOuput: evt.data });
-
-            if (this.state.activeItem == 'generate_schema') {
-                this.props.onupdateSchemaDataForGenerateSchema(evt.data);
-            } else {
-
-                this.props.onupdateJsonForGenerateJson(evt.data);
-            }
-
-console.log("side bar width "+this.myInput.current.offsetWidth);
-this.setState({ iuserInputWidth: this.myInput.current.offsetWidth });
+          // listen to data sent from the websocket server
+          const message = JSON.parse(evt.data)
+    
+          this.setState({ dataFromServer: message })
+          console.log("message" + message)
         }
-
+    
         this.state.ws.onclose = () => {
-            console.log('disconnected')
-
+          console.log('disconnected')
+    
         }
 
     }
@@ -84,19 +72,25 @@ this.setState({ iuserInputWidth: this.myInput.current.offsetWidth });
     }
     changeLocationToGenerateSchema = () => {
         this.setState({ activeItem: 'generate_schema' });
+
+        
     }
 
 
-    // userInput = (newValue, e) => {
-    userInput = (editor, data, newValue) => {
-        var input = newValue;
-        var data = JSON.stringify({ data: input });
+    handleEditorChange = (ev, value) => {
+      
+        var input = value;
+        var data = JSON.stringify({ data: input, action: this.state.activeItem });
         console.log("user input " + input)
 
-        //   this.setState({userInput : input});
 
-        this.state.ws.send(data);
-    }
+        if (this.state.ws.readyState === 1) {
+            this.state.ws.send(data);
+        } else {
+            console.error("unable to send message")
+        }
+
+    };
 
 
     render() {
@@ -105,9 +99,7 @@ this.setState({ iuserInputWidth: this.myInput.current.offsetWidth });
         const userEditorOptions = {
             selectOnLineNumbers: true
         };
-        var sampleDiv = {
-            backgroundColor: `red`, width: this.state.iuserInputWidth,
-        }
+
         return (
 
             <div style={{ height: `99%`, width: `100%`, backgroundColor: `black`, margin: `0px`, padding: `0px` }}>
@@ -131,23 +123,19 @@ this.setState({ iuserInputWidth: this.myInput.current.offsetWidth });
                         <div className="row " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `black` }} >
                             <div ref={this.myInput} className="col-lg-6 col-md-12 col-xs-12" style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `green` }}  >
 
-                                {/* <MonacoEditor
-                                    // width='100%' //{this.state.iuserInputWidth }
-                                    width={this.state.iuserInputWidth }
-                                    height="90vh"
-                                    language="java"
-                                    theme="vs-dark"
-                                    options={userEditorOptions}
-                                    onChange={this.userInput}
-                                /> */}
+                                {this.editor ||
+                                    (this.editor = (
+                                        <ControlledEditor
+                                            width={this.state.iuserInputWidth}
+                                            //    options={userEditorOptions}
+                                            onChange={this.handleEditorChange}
+                                            height="90vh"
+                                            language="java"
+                                            theme="vs-dark"
 
-<Editor
-       width={this.state.iuserInputWidth }
-       height="90vh"
-       language="java"
-       theme="vs-dark"
-        value={"// write your code here"}
-      />
+
+                                        />
+                                    ))}
                             </div>
                             <div className="col-lg-6 col-md-12 col-xs-12 m-0 p-0">
                                 {this.state.activeItem == 'generate_schema' ?
@@ -164,8 +152,9 @@ this.setState({ iuserInputWidth: this.myInput.current.offsetWidth });
                                             showGutter: false,
                                             highlightActiveLine: true,
                                             readOnly: true,
-                                            value :    this.props.convertToSchemaShcema != null && this.props.convertToSchemaShcema.length > 0 ?
-                                            this.props.convertToSchemaShcema.data : this.props.convertToSchemaShcema
+                                            value: this.state.dataFromServer.data
+                                            // value: this.props.convertToSchemaShcema != null && this.props.convertToSchemaShcema.length > 0 ?
+                                            //     this.props.convertToSchemaShcema.data : this.props.convertToSchemaShcema
                                         }}
                                         name="3"
                                         editorProps={{
@@ -187,9 +176,10 @@ this.setState({ iuserInputWidth: this.myInput.current.offsetWidth });
                                             showGutter: false,
                                             highlightActiveLine: true,
                                             readOnly: true,
-                                            value:
-                                             this.props.convertJsonJsonString != null && this.props.convertJsonJsonString.length > 0 ?
-                                              this.props.convertJsonJsonString.data : this.props.convertJsonJsonString
+                                            value:   this.state.dataFromServer
+                                            // value:
+                                            //     this.props.convertJsonJsonString != null && this.props.convertJsonJsonString.length > 0 ?
+                                            //         this.props.convertJsonJsonString.data : this.props.convertJsonJsonString
                                         }}
                                         name="3"
                                         editorProps={{
@@ -228,3 +218,5 @@ const mapActionsToProps = {
 
 
 export default connect(mapStateToProps, mapActionsToProps)(AppGenerator);
+
+
