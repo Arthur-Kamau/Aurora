@@ -77,7 +77,8 @@ class AppGenerator extends Component {
     }
 
 
-    handleEditorChange = (ev, value) => {
+    // handleEditorChange = (ev, value) => {
+    handleEditorChange = (value) => {
       
         var input = value;
         var data = JSON.stringify({ data: input, action: this.state.activeItem });
@@ -125,16 +126,39 @@ class AppGenerator extends Component {
 
                                 {this.editor ||
                                     (this.editor = (
-                                        <ControlledEditor
-                                            width={this.state.iuserInputWidth}
-                                            //    options={userEditorOptions}
-                                            onChange={this.handleEditorChange}
-                                            height="90vh"
-                                            language="java"
-                                            theme="vs-dark"
+                                        // <ControlledEditor
+                                        //     width={this.state.iuserInputWidth}
+                                        //     //    options={userEditorOptions}
+                                        //     onChange={this.handleEditorChange}
+                                        //     height="90vh"
+                                        //     language="java"
+                                        //     theme="vs-dark"
 
 
-                                        />
+                                        // />
+
+                                        <AceEditor
+                                        mode="csharp"
+                                        theme="twilight"
+                                        style={{
+                                          width: `100%`,
+                                          height: `100%`,
+                                          padding: `0`,
+                                          margin: `0`
+                                        }}
+                                        onChange={this.handleEditorChange}
+                                        setOptions={{
+                                          showGutter: true,
+                                          enableBasicAutocompletion: true,
+                                          enableSnippets: true,
+                                          enableLiveAutocompletion: true,
+                                          value: this.state.rawModel
+                                        }}
+                                        name="1"
+                                        editorProps={{
+                                          $blockScrolling: true
+                                        }}
+                                      />
                                     ))}
                             </div>
                             <div className="col-lg-6 col-md-12 col-xs-12 m-0 p-0">
@@ -164,7 +188,7 @@ class AppGenerator extends Component {
                                     :
 
                                     <AceEditor
-                                        mode="java"
+                                        mode="json"
                                         theme="chrome"
                                         style={{
                                             width: `100%`,
@@ -176,7 +200,7 @@ class AppGenerator extends Component {
                                             showGutter: false,
                                             highlightActiveLine: true,
                                             readOnly: true,
-                                            value:   this.state.dataFromServer
+                                            value:   this.state.dataFromServer.data
                                             // value:
                                             //     this.props.convertJsonJsonString != null && this.props.convertJsonJsonString.length > 0 ?
                                             //         this.props.convertJsonJsonString.data : this.props.convertJsonJsonString

@@ -166,7 +166,9 @@ class App extends Component {
   onRouteChanged() {
     console.log("ROUTE CHANGED");
     window.scrollTo(0, 0);
-    const fullPageLayoutRoutes = ['/aurora/project', '/aurora/', '/aurora/editor', '/aurora', '/error-pages/error-404', '/error-pages/error-500', '/general-pages/landing-page'];
+    const fullPageLayoutRoutes = ['/logout', '/login', '/reset-password',
+     '/register', '/error-pages/error-404', '/error-pages/error-500', 
+     '/forgot-password', '/forgot-password-key'];
     for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
       if (this.props.location.pathname === fullPageLayoutRoutes[i]) {
         this.setState({
