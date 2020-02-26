@@ -43,9 +43,9 @@ class AppGenerator extends Component {
             console.log("message from websocket" + evt.data)
             // this.setState({ serverOuput: evt.data });
 
-            if(this.state.activeItem == 'generate_schema') {
+            if (this.state.activeItem == 'generate_schema') {
                 this.props.onupdateSchemaDataForGenerateSchema(evt.data);
-            }else{
+            } else {
 
                 this.props.onupdateJsonForGenerateJson(evt.data);
             }
@@ -84,9 +84,9 @@ class AppGenerator extends Component {
         this.setState({ activeItem: 'generate_schema' });
     }
 
- 
-    userInput = (newValue , e) => {
-       var   input = newValue;
+
+    userInput = (newValue, e) => {
+        var input = newValue;
         var data = JSON.stringify({ data: input });
         console.log("user input " + input)
 
@@ -101,9 +101,9 @@ class AppGenerator extends Component {
         var generateJsonStyle = this.state.activeItem == 'generate_json' ? ' list-group-item active' : 'list-group-item';
         const userEditorOptions = {
             selectOnLineNumbers: true
-          };
-          
-          return (
+        };
+
+        return (
 
             <div style={{ height: `99%`, width: `100%`, backgroundColor: `black`, margin: `0px`, padding: `0px` }}>
                 <div className="row " style={{ height: `100%`, backgroundColor: `yellow`, width: `100%`, margin: `0px`, padding: `0px` }}>
@@ -125,31 +125,15 @@ class AppGenerator extends Component {
                     <div className="col-lg-10 col-md-8 col-xs-12 " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `white` }}>
                         <div className="row " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `black` }}>
                             <div className="col-lg-6 col-md-12 col-xs-12     " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `yellow` }} >
-                                {/* <AceEditor
 
-                                    mode="java"
-                                    theme="twilight"
-                                    style={{
-                                        width: `100%`,
-                                        height: `100%`,
-                                        padding: `0`,
-                                        margin: `0`
-                                    }}
-
+                                <MonacoEditor
+                                    width="600"
+                                    height="100vh"
+                                    language="java"
+                                    theme="vs-dark"
+                                    options={userEditorOptions}
                                     onChange={this.userInput}
-                                    name="2"
-                                    editorProps={{
-                                        $blockScrolling: true
-                                    }}
-                                /> */}
-<MonacoEditor
-        width="800"
-        height="600"
-        language="javascript"
-        theme="vs-dark"
-        options={userEditorOptions}
-        onChange={this.userInput}
-      />
+                                />
                             </div>
                             <div className="col-lg-6 col-md-12 col-xs-12 m-0 p-0">
                                 {this.state.activeItem == 'generate_schema' ?
