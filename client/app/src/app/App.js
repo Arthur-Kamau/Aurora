@@ -62,7 +62,7 @@ class App extends Component {
       : this.setState({ appBarStyle: "style" })
 
 
-    this.state.ws = new WebSocket("wss://echo.websocket.org")//AppUrls.toJsonWebSocket)
+    this.state.ws = new WebSocket("ws://0.0.0.0:8080/ws/user")//AppUrls.toJsonWebSocket)
     this.state.ws.onopen = () => {
       // on connecting, do nothing but log it to the console
       console.log('connected')

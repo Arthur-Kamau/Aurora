@@ -3,17 +3,43 @@ import {
     GoogleLoginButton,
     GithubLoginButton,
 } from "react-social-login-buttons";
+import axios, { post } from 'axios';
 
 class LoginPage extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            email : ''
+        }
     }
     handleGithubClick = () => {
         alert("Hello!");
     }
     handleGooglehubClick = () => {
         alert("Hello!");
+    }
+    changeEmail = (event) => {
+        this.setState({email : event.value})
+    }
+    submitEmail = (e) => {
+        e.preventDefault();
+        const url = 'https://ptsv2.com/t/plk2f-1582637930/post';
+        var bodyFormData = new FormData();
+        bodyFormData.set('email', this.state.email );
+        axios({
+            method: 'post',
+            url: url,
+            data: bodyFormData,
+            headers: {'Content-Type': 'multipart/form-data' }
+            })
+            .then(function (response) {
+                //handle success
+                console.log("check response "+response);
+            })
+            .catch(function (response) {
+                //handle error
+                console.log("catch response "+response);
+            });
     }
     render() {
         return (
@@ -29,13 +55,13 @@ class LoginPage extends Component {
 
                     <div className="form-group ">
                         <label>Email address</label>
-                        <input type="email" className="form-control" placeholder="Enter email" />
+                        <input type="email" onChange={this.changeEmail} className="form-control" placeholder="Enter email" />
                     </div>
 
-                    <div className="form-group">
+                    {/* <div className="form-group">
                         <label>Password</label>
                         <input type="password" className="form-control" placeholder="Enter password" />
-                    </div>
+                    </div> */}
 
                     <div className="form-group">
                         <div className="custom-control custom-checkbox">

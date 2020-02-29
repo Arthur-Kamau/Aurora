@@ -21,35 +21,36 @@ class AppGenerator extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeItem: 'generate_schema',
+            activeItem: 'generate_json', // 'generate_schema',
             userInput: '',
             serverOuput: '',
             iuserInputWidth: '',
             ws: '',
-            dataFromServer: '', 
+            dataFromServer: '',
         }
         this.myInput = React.createRef()
 
     }
     componentDidMount() {
         this.toggleOffcanvas();
-        this.state.ws = new WebSocket("wss://echo.websocket.org")
+        this.state.ws = new WebSocket("ws://0.0.0.0:8080/generator")
         this.state.ws.onopen = () => {
-          // on connecting, do nothing but log it to the console
-          console.log('connected')
+            // on connecting, do nothing but log it to the console
+            console.log('generateor connected')
         }
-    
+
         this.state.ws.onmessage = evt => {
-          // listen to data sent from the websocket server
-          const message = JSON.parse(evt.data)
-    
-          this.setState({ dataFromServer: message })
-          console.log("message" + message)
+            console.log("message received " + evt.data);
+            // listen to data sent from the websocket server
+            const message = JSON.parse(evt.data)
+
+            this.setState({ dataFromServer: message.payload })
+            console.log("message" + message.payload)
         }
-    
+
         this.state.ws.onclose = () => {
-          console.log('disconnected')
-    
+            console.log('disconnected')
+
         }
 
     }
@@ -73,15 +74,15 @@ class AppGenerator extends Component {
     changeLocationToGenerateSchema = () => {
         this.setState({ activeItem: 'generate_schema' });
 
-        
+
     }
 
 
     // handleEditorChange = (ev, value) => {
     handleEditorChange = (value) => {
-      
+
         var input = value;
-        var data = JSON.stringify({ data: input, action: this.state.activeItem });
+        var data = JSON.stringify({ payload: input, action: this.state.activeItem });
         console.log("user input " + input)
 
 
@@ -105,7 +106,7 @@ class AppGenerator extends Component {
 
             <div style={{ height: `99%`, width: `100%`, backgroundColor: `black`, margin: `0px`, padding: `0px` }}>
                 <div className="row " style={{ height: `100%`, backgroundColor: `yellow`, width: `100%`, margin: `0px`, padding: `0px` }}>
-                    <ul className="list-group list-group-flush col-lg-2 col-md-4 " style={{ backgroundColor: `#f2f2f2`, margin: `0px`, padding: `0px`, height: `100%` }}>
+                    {/* <ul className="list-group list-group-flush col-lg-2 col-md-4 " style={{ backgroundColor: `#f2f2f2`, margin: `0px`, padding: `0px`, height: `100%` }}>
 
                         <li
                             className={generateSchemaStyle}
@@ -118,9 +119,8 @@ class AppGenerator extends Component {
                             onClick={this.changeLocationToGenerateJson} >
                             Generate Json
                         </li>
-
-                    </ul>
-                    <div className="col-lg-10 col-md-8 col-xs-12 " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `white` }}>
+                    </ul> */}
+                    <div className="col-lg-12 col-md-8 col-xs-12 " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `white` }}>
                         <div className="row " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `black` }} >
                             <div ref={this.myInput} className="col-lg-6 col-md-12 col-xs-12" style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `green` }}  >
 
@@ -138,27 +138,27 @@ class AppGenerator extends Component {
                                         // />
 
                                         <AceEditor
-                                        mode="csharp"
-                                        theme="twilight"
-                                        style={{
-                                          width: `100%`,
-                                          height: `100%`,
-                                          padding: `0`,
-                                          margin: `0`
-                                        }}
-                                        onChange={this.handleEditorChange}
-                                        setOptions={{
-                                          showGutter: true,
-                                          enableBasicAutocompletion: true,
-                                          enableSnippets: true,
-                                          enableLiveAutocompletion: true,
-                                          value: this.state.rawModel
-                                        }}
-                                        name="1"
-                                        editorProps={{
-                                          $blockScrolling: true
-                                        }}
-                                      />
+                                            mode="csharp"
+                                            theme="twilight"
+                                            style={{
+                                                width: `100%`,
+                                                height: `100%`,
+                                                padding: `0`,
+                                                margin: `0`
+                                            }}
+                                            onChange={this.handleEditorChange}
+                                            setOptions={{
+                                                showGutter: true,
+                                                enableBasicAutocompletion: true,
+                                                enableSnippets: true,
+                                                enableLiveAutocompletion: true,
+                                                value: this.state.rawModel
+                                            }}
+                                            name="1"
+                                            editorProps={{
+                                                $blockScrolling: true
+                                            }}
+                                        />
                                     ))}
                             </div>
                             <div className="col-lg-6 col-md-12 col-xs-12 m-0 p-0">
@@ -176,7 +176,7 @@ class AppGenerator extends Component {
                                             showGutter: false,
                                             highlightActiveLine: true,
                                             readOnly: true,
-                                            value: this.state.dataFromServer.data
+                                            value: this.state.dataFromServer
                                             // value: this.props.convertToSchemaShcema != null && this.props.convertToSchemaShcema.length > 0 ?
                                             //     this.props.convertToSchemaShcema.data : this.props.convertToSchemaShcema
                                         }}
@@ -200,7 +200,7 @@ class AppGenerator extends Component {
                                             showGutter: false,
                                             highlightActiveLine: true,
                                             readOnly: true,
-                                            value:   this.state.dataFromServer.data
+                                            value: this.state.dataFromServer
                                             // value:
                                             //     this.props.convertJsonJsonString != null && this.props.convertJsonJsonString.length > 0 ?
                                             //         this.props.convertJsonJsonString.data : this.props.convertJsonJsonString

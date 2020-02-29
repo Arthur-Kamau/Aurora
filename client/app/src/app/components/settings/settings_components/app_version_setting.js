@@ -82,6 +82,15 @@ if (userAgent.indexOf(' electron/') > -1) {
               Do not Get notified of minor versions
             </label>
           </div></li>
+
+          <li className="list-group-item">    
+            <div className="form-check">
+                     <label className="form-check-label">
+              <input type="checkbox" defaultChecked className="form-check-input" />
+              <i className="input-helper"></i>
+              Report anonymous statistics
+            </label>
+          </div></li>
         </ul>
 
 {this.state.isElectronApp == true ? 
