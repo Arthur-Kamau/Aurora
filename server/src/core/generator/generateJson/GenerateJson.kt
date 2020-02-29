@@ -33,13 +33,20 @@ class GenerateJson {
                 }
             }
         }
-        var result = try {
-            GenerateJsonOperations().generateToken(linesSplitByNewLineAndSemiColon)
+        val res = GenerateJsonOperations().inspectPayloadAndFindError(linesSplitByNewLineAndSemiColon)
 
-        } catch (e: Exception) {
-            "schema has some errors"
+        var result : String
+        result = if(!res.first){
+            try {
+                GenerateJsonOperations().generateToken(linesSplitByNewLineAndSemiColon)
+
+            } catch (e: Exception) {
+                "schema has some errors \n "+ res.second
+            }
+        }else{
+            "errors were identified "+ res.second
         }
-        return "line ${linesSplitByNewLineAndSemiColon.size} result $result"
+        return result
 
     }
 

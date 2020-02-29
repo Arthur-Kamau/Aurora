@@ -2,9 +2,9 @@ package com.araizen.www.core.generator.generateJson
 
 import com.araizen.www.model.generateJsonModel.ComplexToken
 import com.araizen.www.utils.console.Println
+import org.apache.commons.collections4.ListUtils
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-
 
 class GenerateJsonOperations {
 
@@ -14,6 +14,9 @@ class GenerateJsonOperations {
     private val generatorHints = mutableListOf<String>(
         "@name_person", "@name_animal", "@name_bacteria", "@name_animal", "@country", "@city", "@planet", "@any"
     )
+    private val keyPrimaryWord =
+        ListUtils.union(ListUtils.union(supportedPrimaryKeyWords, supportedSecondaryKeyWords), supportedComplexObjects)
+
 
     fun generateToken(dataLines: List<String>): String {
 
@@ -121,19 +124,126 @@ class GenerateJsonOperations {
     }
 
 
-    fun inspectPayloadAndFindError(dataLines: List<String>): String {
+    fun inspectPayloadAndFindError(dataLines: List<String>): Pair<Boolean, String> {
         var errorData = ""
+        var isThereError = false
         for ((lineNumber, aLine) in dataLines.withIndex()) {
 
-            if (aLine.contains("//")) {
-                Println.blue("ignore line ")
-            }else{
+            if (aLine.startsWith("//")) {
+                Println.blue("ignore line as its a comment")
+            } else if (aLine.contains(";")) {
+                var lineToken = aLine.split(";")
+                for (aSemiColonLine in lineToken) {
+                    if (aSemiColonLine.contains("//")) {
+                        var lineStatements = aSemiColonLine.substring(0, aSemiColonLine.indexOf("//") + 2)
+                        var lineStatementsGeneratorHints =
+                            aSemiColonLine.substring(aSemiColonLine.indexOf("//") + 2, aSemiColonLine.length)
 
 
+                    } else {
+
+
+                    }
+                }
             }
 
         }
-        return errorData
+        return Pair(isThereError, errorData)
+    }
+
+
+    fun validateStatement(lineStatements: String, lineNumber: Int): Pair<Boolean, String> {
+        var errorData = ""
+        var isThereError = false
+        var splitBySpace = lineStatements.split(" ")
+        if (splitBySpace.size == 1) {
+            var firstIndex = splitBySpace[0]
+            var secondIndex = splitBySpace[1]
+
+            //first word is not key word
+            if (!keyPrimaryWord.contains(firstIndex)) {
+                isThereError = true
+                errorData = "An identifier and variable is required for every statement \n " +
+                        "For example `int name` or `bool isHuman`  \n" +
+                        "line number $lineNumber word $firstIndex  \n" +
+                        "change $firstIndex to key word \n " +
+                        "keywords are $supportedPrimaryKeyWords"
+                //second word is key word
+            } else if (keyPrimaryWord.contains(secondIndex)) {
+                isThereError = true
+                errorData = "An identifier and variable is required for every statement \n " +
+                        "For example `int name` or `bool isHuman`  \n" +
+                        "line number $lineNumber word $secondIndex \n " +
+                        "change $secondIndex to a non key word"
+            } else {
+                Println.green("everything is okay $splitBySpace")
+            }
+        } else if (splitBySpace.size <= 1) {
+            Println.yellow("less or equal to one")
+
+
+            isThereError = true
+            errorData = "An identifier and variable is required for every statement \n " +
+                    "For example `int name` or `bool isHuman`  \n" +
+                    "line number $lineNumber "
+        } else {
+            Println.yellow("splitBySpace is greater than one")
+
+            isThereError = true
+            errorData = "An identifier and variable is required for every statement \n " +
+                    "For example `int name` or `bool isHuman`  \n" +
+                    "line number $lineNumber  does not make sense \n" +
+                    "found more than identifier and variable in statement"
+        }
+
+        return Pair(isThereError, errorData)
+    }
+
+    fun validateGeneratorHints(lineHint: String, lineNumber: Int): Pair<Boolean, String> {
+        var splitByComma = lineHint.split(",")
+        var isThereWarning = false
+        var errorData = ""
+        for ((wordNumber, word) in splitByComma.withIndex()) {
+
+            if (generatorHints.contains(word)) {
+                Println.yellow(" a genrator keyword found its okay $word")
+            } else if (word.startsWith("[") && word.endsWith("]")) {
+
+                if (word.contains("=")) {
+                    var startIndex = word.substring(word.indexOf("["), word.indexOf("="))
+                    var endIndex = word.substring(word.indexOf("="), word.indexOf("]"))
+                    Println.yellow("range string $word from $startIndex to $endIndex")
+                    try {
+                        var startIndexInt = startIndex.toInt()
+                        var endIndexInt = endIndex.toInt()
+                    } catch (ex: NumberFormatException) {
+                        //handle exception here
+                        isThereWarning = true
+                        errorData = "line $lineNumber contains a genrator hint at index $wordNumber \n " +
+                                "ensure while providing a range follows the follwing format \n " +
+                                "[ int = int] for a range or [int] for exact list range \n" +
+                                "either the start index, or the end index is not a valid integer"
+                    }
+                } else {
+                    var listIndex = word.substring(word.indexOf("["), word.indexOf("]"))
+                    try {
+                        var startAndEndIndexInt = listIndex.toInt()
+                    } catch (ex: NumberFormatException) {
+                        //handle exception here
+                        isThereWarning = true
+                        errorData = "line $lineNumber contains a genrator hint at index $wordNumber \n " +
+                                "ensure while providing a range follows the follwing format \n " +
+                                "[ int = int] for a range or [int] for exact list range \n" +
+                                "either the start index, or the end index is not a valid integer"
+                    }
+                }
+            } else {
+                isThereWarning = true
+                errorData = "an invalid json genrator hint was identified "
+            }
+
+        }
+return  Pair(isThereWarning,errorData)
     }
 }
 
