@@ -120,9 +120,9 @@ class AppGenerator extends Component {
                             Generate Json
                         </li>
                     </ul> */}
-                    <div className="col-lg-12 col-md-8 col-xs-12 " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `white` }}>
+                    <div className="col-lg-12 col-md-12 col-xs-12 " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `white` }}>
                         <div className="row " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `black` }} >
-                            <div ref={this.myInput} className="col-lg-6 col-md-12 col-xs-12" style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `green` }}  >
+                            <div ref={this.myInput} className="col-lg-6 col-md-6 col-xs-12" style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `green` }}  >
 
                                 {this.editor ||
                                     (this.editor = (
@@ -161,8 +161,10 @@ class AppGenerator extends Component {
                                         />
                                     ))}
                             </div>
-                            <div className="col-lg-6 col-md-12 col-xs-12 m-0 p-0">
+                            <div className="col-lg-6 col-md-6 col-xs-12 m-0 p-0">
                                 {this.state.activeItem == 'generate_schema' ?
+                                    // value: this.props.convertToSchemaShcema != null && this.props.convertToSchemaShcema.length > 0 ?
+                                    //     this.props.convertToSchemaShcema.data : this.props.convertToSchemaShcema
                                     <AceEditor
                                         mode="java"
                                         theme="chrome"
@@ -177,8 +179,7 @@ class AppGenerator extends Component {
                                             highlightActiveLine: true,
                                             readOnly: true,
                                             value: this.state.dataFromServer
-                                            // value: this.props.convertToSchemaShcema != null && this.props.convertToSchemaShcema.length > 0 ?
-                                            //     this.props.convertToSchemaShcema.data : this.props.convertToSchemaShcema
+
                                         }}
                                         name="3"
                                         editorProps={{
@@ -186,6 +187,9 @@ class AppGenerator extends Component {
                                         }}
                                     />
                                     :
+                                    // value:
+                                    //     this.props.convertJsonJsonString != null && this.props.convertJsonJsonString.length > 0 ?
+                                    //         this.props.convertJsonJsonString.data : this.props.convertJsonJsonString
 
                                     <AceEditor
                                         mode="json"
@@ -201,9 +205,6 @@ class AppGenerator extends Component {
                                             highlightActiveLine: true,
                                             readOnly: true,
                                             value: this.state.dataFromServer
-                                            // value:
-                                            //     this.props.convertJsonJsonString != null && this.props.convertJsonJsonString.length > 0 ?
-                                            //         this.props.convertJsonJsonString.data : this.props.convertJsonJsonString
                                         }}
                                         name="3"
                                         editorProps={{

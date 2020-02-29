@@ -33,9 +33,13 @@ class GenerateJson {
                 }
             }
         }
+        var result = try {
+            GenerateJsonOperations().generateToken(linesSplitByNewLineAndSemiColon)
 
-        GenerateJsonOperations().generateToken(linesSplitByNewLineAndSemiColon)
-        return "line ${linesSplitByNewLineAndSemiColon.size}"
+        } catch (e: Exception) {
+            "schema has some errors"
+        }
+        return "line ${linesSplitByNewLineAndSemiColon.size} result $result"
 
     }
 

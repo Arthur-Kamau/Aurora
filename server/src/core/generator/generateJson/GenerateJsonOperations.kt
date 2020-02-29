@@ -15,11 +15,16 @@ class GenerateJsonOperations {
         "@name_person", "@name_animal", "@name_bacteria", "@name_animal", "@country", "@city", "@planet", "@any"
     )
 
-    fun generateToken(dataLines: List<String>) {
+    fun generateToken(dataLines: List<String>): String {
 
+        var token: ComplexToken? = null
         for ((lineNumber, aLine) in dataLines.withIndex()) {
 
-            val characterTypeAndKey = aLine.substring(0, aLine.indexOf("//"))
+            val characterTypeAndKey = if (aLine.contains("//")) {
+                aLine.substring(0, aLine.indexOf("//"))
+            } else {
+                aLine
+            }
             val keyValuePairPlusMetaForOriginalMap: MutableList<String> = characterTypeAndKey.split(" ").toMutableList()
 
             Println.purple("key value plus meta $keyValuePairPlusMetaForOriginalMap")
@@ -33,6 +38,8 @@ class GenerateJsonOperations {
             // 1 -> user provided name
             // 2 -> ;
             // contains
+            var generateListRangeFromTo = mutableListOf<Int>()
+            var generateType = ""
             if (aLine.contains("//")) {
                 val characterHint = aLine.substring(aLine.indexOf("//") + 2, aLine.length)
                 Println.cyan("=========================================================")
@@ -40,11 +47,11 @@ class GenerateJsonOperations {
                 Println.cyan("=========================================================")
                 var generateJsonHints = characterHint.split(",")
 
-                var generateListRangeFromTo = mutableListOf<Int>()
                 for (aHint in generateJsonHints) {
                     Println.cyan("a hint $aHint")
                     if (aHint.startsWith("@")) {
                         Println.blue("hint type $aHint")
+                        generateType = aHint
                     } else if (aHint.contains("=") || aHint.contains("-")) {
                         val p: Pattern = Pattern.compile("[0-9]+")
                         val m: Matcher = p.matcher(aHint)
@@ -61,25 +68,37 @@ class GenerateJsonOperations {
                             }
                         }
                     } else {
-Println.red("unknown generator hint")
+                        Println.red("unknown generator hint")
+
                     }
                 }
-                if(generateListRangeFromTo.isEmpty() || generateListRangeFromTo.size <1){
+                if (generateListRangeFromTo.isEmpty() || generateListRangeFromTo.size < 1) {
                     //if the range to generate is 0
                     //generate from 1 to max provided value
-                    generateListRangeFromTo.add(0,1)
+                    generateListRangeFromTo.add(0, 1)
                 }
             } else {
                 Println.yellow("No type hints for line $lineNumber  ")
+                generateListRangeFromTo.addAll(listOf(0, 0))
             }
-            var token = ComplexToken(
+
+
+            token = ComplexToken(
                 type = sanitizedKeyValue[0],
                 key = sanitizedKeyValue[1],
-                generateType = Pair[]
+                generateTypeLength = Pair(generateListRangeFromTo[0], generateListRangeFromTo[1]),
+                generateType = generateType
             )
 
+            Println.yellow("======================================================")
+            Println.yellow("Token $token")
+            Println.yellow("======================================================")
 
         }
+
+
+        return token?.toString() ?: ""
+
     }
 
     private fun eliminateBlankOrSpaceWords(keyValuePairForOriginalMap: MutableList<String>): MutableList<String> {
@@ -102,6 +121,20 @@ Println.red("unknown generator hint")
     }
 
 
+    fun inspectPayloadAndFindError(dataLines: List<String>): String {
+        var errorData = ""
+        for ((lineNumber, aLine) in dataLines.withIndex()) {
+
+            if (aLine.contains("//")) {
+                Println.blue("ignore line ")
+            }else{
+
+
+            }
+
+        }
+        return errorData
+    }
 }
 
 
