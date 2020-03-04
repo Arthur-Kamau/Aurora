@@ -1,0 +1,100 @@
+{ "app":{
+  "name":"Aurora", "description":""
+},
+  "db": {
+    "adapter": "postgres",
+    "host": "localhost",
+    "port": "5432",
+    "user": "newuser",
+    "password": "password",
+    "dbname": "Aurora",
+    "charset": "utf8",
+    "dialect": "mysql",
+    "sslmode": "disable",
+    "userBlocking": "0123456789"
+  },
+  "db2": {
+    "adapter": "mysql",
+    "host": "localhost",
+    "port": "3306",
+    "user": "arthur_kamau",
+    "password": "kamau09",
+    "dbname": "Aurora",
+    "charset": "utf8",
+    "dialect": "mysql",
+    "sslmode": "disable",
+    "userBlocking": "0123456789"
+  },
+  "db3": {
+    "adapter": "mssql",
+    "host": "localhost",
+    "port": "3306",
+    "user": "newuser",
+    "password": "password",
+    "dbname": "Aurora",
+    "charset": "utf8",
+    "dialect": "mssql",
+    "sslmode": "disable",
+    "userBlocking": "0123456789"
+  },
+  "redis": {
+    "auth": "data",
+    "lifetime": "3000",
+    "port": "6379",
+    "host": "localhost",
+    "enabled": "1",
+    "timeout": "600",
+    "session_lifetime": "1209600"
+  },
+  "logs": {
+    "directory": "//var/www/logs/Aurora/go",
+    "info": "info.log",
+    "error": "error.log",
+    "Debug": "debug.log",
+    "security": "security.log"
+  },
+  "sms": {
+    "url": "http://projects.legitimate-technology.com/pledge_api/v1/message/singleSMS",
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsZWdpdGltYXRlLXRlY2hub2xvZ3kuY29tIiwiaWF0IjoxNTQwNTMzMzU1LCJuYmYiOjE1NDA1MzMzNTUsImlkIjoiMTIifQ.y1tnWAQD5pP4P5exsebF9lWbjIZ0kt-3BFC6WpaAtn8",
+    "user_id": "12"
+  },
+  "email": {
+    "server": "smtp.gmail.com",
+    "port": 587,
+    "emailUser": "kennkamau09@gmail.com",
+    "emailPassword": "@Githurai45"
+  },
+  "server": {
+    "host": "",
+    "port": "4000",
+    "database": "mysql"
+  },
+  "chat": {
+    "host": "",
+    "port": "13000",
+    "pprof": "7001",
+    "workers": 128,
+    "queue": 1,
+    "timeout": 100
+  },
+  "jwt": {
+    "key": "my_secret_key",
+    "date": "2019-10-29 07:09:44.890257644 +0000 UTC m=+0.000076581"
+  },
+  "google": {
+    "client_id": "733915849910-kp0udet62etbo53mpn02v76rmdj81f8j.apps.googleusercontent.com",
+    "client_secreat": "eYkPGN1dyyWpip3mHfCjgpsP"
+  },
+  "facebook": {
+    "app_id": "1740178859446362",
+    "app_secreat": "1d6e5ddb42acf8510e0ef9fc3739caa2"
+  },
+  "twitter": {
+    "api_key":"QNYOlpGnNrONwx3yiPO0arnhp",
+    "api_secreat_key":"ACGKuDQCx6rcO1xMFnrN1YmTUs4OiskXJbQdU8bW9WRXsVhuGO"
+  },
+  "github":{
+    "client_id":"82cb61b9efe1fc2664bb",
+  "client_secreat":"c0240f2e2f22a8cfb7a498f968e0bfa7587d86e4"  
+  }
+}
