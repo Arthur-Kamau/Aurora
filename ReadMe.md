@@ -1,5 +1,5 @@
 <!-- ![Aurora logo](./logo.png =200) -->
-<img src="./logo.png" alt="drawing" width="200"/>
+<img src="./icon2.png" alt="drawing" width="200"/>
 
 # Aurora 
 

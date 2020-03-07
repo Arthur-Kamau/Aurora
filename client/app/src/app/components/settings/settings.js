@@ -6,7 +6,7 @@ import ThemeSettingsPage from "./settings_components/theme_settings";
 import BlackSettingsPage from "./settings_components/blank_settings";
 import DocumentationPageInSettings from "./settings_components/documentation";
 import FeedBackPage from "./settings_components/feedback_page";
-
+import { connect } from 'react-redux';
 export class SettingsPage extends Component {
   constructor(props) {
     super(props);
@@ -19,13 +19,16 @@ export class SettingsPage extends Component {
     });
     var userAgent = navigator.userAgent.toLowerCase();
     if (userAgent.indexOf(' electron/') > -1) {
-    //  window.require("shell").openExternal("http://www.google.com")
-        const shell = window.require('electron').shell;
-       shell.openExternal("http://www.google.com");
-    }else{
+      //  window.require("shell").openExternal("http://www.google.com")
+      const shell = window.require('electron').shell;
+      shell.openExternal("http://www.google.com");
+    } else {
       var win = window.open("http://www.google.com", '_blank');
       win.focus();
     }
+  }
+  openLoginPage = (event) => {
+    window.location = "/login";
   }
   changePageToFeedBackPage = (event) => {
     this.setState({
@@ -66,14 +69,31 @@ export class SettingsPage extends Component {
               <h2 className="card-title">App Settings</h2>
               {/* <p className="card-description"> Add faded secondary text to headings </p> */}
               <hr></hr>
-              <div className="template-demo">
-                <div className="btn btn-light btn-lg" onClick={this.changePageToVersion} >            <i className="mdi mdi-compass icon-sm text-warning"></i> &emsp; App  Version  </div>
-                <div className="btn btn-light btn-lg" onClick={this.changePageToAccount}>  <i className="mdi mdi-account icon-sm text-success"></i> &emsp; User Account  </div>
-                <div className="btn btn-light btn-lg" onClick={this.changePageToBilling}>  <i className="mdi  mdi-credit-card icon-sm text-info"></i> &emsp; User Billing &emsp;  </div>
-                <div className="btn btn-light btn-lg" onClick={this.changePageToTheme}>  <i className="mdi  mdi-invert-colors icon-sm text-primary"></i> &emsp; App Theme &emsp;  </div>
-                <div className="btn btn-light btn-lg" onClick={this.changePageToFeedBackPage}>  <i className="mdi  mdi-email icon-sm text-secondary"></i> &emsp;Feedback &emsp;   </div>
-                <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Dcoumentation &emsp;   </div>
-              </div>
+
+              {
+                this.props.authToken == null || this.props.authToken.length == 0 ?
+                  <div className="template-demo">
+
+                    <div className="btn btn-light btn-lg" onClick={this.changePageToFeedBackPage}>  <i className="mdi  mdi-email icon-sm text-secondary"></i> &emsp;Feedback &emsp;   </div>
+                    <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Docoumentation &emsp;   </div>
+                    <div className="btn btn-light btn-lg" onClick={this.openLoginPage}>  <i className="mdi  mdi-lock icon-sm text-dark"></i> &emsp;Login &emsp;   </div>
+
+                  </div>
+                  :
+
+                  <div className="template-demo">
+                    <div className="btn btn-light btn-lg" onClick={this.changePageToVersion} >            <i className="mdi mdi-compass icon-sm text-warning"></i> &emsp; App  Version  </div>
+                    <div className="btn btn-light btn-lg" onClick={this.changePageToAccount}>  <i className="mdi mdi-account icon-sm text-success"></i> &emsp; User Account  </div>
+                    <div className="btn btn-light btn-lg" onClick={this.changePageToBilling}>  <i className="mdi  mdi-credit-card icon-sm text-info"></i> &emsp; User Billing &emsp;  </div>
+                    <div className="btn btn-light btn-lg" onClick={this.changePageToTheme}>  <i className="mdi  mdi-invert-colors icon-sm text-primary"></i> &emsp; App Theme &emsp;  </div>
+                    <div className="btn btn-light btn-lg" onClick={this.changePageToFeedBackPage}>  <i className="mdi  mdi-email icon-sm text-secondary"></i> &emsp;Feedback &emsp;   </div>
+                    <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Dcoumentation &emsp;   </div>
+                  </div>
+
+
+              }
+
+
             </div>
           </div>
         </div>
@@ -90,7 +110,9 @@ export class SettingsPage extends Component {
                       <ThemeSettingsPage></ThemeSettingsPage>
                       : this.state.pageActive == "feedback" ?
                         <FeedBackPage></FeedBackPage>
-                        :    this.state.pageActive == "docementation" ? <DocumentationPageInSettings></DocumentationPageInSettings> : <BlackSettingsPage></BlackSettingsPage>}
+                        : this.state.pageActive == "docementation" ? 
+                        <DocumentationPageInSettings ></DocumentationPageInSettings>
+                         : <BlackSettingsPage authToken={this.props.authToken}></BlackSettingsPage>}
             </div>
           </div>
         </div>
@@ -99,4 +121,13 @@ export class SettingsPage extends Component {
   }
 }
 
-export default SettingsPage
+const mapStateToProps = state => ({
+  authToken: state.authtoken
+});
+
+const mapActionsToProps = {
+  // onUpdateUser : updateUser
+};
+
+
+export default connect(mapStateToProps, mapActionsToProps)(SettingsPage);

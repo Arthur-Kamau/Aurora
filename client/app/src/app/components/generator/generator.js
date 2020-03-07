@@ -7,8 +7,6 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-kuroir";
 import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-twilight";
-import { ControlledEditor } from "@monaco-editor/react";
-// import WebsocketController from "./websocket_app";
 import { connect } from 'react-redux';
 import updateSchemaDataForGenerateSchema from '../../../actions/generate_schema_shema_data_action';
 import updateRawJsonForGenerateSchema from '../../../actions/generate_schema_raw_json_string_action';

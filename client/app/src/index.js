@@ -3,72 +3,93 @@ import ReactDOM from 'react-dom';
 import App from './app/App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
-import {Provider} from 'react-redux';
-import {combineReducers, createStore} from 'redux';
+import { Provider } from 'react-redux';
+import { combineReducers, createStore } from 'redux';
 
 import userReducer from './reducers/user_reducer';
-import productReducer  from './reducers/products_reducer';
+import productReducer from './reducers/products_reducer';
 
-import generateJsonJsonStringReducer  from './reducers/generate_json_raw_string_reducer';
-import generateJsonSchemaReducer  from './reducers/generate_json_schema_reducer';
+import generateJsonJsonStringReducer from './reducers/generate_json_raw_string_reducer';
+import generateJsonSchemaReducer from './reducers/generate_json_schema_reducer';
 
-import generateSchemaJsonStringReducer  from './reducers/generate_schema_raw_json_string_reducer';
-import generateSchemaSchemaReducer  from './reducers/generate_schema_shema_data_reducer';
+import generateSchemaJsonStringReducer from './reducers/generate_schema_raw_json_string_reducer';
+import generateSchemaSchemaReducer from './reducers/generate_schema_shema_data_reducer';
 
+import changeDumpServerStatusReducer from './reducers/dump_server_reducer';
+import changeDumpServerLogsReducer from './reducers/dump_server_log_reducer';
 
+import connectionToolReducer from './reducers/connection_tool_reducer';
 
 const allReducers = combineReducers({
-  products : productReducer,
-  user : userReducer,
-  userProfile : userReducer,
-  userAccount : userReducer,
+    products: productReducer,
+    user: userReducer,
+    userProfile: userReducer,
+    userAccount: userReducer,
 
-  convertJsonJsonString : generateJsonJsonStringReducer,
-  convertToJsonRawShcema : generateJsonSchemaReducer,
+    convertJsonJsonString: generateJsonJsonStringReducer,
+    convertToJsonRawShcema: generateJsonSchemaReducer,
 
-  convertToSchemaShcema : generateSchemaSchemaReducer,
-  convertToSchemaJsonString :generateSchemaJsonStringReducer
+    convertToSchemaShcema: generateSchemaSchemaReducer,
+    convertToSchemaJsonString: generateSchemaJsonStringReducer,
+
+    dumpServer: changeDumpServerStatusReducer, 
+    dumpServerLogs: changeDumpServerLogsReducer,
+
+    connectionTool :  connectionToolReducer
 })
 
 const store = createStore(
-   allReducers,
-   {
-       products : [{"name":"galaxy"}],
-       user : 'kamau',
-       convertJsonJsonString : '// paste your schema on the left side panel \n// The generated json string will apear here ',
-       convertToJsonRawShcema :'',
-     
-       convertToSchemaShcema : '// paste your json on the left side panel \n// The generated shema model will apear here ',
-       convertToSchemaJsonString :'',
+    allReducers,
+    {
+        products: [{ "name": "galaxy" }],
+        user: 'kamau',
+        convertJsonJsonString: '// paste your schema on the left side panel \n// The generated json string will apear here ',
+        convertToJsonRawShcema: '',
 
-       userAccount : {
-            accountType : 'free',
-            accountBalance : 'None',
-            accountExpendture : 'None',
-       },
-       userProfile : {
-           name : 'name',
-           email : 'email',
-           location : 'location',
-           userAvatar : 'https://picsum.photos/536/354',
-           getNotifiedOfMinorUpdate: true,
-           sendTelemetry: true,
-           theme: 'light'
-       }
-   },
-   window.devToolsExtension && window.devToolsExtension()
+        convertToSchemaShcema: '// paste your json on the left side panel \n// The generated shema model will apear here ',
+        convertToSchemaJsonString: '',
+        authtoken: '',
+        dumpServer: {
+            isStarted: false,
+            ip: "",
+            port: 0
+        }, 
+        dumpServerLogs: [],
+        connectionTool:{
+            connectionPlatform:'',
+            connectionPlatformHost:'',
+            connectionPlatformPort:'',
+            connectionPlatformTopics:['', ''],
+            connectionPlatformLogs:['', ''],
+        },
+        userAccount: {
+            accountType: 'free',
+            accountBalance: 'None',
+            accountExpendture: 'None',
+        },
+        userProfile: {
+            name: 'name',
+            email: 'email',
+            location: 'location',
+            userAvatar: 'https://picsum.photos/536/354',
+            getNotifiedOfMinorUpdate: true,
+            sendTelemetry: true,
+            theme: 'light'
+        }
+    },
+    window.devToolsExtension && window.devToolsExtension()
 )
 
 
 
 ReactDOM.render(
-    
-<Provider store={store}>
-    {console.log("index "+ store.getState())}
-<BrowserRouter basename="/aurora">
-        <App />
-    </BrowserRouter>
-</Provider>
+
+    <Provider store={store}>
+        {console.log("index " + store.getState())}
+        <BrowserRouter basename="/aurora">
+            <App />
+        </BrowserRouter>
+    </Provider>
     , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

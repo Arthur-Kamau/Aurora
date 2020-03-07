@@ -71,18 +71,16 @@ class LoginPage extends Component {
                     </div>
 
                     <div className="align-self-center" >
-                        <button type="submit" className=" btn btn-primary btn-block" style={{ width: `200px` }} >Submit</button>
+                        <button type="submit" className=" btn btn-lg btn-primary btn-block" style={{ width: `200px` }} >Submit</button>
                     </div>
 
-                    <p className="forgot-password text-right mt-3">
+                    {/* <p className="forgot-password text-right mt-3">
                         Forgot <a href="/forgot-password">password?</a>
-                    </p>
+                    </p> */}   <br></br>
                 </form>
 
-                <div className=" align-items-center mt-3 ">
-
+                {/* <div className=" align-items-center mt-3 ">
                     <div className="container card ml-auto" style={{ maxWidth: `700px` }}>
-
                         <div className="row">
                             <div className="col-md-6">
                                 <GoogleLoginButton onClick={this.handleGooglehubClick} />
@@ -90,7 +88,7 @@ class LoginPage extends Component {
                             <div className="col-md-6"><GithubLoginButton onClick={this.handleGithubClick} /></div>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
 
         );
