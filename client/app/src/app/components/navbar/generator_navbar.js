@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import jsonOperationsActions from '../../../actions/json_operations_actions';
+import {jsonOperationsActions ,} from '../../../actions/json_operations_actions';
 
 class GeneratorNavBar extends Component {
   toggleOffcanvas() {
