@@ -109,7 +109,7 @@ class Sidebar extends Component {
 
           <li className={this.isPathActive('/connection_tool') ? 'nav-item active' : 'nav-item'}>
             <Link className="nav-link" to="/connection_tool">
-              <i className="mdi  mdi-pound menu-icon"></i>
+              <i className="mdi  mdi-swap-horizontal fa-lg menu-icon"></i>
               <span className="menu-title">Connection  tool</span>
             </Link>
           </li>

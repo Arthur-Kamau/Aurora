@@ -19,7 +19,9 @@ class LoginPage extends Component {
         alert("Hello!");
     }
     changeEmail = (event) => {
-        this.setState({email : event.value})
+        event.preventDefault();
+        console.log("email "+event.target.value);
+        this.setState({email : event.target.value})
     }
     submitEmail = (e) => {
         e.preventDefault();
@@ -71,24 +73,12 @@ class LoginPage extends Component {
                     </div>
 
                     <div className="align-self-center" >
-                        <button type="submit" className=" btn btn-lg btn-primary btn-block" style={{ width: `200px` }} >Submit</button>
+                        <button type="submit" className=" btn btn-lg btn-primary btn-block" style={{ width: `200px` }} onClick={this.submitEmail} >Submit</button>
                     </div>
 
-                    {/* <p className="forgot-password text-right mt-3">
-                        Forgot <a href="/forgot-password">password?</a>
-                    </p> */}   <br></br>
+                      <br></br>
                 </form>
 
-                {/* <div className=" align-items-center mt-3 ">
-                    <div className="container card ml-auto" style={{ maxWidth: `700px` }}>
-                        <div className="row">
-                            <div className="col-md-6">
-                                <GoogleLoginButton onClick={this.handleGooglehubClick} />
-                            </div>
-                            <div className="col-md-6"><GithubLoginButton onClick={this.handleGithubClick} /></div>
-                        </div>
-                    </div>
-                </div> */}
             </div>
 
         );

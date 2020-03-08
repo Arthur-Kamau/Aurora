@@ -63,7 +63,7 @@ export class SettingsPage extends Component {
 
       <div className="row">
 
-        <div className="col-md-4 grid-margin stretch-card">
+        <div className="col-lg-3 col-md-4 grid-margin stretch-card">
           <div className="card">
             <div className="card-body">
               <h2 className="card-title">App Settings</h2>
@@ -87,7 +87,7 @@ export class SettingsPage extends Component {
                     <div className="btn btn-light btn-lg" onClick={this.changePageToBilling}>  <i className="mdi  mdi-credit-card icon-sm text-info"></i> &emsp; User Billing &emsp;  </div>
                     <div className="btn btn-light btn-lg" onClick={this.changePageToTheme}>  <i className="mdi  mdi-invert-colors icon-sm text-primary"></i> &emsp; App Theme &emsp;  </div>
                     <div className="btn btn-light btn-lg" onClick={this.changePageToFeedBackPage}>  <i className="mdi  mdi-email icon-sm text-secondary"></i> &emsp;Feedback &emsp;   </div>
-                    <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Dcoumentation &emsp;   </div>
+                    <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Documentation &emsp;   </div>
                   </div>
 
 
@@ -97,7 +97,7 @@ export class SettingsPage extends Component {
             </div>
           </div>
         </div>
-        <div className="col-md-8 grid-margin stretch-card">
+        <div className="col-lg-8 col-md-8 grid-margin stretch-card">
           <div className="card">
             <div className="card-body">
               {this.state.pageActive === "account" ?
@@ -110,12 +110,15 @@ export class SettingsPage extends Component {
                       <ThemeSettingsPage></ThemeSettingsPage>
                       : this.state.pageActive == "feedback" ?
                         <FeedBackPage></FeedBackPage>
-                        : this.state.pageActive == "docementation" ? 
-                        <DocumentationPageInSettings ></DocumentationPageInSettings>
-                         : <BlackSettingsPage authToken={this.props.authToken}></BlackSettingsPage>}
+                        : this.state.pageActive == "docementation" ?
+                          <DocumentationPageInSettings ></DocumentationPageInSettings>
+                          : <BlackSettingsPage authToken={this.props.authToken}></BlackSettingsPage>}
             </div>
           </div>
         </div>
+        <div className="col-lg-1">
+        </div>
+
       </div>
     )
   }

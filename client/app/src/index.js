@@ -19,6 +19,7 @@ import changeDumpServerStatusReducer from './reducers/dump_server_reducer';
 import changeDumpServerLogsReducer from './reducers/dump_server_log_reducer';
 
 import connectionToolReducer from './reducers/connection_tool_reducer';
+import jsonOperationsReducer from './reducers/json_operattions_reducer';
 
 const allReducers = combineReducers({
     products: productReducer,
@@ -32,10 +33,11 @@ const allReducers = combineReducers({
     convertToSchemaShcema: generateSchemaSchemaReducer,
     convertToSchemaJsonString: generateSchemaJsonStringReducer,
 
-    dumpServer: changeDumpServerStatusReducer, 
+    dumpServer: changeDumpServerStatusReducer,
     dumpServerLogs: changeDumpServerLogsReducer,
 
-    connectionTool :  connectionToolReducer
+    connectionTool: connectionToolReducer,
+    jsonOperations : jsonOperationsReducer
 })
 
 const store = createStore(
@@ -49,18 +51,26 @@ const store = createStore(
         convertToSchemaShcema: '// paste your json on the left side panel \n// The generated shema model will apear here ',
         convertToSchemaJsonString: '',
         authtoken: '',
+        jsonOperations : {
+            jsonOperationsActions: 'convert_to_json',
+            jsonPayloadReceived : '',
+            jsonInput:''
+        },
         dumpServer: {
             isStarted: false,
             ip: "",
             port: 0
-        }, 
+        },
         dumpServerLogs: [],
-        connectionTool:{
-            connectionPlatform:'',
-            connectionPlatformHost:'',
-            connectionPlatformPort:'',
-            connectionPlatformTopics:['', ''],
-            connectionPlatformLogs:['', ''],
+        connectionTool: {
+            connectionMethod: '',
+            connectionProtocol: '',
+            connectionAddress: '',
+            connectionPort: '',
+            connectionTime: '',
+            connectionMethodTopics: [],
+            connectionMethodTopicsMessages: [],
+            connectionMethodLogs: [],
         },
         userAccount: {
             accountType: 'free',

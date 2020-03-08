@@ -35,9 +35,16 @@ class ConnectionToolAppBar extends Component {
 
   createThenCloseModal() {
     this.setState({ modalIsOpen: false });
-
+   
     this.props.onconnectionToolAction({
-
+      connectionMethod: this.state.connectionMethod,
+      connectionProtocol: this.state.connectionProtocol,
+      connectionAddress: this.state.connectionAddress,
+      connectionPort: this.state.connectionPort,
+      connectionTime: new Date().toLocaleTimeString(),
+      connectionMethodTopics: [],
+      connectionMethodTopicsMessages: [],
+      connectionMethodLogs: [],
 
     });
   }
@@ -106,12 +113,13 @@ class ConnectionToolAppBar extends Component {
           Connection Tool
             </h4>
         <ul className="navbar-nav navbar-nav-right ml-lg-auto">
-
-          <button type="submit" className="btn btn-success mb-2  btn-sm " onClick={this.openModal}>
-            <i className="mdi mdi-clipboard-plus menu-icon"></i>
-            create Connection
+          {this.props.connectionTool == null || this.props.connectionTool.connectionMethod.length == 0 ?
+            <button type="submit" className="btn btn-success mb-2  btn-sm " onClick={this.openModal}>
+              <i className="mdi mdi-clipboard-plus menu-icon"></i>
+              create Connection
           </button>
-
+            : <div></div>
+          }
 
           <Modal
             isOpen={this.state.modalIsOpen}
@@ -202,10 +210,6 @@ class ConnectionToolAppBar extends Component {
 
                     </div>
                 }
-
-
-
-
 
               </div>
             </div>
