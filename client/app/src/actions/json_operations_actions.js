@@ -1,27 +1,29 @@
-export const JSON_OPERATIONS = 'json_operations';
+export const JSON_OPERATIONS_ACTIONS = 'json_operations_actions';
+export const JSON_OPERATIONS_PAYLOAD_RECEIVED = 'json_operations_payload_received';
+export const JSON_OPERATIONS_INPUT = 'json_operations_input';
 
-export  function jsonOperationsActions(jsonObject) {
+export  function jsonOperationsActions(jsonObjectAction) {
     return {
-        type: JSON_OPERATIONS,
+        type: JSON_OPERATIONS_ACTIONS,
         payload: {
-            jsonObject: jsonObject
+            jsonObjectAction: jsonObjectAction
         }
     }
 }
-export  function jsonPayloadReceivedActions(jsonObject) {
+export  function jsonPayloadReceivedActions(jsonObjectPayload) {
     return {
-        type: JSON_OPERATIONS,
+        type: JSON_OPERATIONS_PAYLOAD_RECEIVED,
         payload: {
-            jsonObject: jsonObject
+            jsonObjectPayload: jsonObjectPayload
         }
     }
 }
 
-export  function jsonInputctions(jsonObject) {
+export  function jsonInputActions(jsonObjectInput) {
     return {
-        type: JSON_OPERATIONS,
+        type: JSON_OPERATIONS_INPUT,
         payload: {
-            jsonObject: jsonObject
+            jsonObjectInput : jsonObjectInput
         }
     }
 }
