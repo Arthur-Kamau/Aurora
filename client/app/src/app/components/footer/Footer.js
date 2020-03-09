@@ -22,7 +22,7 @@ class Footer extends Component {
             <div className="col-lg-3 ">
 
               {window.location.pathname == "/aurora/generator" ?
-                <div className="float-right " style={{ marginBottom: `10px` }}> {this.props.jsonOperations.jsonOperationsActions}</div>
+                <div className="float-right " style={{ marginBottom: `10px` }}> {this.props.jsonOperations.jsonOperationsActions == null ||  this.props.jsonOperations.jsonOperationsActions.length == 0  ? 'convert to json' :  this.props.jsonOperations.jsonOperationsActions}</div>
                 : <div></div>
               }
             </div>

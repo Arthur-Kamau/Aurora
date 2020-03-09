@@ -66,7 +66,7 @@ export class SettingsPage extends Component {
         <div className="col-lg-3 col-md-4 grid-margin stretch-card">
           <div className="card">
             <div className="card-body">
-              <h2 className="card-title">App Settings</h2>
+              <h2 className="card-title">App Settings <br></br> {this.props.authToken} </h2>
               {/* <p className="card-description"> Add faded secondary text to headings </p> */}
               <hr></hr>
 
@@ -133,4 +133,4 @@ const mapActionsToProps = {
 };
 
 
-export default connect(mapStateToProps, mapActionsToProps)(SettingsPage);
+export default connect(mapStateToProps )(SettingsPage);

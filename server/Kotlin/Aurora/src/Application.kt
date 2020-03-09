@@ -1,67 +1,88 @@
-package com.araizen.com
+package com.araizen.www
 
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
-import io.ktor.client.*
-import io.ktor.routing.*
-import io.ktor.http.*
-import io.ktor.html.*
-import kotlinx.html.*
-import kotlinx.css.*
+import com.araizen.www.database.mysql.DatabaseObj
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache.Apache
+import io.ktor.features.CallLogging
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.DefaultHeaders
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.cio.websocket.*
+import io.ktor.response.respondText
+import io.ktor.routing.get
+import io.ktor.routing.post
+import io.ktor.routing.routing
+import io.ktor.serialization.DefaultJsonConfiguration
+import io.ktor.serialization.serialization
+import io.ktor.websocket.WebSockets
+import kotlinx.serialization.json.Json
+import java.time.Duration
+
+
+fun main(args: Array<String>): Unit {
+    DatabaseObj().connect()
+    io.ktor.server.netty.EngineMain.main(args)
+
+}
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    val client = HttpClient() {
+
+
+    val client = HttpClient(Apache) {
     }
 
+    install(DefaultHeaders) {
+        header(HttpHeaders.Server, "Aurora")
+        header("System", "Aurora - core")
+    }
+    // This uses use the logger to log every call (request/response)
+    install(CallLogging)
+
+    install(ContentNegotiation) {
+        serialization(
+            contentType = ContentType.Application.Json,
+            json = Json(
+                DefaultJsonConfiguration.copy(
+                    prettyPrint = true
+                )
+            )
+        )
+    }
+    install(WebSockets) {
+        pingPeriod = Duration.ofSeconds(60) // Disabled (null) by default
+        timeout = Duration.ofSeconds(15)
+        maxFrameSize = Long.MAX_VALUE // Disabled (max value). The connection will be closed if surpassed this length.
+        masking = false
+    }
+
+
+
+
     routing {
+
+        post("/register") {
+
+        }
+        post("/login") {
+
+        }
+        post("/feedback") {
+
+        }
+        post("/logout") {
+
+        }
+
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
 
-        get("/html-dsl") {
-            call.respondHtml {
-                body {
-                    h1 { +"HTML" }
-                    ul {
-                        for (n in 1..10) {
-                            li { +"$n" }
-                        }
-                    }
-                }
-            }
-        }
-
-        get("/styles.css") {
-            call.respondCss {
-                body {
-                    backgroundColor = Color.red
-                }
-                p {
-                    fontSize = 2.em
-                }
-                rule("p.myclass") {
-                    color = Color.blue
-                }
-            }
-        }
-    }
-}
-
-fun FlowOrMetaDataContent.styleCss(builder: CSSBuilder.() -> Unit) {
-    style(type = ContentType.Text.CSS.toString()) {
-        +CSSBuilder().apply(builder).toString()
-    }
-}
-
-fun CommonAttributeGroupFacade.style(builder: CSSBuilder.() -> Unit) {
-    this.style = CSSBuilder().apply(builder).toString().trim()
-}
-
-suspend inline fun ApplicationCall.respondCss(builder: CSSBuilder.() -> Unit) {
-    this.respondText(CSSBuilder().apply(builder).toString(), ContentType.Text.CSS)
+   }
 }

@@ -1,4 +1,4 @@
-package com.araizen.com
+package com.araizen.www
 
 import io.ktor.application.*
 import io.ktor.response.*

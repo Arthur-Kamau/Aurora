@@ -50,7 +50,7 @@ const store = createStore(
 
         convertToSchemaShcema: '// paste your json on the left side panel \n// The generated shema model will apear here ',
         convertToSchemaJsonString: '',
-        authtoken: '',
+        authtoken: 'yyy',
         jsonOperations : {
             jsonOperationsActions: 'convert_to_json',
             jsonPayloadReceived : '',
