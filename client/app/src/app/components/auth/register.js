@@ -51,18 +51,18 @@ class RegisterPage extends Component {
                     Already registered <a href="/login">sign in?</a>
                 </p>
             </form>
-            <div className=" align-items-center mt-3 ">
+            {/* <div className=" align-items-center mt-3 ">
 
-<div className="container card ml-auto" style={{ maxWidth: `700px` }}>
+                <div className="container card ml-auto" style={{ maxWidth: `700px` }}>
 
-    <div className="row">
-        <div className="col-md-6">
-            <GoogleLoginButton onClick={this.handleGooglehubClick} text={'Register with Google'} />
-        </div>
-        <div className="col-md-6"><GithubLoginButton onClick={this.handleGithubClick} text={'Register with Github'} /></div>
-    </div>
-</div>
-</div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <GoogleLoginButton onClick={this.handleGooglehubClick} text={'Register with Google'} />
+                        </div>
+                        <div className="col-md-6"><GithubLoginButton onClick={this.handleGithubClick} text={'Register with Github'} /></div>
+                    </div>
+                </div>
+            </div> */}
         </div>);
     }
 }
