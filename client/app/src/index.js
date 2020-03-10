@@ -8,6 +8,7 @@ import { combineReducers, createStore } from 'redux';
 
 import userReducer from './reducers/user_reducer';
 import productReducer from './reducers/products_reducer';
+import authtokenReducer from './reducers/auth_token_reducer';
 
 import generateJsonJsonStringReducer from './reducers/generate_json_raw_string_reducer';
 import generateJsonSchemaReducer from './reducers/generate_json_schema_reducer';
@@ -26,6 +27,7 @@ const allReducers = combineReducers({
     user: userReducer,
     userProfile: userReducer,
     userAccount: userReducer,
+    authtoken:  authtokenReducer,
 
     convertJsonJsonString: generateJsonJsonStringReducer,
     convertToJsonRawShcema: generateJsonSchemaReducer,
