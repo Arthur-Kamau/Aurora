@@ -1,6 +1,9 @@
-package com.araizen.www.database.user
+package com.araizen.www.database.mysql.user
 
-import org.jetbrains.exposed.sql.Table
+import com.araizen.www.models.profile.ProfileModel
+import com.araizen.www.utils.console.Println
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
 class UserDatabaseDao {
@@ -18,4 +21,64 @@ class UserDatabaseDao {
 
         override val primaryKey = PrimaryKey(id, name = "PK_User_ID") // name is optional here
     }
+
+    fun insertProfile(profile: ProfileModel, database: Database) {
+
+        transaction {
+            ProfileTable.insert {
+                it[name] = profile.name
+                it[userId] = profile.userId
+                it[phoneNumber] = profile.phoneNumber
+                it[email] = profile.email
+                it[location] = profile.location
+                it[avatarUrl] = profile.avatarUrl
+            }
+        }
+    }
+
+    fun getAllUserProfile(): List<ProfileModel> {
+        var profileList = mutableListOf<ProfileModel>(); transaction {
+            val res = ProfileTable.selectAll()
+            for (item in res) {
+                profileList.add(
+                    ProfileModel(
+                        name = item[ProfileTable.name],
+                        email = item[ProfileTable.email],
+                        userId = item[ProfileTable.userId],
+                        location = item[ProfileTable.location],
+                        avatarUrl = item[ProfileTable.avatarUrl],
+                        phoneNumber = item[ProfileTable.phoneNumber]
+
+                    )
+                )
+            }
+        }
+        return profileList
+    }
+
+    fun getUserProfile(userId: String): ProfileModel? {
+        var profileData: ProfileModel? = null;
+        transaction {
+            val res: Query = ProfileTable.select { ProfileTable.userId eq userId }
+
+             if (res.fetchSize == 0) {
+                 Println.red("getUserProfile at index ")
+            } else {
+                for ((i, item) in res.withIndex()) {
+                    Println.yellow("getUserProfile at index $i ")
+                    profileData = ProfileModel(
+                        name = item[ProfileTable.name],
+                        email = item[ProfileTable.email],
+                        userId = item[ProfileTable.userId],
+                        location = item[ProfileTable.location],
+                        avatarUrl = item[ProfileTable.avatarUrl],
+                        phoneNumber = item[ProfileTable.phoneNumber]
+                    )
+                }
+
+            }
+        }
+        return  profileData
+    }
+
 }

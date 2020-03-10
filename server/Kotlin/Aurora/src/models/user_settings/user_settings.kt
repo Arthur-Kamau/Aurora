@@ -3,7 +3,7 @@ package com.araizen.www.models.user_settings
 import com.beust.klaxon.Json
 import com.sun.org.apache.xpath.internal.operations.Bool
 
-data class UserSettings(
+data class UserSettingsModel(
 
 
     @Json(name = "user_id")

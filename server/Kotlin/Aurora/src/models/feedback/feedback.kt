@@ -2,7 +2,7 @@ package com.araizen.www.models.feedback
 
 import com.beust.klaxon.Json
 
-data class Feedback(
+data class FeedbackModel(
     @Json(name = "name")
     val name: String,
     @Json(name = "user_id")

@@ -2,7 +2,7 @@ package com.araizen.www.models.log
 
 import com.beust.klaxon.Json
 
-data class Log(
+data class LogModel(
     @Json(name = "user_id")
     val userId: String,
 

@@ -6,7 +6,7 @@ import com.araizen.www.database.feedback.FeedbackDatabaseDao
 import com.araizen.www.database.log.LogDatabaseDao
 import com.araizen.www.database.settings.SettingsDatabaseDao
 import com.araizen.www.database.transaction.TransactionDatabaseDao
-import com.araizen.www.database.user.UserDatabaseDao
+import com.araizen.www.database.mysql.user.UserDatabaseDao
 import com.araizen.www.utils.console.Println
 
 

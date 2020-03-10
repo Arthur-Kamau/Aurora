@@ -11,6 +11,7 @@ class AuthDatabaseDao{
         private val id = integer("id").autoIncrement() // Column<String>
         val userId = varchar("user_id", length = 50) // Column<String>
         val resetKey = varchar("reset_key", length = 50) // Column<String>
+        val isBlocked = bool("is_blocked") // Column<String>
         val loginKey = varchar("login_key", length = 50) // Column<String>
         val email = varchar("email", length = 50) // Column<String>
         val password = varchar("password", length = 50) // Column<String>

@@ -2,7 +2,7 @@ package com.araizen.www.models.profile
 
 import com.beust.klaxon.Json
 
-data class Profile (
+data class ProfileModel (
 
     @Json(name = "name")
     val name: String,

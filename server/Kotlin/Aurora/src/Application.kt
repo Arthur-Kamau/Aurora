@@ -1,6 +1,9 @@
 package com.araizen.www
 
 import com.araizen.www.database.mysql.DatabaseObj
+import com.araizen.www.database.mysql.user.UserDatabaseDao
+import com.araizen.www.models.profile.ProfileModel
+import com.araizen.www.utils.console.Println
 
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -20,12 +23,18 @@ import io.ktor.routing.routing
 import io.ktor.serialization.DefaultJsonConfiguration
 import io.ktor.serialization.serialization
 import io.ktor.websocket.WebSockets
+import io.ktor.websocket.webSocket
+import io.ktor.http.cio.websocket.CloseReason
+import io.ktor.http.cio.websocket.Frame
+import io.ktor.http.cio.websocket.close
+import io.ktor.http.cio.websocket.readText
 import kotlinx.serialization.json.Json
 import java.time.Duration
 
 
 fun main(args: Array<String>): Unit {
-    DatabaseObj().connect()
+   val db = DatabaseObj().connect()
+
     io.ktor.server.netty.EngineMain.main(args)
 
 }
@@ -73,12 +82,42 @@ fun Application.module(testing: Boolean = false) {
         post("/login") {
 
         }
+        post("/login/key") {
+
+        }
+        post("/forgot_password") {
+
+        }
+        post("/forgot_password_key") {
+
+        }
+        post("/reset_password") {
+
+        }
+
+        post("/update_settings") {
+
+        }
+        post("/updateProfileImage") {
+
+        }
+
+        post("/error") {
+
+        }
         post("/feedback") {
 
         }
         post("/logout") {
 
         }
+        webSocket("/ws/user") {
+
+        }
+        webSocket("/generator"){
+
+        }
+
 
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)

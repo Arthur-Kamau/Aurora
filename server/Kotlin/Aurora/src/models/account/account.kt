@@ -2,7 +2,7 @@ package com.araizen.www.models.account
 
 import com.beust.klaxon.Json
 
-data class Account (
+data class AccountModel (
 
     @Json(name = "user_plan")
     val userPlan: String,
