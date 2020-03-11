@@ -1,4 +1,5 @@
-const  { app, BrowserWindow, ipcMain , electron}  = require("electron");
+import * as Sentry from '@sentry/electron';
+const { app, BrowserWindow, ipcMain, electron } = require("electron");
 // const app = electron.app;
 // const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
@@ -7,6 +8,8 @@ const { autoUpdater } = require('electron-updater');
 
 let mainWindow;
 function createWindow() {
+  Sentry.init({dsn: 'https://392fb7161b364e3d969d03302d121a99@sentry.io/4267263'});
+    
   mainWindow = new BrowserWindow({
     width: 900,
     height: 680,
@@ -26,6 +29,7 @@ function createWindow() {
     autoUpdater.checkForUpdatesAndNotify();
   });
   mainWindow.on("closed", () => (mainWindow = null));
+
 }
 app.on("ready", createWindow);
 app.on("window-all-closed", () => {
@@ -40,13 +44,13 @@ app.on("activate", () => {
 });
 
 ipcMain.on('app_version', (event) => {
- 
-  console.log("app version "+ app.getVersion());
+
+  console.log("app version " + app.getVersion());
   event.sender.send('app_version', { version: app.getVersion() });
 });
 ipcMain.on('restart_app', () => {
   app.relaunch()
-app.exit()
+  app.exit()
 });
 ipcMain.on('restart_app_install_update', () => {
   autoUpdater.quitAndInstall();
