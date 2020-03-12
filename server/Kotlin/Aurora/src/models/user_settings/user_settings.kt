@@ -1,7 +1,6 @@
 package com.araizen.www.models.user_settings
 
 import com.beust.klaxon.Json
-import com.sun.org.apache.xpath.internal.operations.Bool
 
 data class UserSettingsModel(
 
@@ -13,7 +12,7 @@ data class UserSettingsModel(
     val theme: String,
 
     @Json(name = "report_stats")
-    val reportStats: Bool
+    val reportStats: Boolean
 
 
 )

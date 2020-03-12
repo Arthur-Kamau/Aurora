@@ -1,8 +1,8 @@
 package com.araizen.www.database.mysql
 
 import com.araizen.www.database.account.AccountDatabaseDao
-import com.araizen.www.database.auth.AuthDatabaseDao
-import com.araizen.www.database.feedback.FeedbackDatabaseDao
+import com.araizen.www.database.mysql.auth.AuthDatabaseDao
+import com.araizen.www.database.mysql.feedback.FeedbackDatabaseDao
 import com.araizen.www.database.log.LogDatabaseDao
 import com.araizen.www.database.settings.SettingsDatabaseDao
 import com.araizen.www.database.transaction.TransactionDatabaseDao

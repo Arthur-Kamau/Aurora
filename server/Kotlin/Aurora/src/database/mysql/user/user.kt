@@ -22,7 +22,14 @@ class UserDatabaseDao {
         override val primaryKey = PrimaryKey(id, name = "PK_User_ID") // name is optional here
     }
 
-    fun insertProfile(profile: ProfileModel, database: Database) {
+    /**
+     * insertAUsersProfile
+     *
+     * inserts a users profile to the database
+     *
+     * @param profile the profile model containing users data
+     */
+    fun insertAUsersProfile(profile: ProfileModel) {
 
         transaction {
             ProfileTable.insert {
@@ -36,8 +43,16 @@ class UserDatabaseDao {
         }
     }
 
+    /**
+     * getAllUserProfile
+     *  get all user profile
+     *  used for admin dashboard
+     *
+     * @return List<ProfileModel>
+     */
     fun getAllUserProfile(): List<ProfileModel> {
-        var profileList = mutableListOf<ProfileModel>(); transaction {
+        var profileList = mutableListOf<ProfileModel>();
+        transaction {
             val res = ProfileTable.selectAll()
             for (item in res) {
                 profileList.add(
@@ -56,6 +71,13 @@ class UserDatabaseDao {
         return profileList
     }
 
+    /**
+     * getUserProfile
+     *
+     * get a users profile from the database based on the users id
+     *
+     * @return ProfileModel?
+     */
     fun getUserProfile(userId: String): ProfileModel? {
         var profileData: ProfileModel? = null;
         transaction {

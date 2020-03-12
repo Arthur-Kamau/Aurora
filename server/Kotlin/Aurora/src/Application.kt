@@ -2,6 +2,7 @@ package com.araizen.www
 
 import com.araizen.www.database.mysql.DatabaseObj
 import com.araizen.www.database.mysql.user.UserDatabaseDao
+import com.araizen.www.models.auth.LoginModel
 import com.araizen.www.models.profile.ProfileModel
 import com.araizen.www.utils.console.Println
 
@@ -13,6 +14,7 @@ import io.ktor.client.engine.apache.Apache
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
+import io.ktor.gson.gson
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.cio.websocket.*
@@ -28,7 +30,10 @@ import io.ktor.http.cio.websocket.CloseReason
 import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.close
 import io.ktor.http.cio.websocket.readText
+import io.ktor.request.receive
+import io.ktor.response.respond
 import kotlinx.serialization.json.Json
+import java.text.DateFormat
 import java.time.Duration
 
 
@@ -55,14 +60,12 @@ fun Application.module(testing: Boolean = false) {
     install(CallLogging)
 
     install(ContentNegotiation) {
-        serialization(
-            contentType = ContentType.Application.Json,
-            json = Json(
-                DefaultJsonConfiguration.copy(
-                    prettyPrint = true
-                )
-            )
-        )
+
+        gson {
+            setDateFormat(DateFormat.LONG)
+            setPrettyPrinting()
+
+        }
     }
     install(WebSockets) {
         pingPeriod = Duration.ofSeconds(60) // Disabled (null) by default
@@ -81,7 +84,15 @@ fun Application.module(testing: Boolean = false) {
         }
         post("/login") {
 
+            val post = call.receive<LoginModel>()
+            Println.yellow("post data $post")
+
+
+
+            call.respond(mapOf("OK" to true))
         }
+
+
         post("/login/key") {
 
         }
