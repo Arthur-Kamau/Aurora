@@ -6,7 +6,9 @@ data class TransactionModel(
     @Json(name = "user_id")
     val userId: String,
     @Json(name = "amount")
-    val amount: String,
+    val amount: Int,
     @Json(name = "transaction_type")
-    val transactionType: String
+    val transactionType: String,
+    @Json(name = "transaction_id")
+    val transactionId: String
 )

@@ -1,12 +1,15 @@
-package com.araizen.www.database.mysql.user
+package com.araizen.www.database.mysql.user_profile
 
+import com.araizen.www.database.mysql.auth.AuthDatabaseDao
 import com.araizen.www.models.profile.ProfileModel
+import com.araizen.www.objects.database_transaction_state.DatabaseTransactionState
 import com.araizen.www.utils.console.Println
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
-class UserDatabaseDao {
+class ProfileDatabaseDao {
 
     object ProfileTable : Table() {
         private val id = integer("id").autoIncrement() // Column<String>
@@ -102,5 +105,62 @@ class UserDatabaseDao {
         }
         return  profileData
     }
+
+
+
+    fun  updateUserProfile(column: String , newValue: String, userId: String): Pair<DatabaseTransactionState, String> {
+
+       return when (column){
+            "name" ->{
+                transaction {
+                    ProfileTable.update({ ProfileTable.userId.eq(userId) }) {
+                        it[ProfileTable.name] = newValue
+                    }
+                }
+                Pair(DatabaseTransactionState.OK,"column $column updated")
+            }
+           "email" -> {
+
+                   transaction {
+                       ProfileTable.update({ ProfileTable.userId.eq(userId) }) {
+                           it[ProfileTable.email] = newValue
+                       }
+                   }
+                   Pair(DatabaseTransactionState.OK,"column $column updated")
+
+           }
+
+           "phone_number" ->{
+               transaction {
+                   ProfileTable.update({ ProfileTable.userId.eq(userId) }) {
+                       it[ProfileTable.phoneNumber] = newValue
+                   }
+               }
+               Pair(DatabaseTransactionState.OK,"column $column updated")
+           }
+
+           "location" ->{
+               transaction {
+                   ProfileTable.update({ ProfileTable.userId.eq(userId) }) {
+                       it[ProfileTable.location] = newValue
+                   }
+               }
+               Pair(DatabaseTransactionState.OK,"column $column updated")
+           }
+           "avatar_url" ->{
+               transaction {
+                   ProfileTable.update({ ProfileTable.userId.eq(userId) }) {
+                       it[ProfileTable.avatarUrl] = newValue
+                   }
+               }
+               Pair(DatabaseTransactionState.OK,"column $column updated")
+           }
+           else -> {
+               Pair(DatabaseTransactionState.Err,"column $column not known")
+           }
+        }
+
+    }
+
 
 }

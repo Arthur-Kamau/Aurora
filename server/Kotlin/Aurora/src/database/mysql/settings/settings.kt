@@ -1,7 +1,6 @@
-package com.araizen.www.database.settings
+package com.araizen.www.database.mysql.settings
 
-import com.araizen.www.database.mysql.auth.AuthDatabaseDao
-import com.araizen.www.database.mysql.user.UserDatabaseDao
+import com.araizen.www.database.mysql.account.AccountDatabaseDao.AccountTable.uniqueIndex
 import com.araizen.www.models.profile.ProfileModel
 import com.araizen.www.models.user_settings.UserSettingsModel
 import com.araizen.www.utils.console.Println
@@ -17,7 +16,7 @@ class SettingsDatabaseDao {
     object SettingsTable : Table() {
         private val id = integer("id").autoIncrement() // Column<String>
        
-        val userId = varchar("user_id", length = 50) // Column<String>
+        val userId = varchar("user_id", length = 50).uniqueIndex() // Column<String>
         val theme = varchar("theme", length = 50) // Column<String>
         val reportStats = bool("report_stats") // Column<String>
         val createdAt = varchar("created_at", length = 50).default(LocalDateTime.now().toString()) // Column<String>

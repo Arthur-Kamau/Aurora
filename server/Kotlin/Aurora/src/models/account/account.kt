@@ -9,7 +9,7 @@ data class AccountModel (
     @Json(name = "user_id")
     val userId: String,
     @Json(name = "account_balance")
-    val accountBalance: String
+    val accountBalance: Int
 
 
 )

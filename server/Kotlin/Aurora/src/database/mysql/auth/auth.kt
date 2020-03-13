@@ -1,5 +1,6 @@
 package com.araizen.www.database.mysql.auth
 
+import com.araizen.www.database.mysql.account.AccountDatabaseDao.AccountTable.uniqueIndex
 import com.araizen.www.utils.console.Println
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -10,7 +11,7 @@ class AuthDatabaseDao {
 
     object AuthTable : Table() {
          val id = integer("id").autoIncrement() // Column<String>
-        val userId = varchar("user_id", length = 50) // Column<String>
+        val userId = varchar("user_id", length = 50).uniqueIndex() // Column<String>
         val resetKey = varchar("reset_key", length = 50).nullable() // Column<String>
         val isBlocked = bool("is_blocked").default(false) // Column<String>
         val loginKey = varchar("login_key", length = 50).default("0") // Column<String>

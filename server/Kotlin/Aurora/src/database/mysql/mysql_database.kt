@@ -1,12 +1,12 @@
 package com.araizen.www.database.mysql
 
-import com.araizen.www.database.account.AccountDatabaseDao
+import com.araizen.www.database.mysql.account.AccountDatabaseDao
 import com.araizen.www.database.mysql.auth.AuthDatabaseDao
 import com.araizen.www.database.mysql.feedback.FeedbackDatabaseDao
-import com.araizen.www.database.log.LogDatabaseDao
-import com.araizen.www.database.settings.SettingsDatabaseDao
-import com.araizen.www.database.transaction.TransactionDatabaseDao
-import com.araizen.www.database.mysql.user.UserDatabaseDao
+import com.araizen.www.database.mysql.log.LogDatabaseDao
+import com.araizen.www.database.mysql.settings.SettingsDatabaseDao
+import com.araizen.www.database.mysql.transaction.TransactionDatabaseDao
+import com.araizen.www.database.mysql.user_profile.ProfileDatabaseDao
 import com.araizen.www.utils.console.Println
 
 
@@ -28,9 +28,7 @@ class DatabaseObj {
                 LogDatabaseDao.LogTable,
                 SettingsDatabaseDao.SettingsTable,
                 TransactionDatabaseDao.TransactionTable,
-                UserDatabaseDao.ProfileTable
-
-
+                ProfileDatabaseDao.ProfileTable
 
             )
         }
