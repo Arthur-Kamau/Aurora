@@ -47,7 +47,7 @@ class AppGenerator extends Component {
         }
 
         this.state.ws.onclose = () => {
-            console.log('disconnected')
+            console.log('generator disconnected')
 
         }
 

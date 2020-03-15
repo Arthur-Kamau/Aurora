@@ -7,7 +7,10 @@
  *
  */
 
-package com.araizen.www.core.generator.generate_json_seed_data
+package com.araizen.www.core.generator.generate_json_data
 
 class GenerateJsonSeedData {
+    fun generate(payload : String){
+
+    }
 }

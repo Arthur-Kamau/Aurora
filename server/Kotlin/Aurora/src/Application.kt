@@ -1,10 +1,14 @@
 package com.araizen.www
 
+import com.araizen.www.core.generator.generate_json.GenerateJson
+import com.araizen.www.core.generator.generate_json_data.GenerateJsonSeedData
+import com.araizen.www.core.generator.generate_model.GenerateModel
 import com.araizen.www.database.mysql.DatabaseObj
-import com.araizen.www.database.mysql.user.UserDatabaseDao
 import com.araizen.www.models.auth.LoginModel
 import com.araizen.www.models.profile.ProfileModel
+import com.araizen.www.models.websockets.WebSocketPayloadModel
 import com.araizen.www.utils.console.Println
+import com.beust.klaxon.Klaxon
 
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -32,6 +36,7 @@ import io.ktor.http.cio.websocket.close
 import io.ktor.http.cio.websocket.readText
 import io.ktor.request.receive
 import io.ktor.response.respond
+import kotlinx.coroutines.channels.mapNotNull
 import kotlinx.serialization.json.Json
 import java.text.DateFormat
 import java.time.Duration
@@ -123,10 +128,52 @@ fun Application.module(testing: Boolean = false) {
 
         }
         webSocket("/ws/user") {
+            for (frame in incoming.mapNotNull { it as? Frame.Text }) {
+                val text = frame.readText()
 
+                val payload = Klaxon()
+                    .parse<WebSocketPayloadModel>(text)
+                Println.yellow("ws/user - payload ${payload.toString()}")
+
+            }
         }
-        webSocket("/generator"){
+        webSocket("/generator") {
 
+            for (frame in incoming.mapNotNull { it as? Frame.Text }) {
+                val text = frame.readText()
+
+                val payload = Klaxon()
+                    .parse<WebSocketPayloadModel>(text)
+//                Println.yellow("payload ${payload.toString()}")
+
+                when {
+                    payload?.action.equals("bye", ignoreCase = true) -> {
+                        close(CloseReason(CloseReason.Codes.NORMAL, "Client said BYE"))
+                    }
+                    payload?.action.equals("generate_schema", ignoreCase = true) -> {
+                        val result = GenerateModel().generate(payload = payload!!.payload)
+                        Println.green("to json received payload $payload  -- result  $result")
+                        outgoing.send(Frame.Text(result))
+                    }
+                    payload?.action.equals("generate_json", ignoreCase = true) -> {
+                        val result = GenerateJson().convertToJsonFromRawSchemaString(payload = payload!!.payload)
+//                         Println.green("to json received payload $payload  -- result  $result")
+                        outgoing.send(Frame.Text(result))
+                    }
+
+                    payload?.action.equals("generate_json_data", ignoreCase = true) -> {
+                        val result = GenerateJsonSeedData().generate(payload = payload!!.payload)
+                        // Println.green("to json received payload $payload  -- result  $result")
+                        outgoing.send(Frame.Text(text))
+                    }
+                    else -> {
+                        Println.red("=> undifned action")
+                        outgoing.send(Frame.Text(text))
+                    }
+                }
+
+
+            }
         }
 
 

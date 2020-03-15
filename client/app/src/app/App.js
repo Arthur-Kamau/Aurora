@@ -65,7 +65,7 @@ class App extends Component {
     this.state.ws = new WebSocket("ws://0.0.0.0:8080/ws/user")//AppUrls.toJsonWebSocket)
     this.state.ws.onopen = () => {
       // on connecting, do nothing but log it to the console
-      console.log('connected')
+      console.log('App connected')
     }
 
     this.state.ws.onmessage = evt => {
@@ -89,7 +89,7 @@ class App extends Component {
     }
 
     this.state.ws.onclose = () => {
-      console.log('disconnected')
+      console.log('App disconnected')
 
     }
 

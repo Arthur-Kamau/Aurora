@@ -120,6 +120,20 @@ func LogFolderPermissions(appName string) {
 
 }
 
+func getWkDir() string{
+	mydir, err := os.Getwd()
+	if err != nil {
+		fmt.Println(aurora.BgRed("==========================="))
+		fmt.Println(aurora.BgRed("error checking log folder  statistics"))
+		fmt.Println(aurora.BgYellow(err.Error))
+		fmt.Println(aurora.BgRed("================================"))
+		panic(err)
+	}
+	fmt.Println(aurora.BgYellow("================= get wkdir===================="))
+	fmt.Println(aurora.BgYellow(mydir))
+	fmt.Println(mydir)
+	return mydir
+}
 //LogFileExistElseCreateTheLogFiles check the log files
 func LogFileExistElseCreateTheLogFiles(appName string) {
 	logFiles := [...]string{

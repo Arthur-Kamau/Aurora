@@ -10,4 +10,7 @@
 package com.araizen.www.core.generator.generate_model
 
 class GenerateModel {
+    fun generate(payload : String): String{
+        return  ""
+    }
 }

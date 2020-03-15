@@ -1,4 +1,5 @@
-import * as Sentry from '@sentry/electron';
+// import * as Sentry from '@sentry/electron';
+
 const { app, BrowserWindow, ipcMain, electron } = require("electron");
 // const app = electron.app;
 // const BrowserWindow = electron.BrowserWindow;
@@ -8,7 +9,7 @@ const { autoUpdater } = require('electron-updater');
 
 let mainWindow;
 function createWindow() {
-  Sentry.init({dsn: 'https://392fb7161b364e3d969d03302d121a99@sentry.io/4267263'});
+  // Sentry.init({dsn: 'https://392fb7161b364e3d969d03302d121a99@sentry.io/4267263'});
     
   mainWindow = new BrowserWindow({
     width: 900,
