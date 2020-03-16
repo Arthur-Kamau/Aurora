@@ -17,8 +17,9 @@ function createWindow() {
     icon: path.join(__dirname, "/icon_4.png"),
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: true
+      webSecurity: false
     }
+    
   });
   mainWindow.setMenuBarVisibility(false);
   mainWindow.loadURL(

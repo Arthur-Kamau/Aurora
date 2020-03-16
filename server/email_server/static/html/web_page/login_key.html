@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login Key</title>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+    
+    <p>Login Key</p>
+
+    <script>
+        var pageURL = window.location.href;
+var lastURLSegment = pageURL.substr(pageURL.lastIndexOf('/') + 1);
+console.log("par--"+lastURLSegment);
+
+
+var xhr = new XMLHttpRequest();
+xhr.open("POST", "http://127.0.0.1:4000/login/email/token_key", true);
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.send(JSON.stringify({
+    email : "", key : lastURLSegment
+}));
+xhr.onreadystatechange = function () {
+    if (this.readyState != 4) return;
+
+    if (this.status == 200) {
+        var data = JSON.parse(this.responseText);
+
+        // we get the returned data
+        if(data.status ==200 ){
+    
+            localStorage.setItem("jwt", decodedData.data.jwt);
+          localStorage.setItem("user_id", decodedData.data.user_id);
+          localStorage.setItem("company_id", decodedData.data.company_id);
+
+          console.log("user id " + window.localStorage.getItem('user_id'))
+          window.location = "http://127.0.0.1:2000/home"
+          
+        }else if(data.status == 400){
+            alert("err "+data.reason)
+        }else{
+            alert("err "+data.reason)
+        }
+
+
+
+    }
+
+    // end of state change: it can be after some time (async)
+};
+
+    </script>
+
+
+
+    
+</body>
+</html>
