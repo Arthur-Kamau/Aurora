@@ -45,7 +45,9 @@ class EditorHomePage extends Component {
                         {
                             this.state.itemsList == null ?
                                 <li class="list-group-item bg-light">No requestst available</li>
-                                : this.state.itemsList.map((item, index) => (
+                                :
+                                
+                                this.state.itemsList.map((item, index) => (
                                     this.state.activeItem == index ?
                                         <li
                                             class="list-group-item  active"

@@ -7,6 +7,7 @@ import com.araizen.www.database.mysql.DatabaseObj
 import com.araizen.www.models.api_response.ApiResponse
 import com.araizen.www.models.auth.LoginModel
 import com.araizen.www.models.websockets.WebSocketPayloadModel
+import com.araizen.www.models.websockets.WebsSocketResponse
 import com.araizen.www.objects.result.HttpResult
 import com.araizen.www.utils.console.Println
 import com.araizen.www.utils.random_generator.RandomGenerator
@@ -43,7 +44,27 @@ import java.time.Duration
 
 fun main(args: Array<String>): Unit {
     val db = DatabaseObj().connect()
-     startGoServer()
+
+
+
+
+
+
+
+   var one = object : Thread() {
+        override fun run() {
+            try {
+                Println.blue("==========================================")
+                Println.blue("Starting go server")
+                Println.blue("==========================================")
+                startGoServer()
+            } catch (v: InterruptedException) {
+                Println.red("Error $v")
+            }
+        }
+    }
+
+    one.start()
     io.ktor.server.netty.EngineMain.main(args)
 
 }
@@ -174,7 +195,6 @@ fun Application.module(testing: Boolean = false) {
 
                 val payload = Klaxon()
                     .parse<WebSocketPayloadModel>(text)
-//                Println.yellow("payload ${payload.toString()}")
 
                 when {
                     payload?.action.equals("bye", ignoreCase = true) -> {
@@ -182,23 +202,24 @@ fun Application.module(testing: Boolean = false) {
                     }
                     payload?.action.equals("generate_schema", ignoreCase = true) -> {
                         val result = GenerateModel().generate(payload = payload!!.payload)
-                        Println.green("to json received payload $payload  -- result  $result")
-                        outgoing.send(Frame.Text(result))
+                      val response =  WebsSocketResponse(message= result, action = "generate_schema" )
+                        outgoing.send(Frame.Text(Klaxon().toJsonString(response)))
                     }
                     payload?.action.equals("generate_json", ignoreCase = true) -> {
                         val result = GenerateJson().convertToJsonFromRawSchemaString(payload = payload!!.payload)
-//                         Println.green("to json received payload $payload  -- result  $result")
-                        outgoing.send(Frame.Text(result))
+                        val response =  WebsSocketResponse(message= result, action = "generate_json" )
+                        outgoing.send(Frame.Text(Klaxon().toJsonString(response)))
                     }
 
                     payload?.action.equals("generate_json_data", ignoreCase = true) -> {
                         val result = GenerateJsonSeedData().generate(payload = payload!!.payload)
-                        // Println.green("to json received payload $payload  -- result  $result")
-                        outgoing.send(Frame.Text(text))
+                        val response =  WebsSocketResponse(message= result, action = "generate_json_data" )
+                        outgoing.send(Frame.Text(Klaxon().toJsonString(response)))
                     }
                     else -> {
                         Println.red("=> undifned action")
-                        outgoing.send(Frame.Text(text))
+                        val response =  WebsSocketResponse(message= text, action = "undifined_action" )
+                        outgoing.send(Frame.Text(Klaxon().toJsonString(response)))
                     }
                 }
 

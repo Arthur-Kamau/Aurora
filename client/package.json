@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@uiw/react-monacoeditor": "^2.0.2"
+  }
+}

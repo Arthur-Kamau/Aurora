@@ -12,6 +12,7 @@ import EditorNavBar from './components/navbar/editor_navbar';
 import Sidebar from './components/sidebar/Sidebar';
 import Footer from './components/footer/Footer';
 import EditorHomePage from './components/editor/editor_home';
+ import AppGenerator from './components/generator/generator';
 
 import GeneratorNavBar from './components/navbar/generator_navbar';
 import JsonGeneratorNavBar from './components/navbar/json_generator_navbar';
@@ -104,6 +105,14 @@ class App extends Component {
       navbarTwo = <DumpServerNavbar></DumpServerNavbar>
     } else if (window.location.pathname == "/aurora/generator") {
       navbarTwo = <GeneratorNavBar></GeneratorNavBar>
+      let isTogled = document.body.classList.contains('sidebar-icon-only');
+
+      if (isTogled) {
+          console.log("ignore as sidebar already toggled");
+
+      } else {
+          document.body.classList.toggle('sidebar-icon-only');
+      }
     } else if (window.location.pathname == "/aurora/generator/tojson") {
       navbarTwo = <JsonGeneratorNavBar></JsonGeneratorNavBar>
     } else if (window.location.pathname == "/aurora/generator/toschema") {
@@ -131,7 +140,7 @@ class App extends Component {
         <div className="container-fluid page-body-wrapper">
           {sidebarComponent}
 
-          {window.location.pathname != "/aurora/project" ?
+          {window.location.pathname != "/aurora/generator" ?
 
             <div className="main-panel"    >
               <div className="content-wrapper"
@@ -147,7 +156,7 @@ class App extends Component {
             </div>
             :
             <div className="main-panel" style={{ margin: `2px, 0, 0,0`, backgroundColor: `pink` }}  >
-              <EditorHomePage />
+              <AppGenerator />
               {footerComponent}
             </div>
 
@@ -168,7 +177,7 @@ class App extends Component {
     window.scrollTo(0, 0);
     const fullPageLayoutRoutes = ['/logout', '/login', '/reset-password',
      '/register', '/error-pages/error-404', '/error-pages/error-500', 
-     '/forgot-password', '/forgot-password-key'];
+     '/forgot-password', '/forgot-password-key' ];
     for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
       if (this.props.location.pathname === fullPageLayoutRoutes[i]) {
         this.setState({

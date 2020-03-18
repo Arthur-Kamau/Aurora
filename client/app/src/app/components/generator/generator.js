@@ -14,6 +14,8 @@ import updateRawJsonForGenerateSchema from '../../../actions/generate_schema_raw
 import updateSchemaForGenerateJson from '../../../actions/generate_json_schema_action';
 import updateJsonForGenerateJson from '../../../actions/generate_json_raw_string_action';
 
+// import MonacoEditor from 'react-monaco-editor';
+import MonacoEditor from '@uiw/react-monacoeditor';
 
 class AppGenerator extends Component {
     constructor(props) {
@@ -25,12 +27,15 @@ class AppGenerator extends Component {
             iuserInputWidth: '',
             ws: '',
             dataFromServer: '',
+            thisEditorWidth: ''
         }
-        this.myInput = React.createRef()
+
 
     }
     componentDidMount() {
-        this.toggleOffcanvas();
+
+        
+
         this.state.ws = new WebSocket("ws://0.0.0.0:8080/generator")
         this.state.ws.onopen = () => {
             // on connecting, do nothing but log it to the console
@@ -42,26 +47,13 @@ class AppGenerator extends Component {
             // listen to data sent from the websocket server
             const message = JSON.parse(evt.data)
 
-            this.setState({ dataFromServer: message.payload })
-            console.log("message" + message.payload)
+            this.setState({ dataFromServer: message.message })
+            console.log("message" + message.message)
         }
 
         this.state.ws.onclose = () => {
             console.log('generator disconnected')
 
-        }
-
-    }
-
-    toggleOffcanvas = () => {
-        // document.querySelector('.sidebar-offcanvas').classList.toggle('active');
-        let isTogled = document.body.classList.contains('sidebar-icon-only');
-
-        if (isTogled) {
-            console.log("ignore as sidebar already toggled");
-
-        } else {
-            document.body.classList.toggle('sidebar-icon-only');
         }
 
     }
@@ -72,9 +64,9 @@ class AppGenerator extends Component {
     changeLocationToGenerateSchema = () => {
         this.setState({ activeItem: 'generate_schema' });
 
-
     }
 
+    
 
     // handleEditorChange = (ev, value) => {
     handleEditorChange = (value) => {
@@ -93,10 +85,34 @@ class AppGenerator extends Component {
     };
 
 
+    editorDidMount = (editor, monaco) => {
+        console.log('editorDidMount', editor);
+        editor.focus();
+    }
+    onChange = (newValue, e) => {
+        console.log('onChange', newValue, e);
+
+        var input = newValue;
+        var data = JSON.stringify({ payload: input, action: this.state.activeItem });
+        console.log("user input " + input)
+
+
+        if (this.state.ws.readyState === 1) {
+            this.state.ws.send(data);
+        } else {
+            console.error("unable to send message")
+        }
+    }
+
     render() {
         var generateSchemaStyle = this.state.activeItem == 'generate_schema' ? ' list-group-item active' : 'list-group-item';
         var generateJsonStyle = this.state.activeItem == 'generate_json' ? ' list-group-item active' : 'list-group-item';
         const userEditorOptions = {
+            selectOnLineNumbers: true
+        };
+
+        const code = this.state.code;
+        const options = {
             selectOnLineNumbers: true
         };
 
@@ -120,9 +136,9 @@ class AppGenerator extends Component {
                     </ul> */}
                     <div className="col-lg-12 col-md-12 col-xs-12 " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `white` }}>
                         <div className="row " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `black` }} >
-                            <div ref={this.myInput} className="col-lg-6 col-md-6 col-xs-12" style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `green` }}  >
+                            <div ref="myImgContainer" className="col-lg-6 col-md-6 col-xs-12" style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `green` }}  >
 
-                                {this.editor ||
+                                {/* {this.editor ||
                                     (this.editor = (
                                         // <ControlledEditor
                                         //     width={this.state.iuserInputWidth}
@@ -157,7 +173,17 @@ class AppGenerator extends Component {
                                                 $blockScrolling: true
                                             }}
                                         />
-                                    ))}
+                                    ))} */}
+
+
+                                <MonacoEditor
+                                    language="javascript"
+                                    width={this.state.thisEditorWidth}
+                                    onChange={this.onChange.bind(this)}
+                                    options={{
+                                        theme: 'vs-dark',
+                                    }}
+                                />
                             </div>
                             <div className="col-lg-6 col-md-6 col-xs-12 m-0 p-0">
                                 {this.state.activeItem == 'generate_schema' ?
@@ -179,6 +205,7 @@ class AppGenerator extends Component {
                                             value: this.state.dataFromServer
 
                                         }}
+                                        value ={this.state.dataFromServer}
                                         name="3"
                                         editorProps={{
                                             $blockScrolling: true
@@ -204,6 +231,7 @@ class AppGenerator extends Component {
                                             readOnly: true,
                                             value: this.state.dataFromServer
                                         }}
+                                        value ={this.state.dataFromServer}
                                         name="3"
                                         editorProps={{
                                             $blockScrolling: true
