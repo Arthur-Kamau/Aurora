@@ -27,7 +27,9 @@ class AppGenerator extends Component {
             iuserInputWidth: '',
             ws: '',
             dataFromServer: '',
-            thisEditorWidth: ''
+            thisEditorWidth: '',
+            pageWidth: '',
+            pageHeight: ''
         }
 
 
@@ -56,8 +58,13 @@ class AppGenerator extends Component {
 
         }
 
+        window.addEventListener("resize", this.updateDimensions);
+
     }
 
+    updateDimensions = () =>{
+        window.location.reload(false);
+    }
     changeLocationToGenerateJson = () => {
         this.setState({ activeItem: 'generate_json' });
     }

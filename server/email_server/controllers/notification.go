@@ -13,7 +13,7 @@ import (
 	"Aurora/server/email_server/email"
  ) 
 
-//welcomeEmail welcome email
+//NotificationEmail welcome email
 func NotificationEmail(c echo.Context) error {
 	u := new(post.NotificationData)
 	if err := c.Bind(u); err != nil {

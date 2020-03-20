@@ -4,6 +4,7 @@ import com.araizen.www.core.generator.generate_json.GenerateJson
 import com.araizen.www.core.generator.generate_json_data.GenerateJsonSeedData
 import com.araizen.www.core.generator.generate_model.GenerateModel
 import com.araizen.www.database.mysql.DatabaseObj
+import com.araizen.www.database.mysql.auth.AuthDatabaseDao
 import com.araizen.www.models.api_response.ApiResponse
 import com.araizen.www.models.auth.LoginModel
 import com.araizen.www.models.websockets.WebSocketPayloadModel
@@ -34,6 +35,7 @@ import io.ktor.routing.routing
 import io.ktor.websocket.WebSockets
 import io.ktor.websocket.webSocket
 import kotlinx.coroutines.channels.mapNotNull
+import utils.post.curl.AppCurl
 import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
@@ -118,22 +120,22 @@ fun Application.module(testing: Boolean = false) {
             var isValidEmail = ValidateInput().isValidEmail(post.email)
             if (isValidEmail) {
 
+
+
+             var doesUserExist = AuthDatabaseDao().doesUserExist(email=post.email)
+
                 //generate key
                 val key = RandomGenerator().generateRandomIntIntRange(1000, 9999)
 
 
-
-                khttp.post(
-                    url = "http://127.0.0.1:4000/login",
-                    json = mapOf("email" to post.email, "key" to "$key"))
-
+                AppCurl().sendLoginEmail(post.email, key.toString())
 
 
 
                 val apiResponse = ApiResponse(
-                    status = HttpResult.okResponse,
+                    status =  if(doesUserExist) { HttpResult.okResponse  }else { HttpResult.emailNotExistInDatabase },
                     data = "",
-                    reason = "invalid  email"
+                    reason = "login key sent to email"
                 )
                 call.respond(Klaxon().toJsonString(apiResponse))
             } else {

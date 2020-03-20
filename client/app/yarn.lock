@@ -1825,6 +1825,15 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
+"@uiw/react-monacoeditor@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@uiw/react-monacoeditor/-/react-monacoeditor-2.0.2.tgz#6bac70958228604b3c1f5fdc713bb2702ce9e028"
+  integrity sha512-GSVoRIWJDITCZotoUNJPo5OBlKyflAcg0AVqs0PxR9KFfyjDwHPxnWyB+647VEFq54NsNnPVAZepYRo3IVQxnA==
+  dependencies:
+    "@babel/runtime" "^7.7.4"
+    monaco-editor "^0.17.1"
+    prop-types "^15.7.2"
+
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.8.5.tgz#51b1c5fe6576a34953bf4b253df9f0d490d9e359"
@@ -8185,6 +8194,11 @@ monaco-editor-webpack-plugin@^1.8.2:
   dependencies:
     loader-utils "^1.2.3"
 
+monaco-editor@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.17.1.tgz#8fbe96ca54bfa75262706e044f8f780e904aa45c"
+  integrity sha512-JAc0mtW7NeO+0SwPRcdkfDbWLgkqL9WfP1NbpP9wNASsW6oWqgZqNIWt4teymGjZIXTElx3dnQmUYHmVrJ7HxA==
+
 monaco-editor@^0.19.3:
   version "0.19.3"
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.19.3.tgz#1c994b3186c00650dbcd034d5370d46bf56c0663"
@@ -10189,6 +10203,11 @@ react-chartjs-2@^2.8.0:
     lodash "^4.17.4"
     prop-types "^15.5.8"
 
+react-circular-progressbar@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-circular-progressbar/-/react-circular-progressbar-2.0.3.tgz#fa8eb59f8db168d2904bae4590641792c80f5991"
+  integrity sha512-YKN+xAShXA3gYihevbQZbavfiJxo83Dt1cUxqg/cltj4VVsRQpDr7Fg1mvjDG3x1KHGtd9NmYKvJ2mMrPwbKyw==
+
 react-codemirror2@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-6.0.0.tgz#180065df57a64026026cde569a9708fdf7656525"
@@ -10283,6 +10302,14 @@ react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
+react-loader-spinner@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/react-loader-spinner/-/react-loader-spinner-3.1.5.tgz#e9a40c6032fddf0eba319e525cc613c5d698e4f9"
+  integrity sha512-617hOJtzFqQDs9OT/zLzdyvlCcb6m07xz/tOoZcVAeb/yiwstrz3nulzpKkwYL3c/3+l5IZJNGl1Bm5fLy6uYg==
+  dependencies:
+    babel-runtime "^6.26.0"
+    prop-types "^15.6.2"
 
 react-modal@^3.11.1:
   version "3.11.1"

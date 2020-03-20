@@ -131,8 +131,9 @@ type Config struct {
 //GetConfig get json data from config.json with the use  of structs
 func GetConfig() Config {
 
-	path := os.Getenv("GOPATH") ///C:\Users\Arthur-Kamau\go\src\
-
+	path := os.Getenv("GOPATH") 
+	/// widnows => C:\Users\Arthur-Kamau\go\src\
+	/// linux  => /home/publisher/Development/Go/src/
 	path += defaultConfigPath
 
 	//logger.InfoLog.Printf("Using config from '%s'", path)

@@ -28,7 +28,7 @@ class LoginKey extends Component {
 
             let decodedData = response.data;
             if (decodedData.status === AppResponseStatus.okResponse) {
-          window.location = "";
+          window.location = "/generator";
           window.localStorage.setItem("aurora_key",decodedData.data);
             } else if (decodedData.status === AppResponseStatus.emailNotExistInDatabase) {
                

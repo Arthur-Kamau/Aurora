@@ -3,6 +3,7 @@ import AppVersion from "./settings_components/app_version_setting";
 import AccountSettings from "./settings_components/account_settings";
 import UserBilling from "./settings_components/billing_setting";
 import ThemeSettingsPage from "./settings_components/theme_settings";
+import SharePageComponent from "./settings_components/share_page";
 import BlackSettingsPage from "./settings_components/blank_settings";
 import DocumentationPageInSettings from "./settings_components/documentation";
 import FeedBackPage from "./settings_components/feedback_page";
@@ -13,6 +14,11 @@ export class SettingsPage extends Component {
     this.state = { pageActive: "" }
   }
 
+  openSharePage = (event) => {
+    this.setState({
+      pageActive: "share"
+    });
+  }
   openDocumentationTab = (event) => {
     this.setState({
       pageActive: "docementation"
@@ -66,7 +72,7 @@ export class SettingsPage extends Component {
         <div className="col-lg-3 col-md-4 grid-margin stretch-card">
           <div className="card">
             <div className="card-body">
-              <h2 className="card-title">App Settings <br></br> {this.props.authToken} </h2>
+              <h2 className="card-title">App Settings  </h2>
               {/* <p className="card-description"> Add faded secondary text to headings </p> */}
               <hr></hr>
 
@@ -87,6 +93,16 @@ export class SettingsPage extends Component {
                     <div className="btn btn-light btn-lg" onClick={this.changePageToBilling}>  <i className="mdi  mdi-credit-card icon-sm text-info"></i> &emsp; User Billing &emsp;  </div>
                     <div className="btn btn-light btn-lg" onClick={this.changePageToTheme}>  <i className="mdi  mdi-invert-colors icon-sm text-primary"></i> &emsp; App Theme &emsp;  </div>
                     <div className="btn btn-light btn-lg" onClick={this.changePageToFeedBackPage}>  <i className="mdi  mdi-email icon-sm text-secondary"></i> &emsp;Feedback &emsp;   </div>
+                    {
+                      navigator.userAgent.toLowerCase().indexOf(' electron/') > -1 ?
+
+                        <div className="btn btn-light btn-lg" onClick={this.openSharePage}>  <i className="mdi  mdi-share-variant icon-sm text-dark"></i> &emsp;share &emsp;   </div>
+
+                        :
+                        <div></div>
+
+                    }
+
                     <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Documentation &emsp;   </div>
                   </div>
 
@@ -112,7 +128,9 @@ export class SettingsPage extends Component {
                         <FeedBackPage></FeedBackPage>
                         : this.state.pageActive == "docementation" ?
                           <DocumentationPageInSettings ></DocumentationPageInSettings>
-                          : <BlackSettingsPage authToken={this.props.authToken}></BlackSettingsPage>}
+                          : this.state.pageActive == "share" ?
+                            <SharePageComponent ></SharePageComponent>
+                            : <BlackSettingsPage authToken={this.props.authToken}></BlackSettingsPage>}
             </div>
           </div>
         </div>
@@ -133,4 +151,4 @@ const mapActionsToProps = {
 };
 
 
-export default connect(mapStateToProps )(SettingsPage);
+export default connect(mapStateToProps)(SettingsPage);

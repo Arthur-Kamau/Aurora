@@ -6,11 +6,15 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import AppUrls from "../../../url/url";
 import AppResponseStatus from "../../../url/app_responses";
+import Loader from 'react-loader-spinner'
+
 class LoginPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '', emailNotRegistered: ''
+            email: '',
+            isSendingEmail: false,
+            emailNotRegistered: ''
         }
     }
     handleGithubClick = () => {
@@ -27,19 +31,30 @@ class LoginPage extends Component {
     submitEmail = (e) => {
         e.preventDefault();
 
-
+        this.setState({ isSendingEmail: true });
         axios.post(AppUrls.loginPost, {
             email: this.state.email
         }).then((response) => {
 
+
             let decodedData = response.data;
+
+            console.log("response data " + decodedData.status);
             if (decodedData.status === AppResponseStatus.okResponse) {
                 localStorage.setItem("email", this.state.user_email);
+                window.location = "/login-key";
             } else if (decodedData.status === AppResponseStatus.emailNotExistInDatabase) {
                 localStorage.setItem("email", this.state.user_email);
+                window.location = "/register";
+            } else {
+                this.setState({ isSendingEmail: false });
+                alert("erro response");
+            }
 
-            } else { alert("erro response"); }
-
+        }).catch((erros) => {
+            alert("erro response");
+            this.setState({ isSendingEmail: false });
+            console.log("Error " + erros);
         });
     }
     render() {
@@ -66,7 +81,21 @@ class LoginPage extends Component {
                     </div>
 
                     <div className="align-self-center" >
-                        <button type="submit" className=" btn btn-lg btn-primary btn-block" style={{ width: `200px` }} onClick={this.submitEmail} >Submit</button>
+                        {this.state.isSendingEmail == false ?
+                            <button type="submit" className=" btn btn-lg btn-primary btn-block" style={{ width: `200px` }} onClick={this.submitEmail} >Submit</button>
+                            : <div>
+
+                                <Loader
+                                    type="Puff"
+                                    color="#00BFFF"
+                                    height={100}
+                                    width={100}
+                                    timeout={3000} //3 secs
+
+                                />
+
+                            </div>
+                        }
                     </div>
 
                     <br></br>

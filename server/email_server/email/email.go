@@ -10,6 +10,7 @@ import (
 	"Aurora/server/email_server/config"
 	"Aurora/server/email_server/logger"
 
+	"github.com/logrusorgru/aurora"
 )
 
 //Request data required to send an email
@@ -20,7 +21,7 @@ type Request struct {
 	body    string
 }
 
-// MiMe = email 
+// MiMe = email
 const (
 	MIME = "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n"
 )
@@ -49,31 +50,31 @@ func (r *Request) parseTemplate(fileName string, data interface{}) error {
 func (r *Request) sendMail() bool {
 
 	configFile := config.GetConfig()
-	
+
 	emailServer := configFile.Email.Server
 	emailPort := configFile.Email.Port
 
 	emailName := configFile.Email.EmailUser
 	emailPassword := configFile.Email.EmailPassword
 
+	
+
 	body := "To: " + r.to[0] + "\r\nSubject: " + r.subject + "\r\n" + MIME + "\r\n" + r.body
 	SMTP := fmt.Sprintf("%s:%d", emailServer, emailPort)
 
-
-
 	if err := smtp.SendMail(SMTP, smtp.PlainAuth("", emailName, emailPassword, emailServer), emailName, r.to, []byte(body)); err != nil {
-		
+
 		logger.ErrorLog.Println("Email not   sent error  ")
 		return false
 	}
-	
+
 	return true
 
-
-
 }
+
 //Send send action of email
 func (r *Request) Send(templateName string, items interface{}) {
+	fmt.Println(aurora.BgGreen("============ Send email template " + templateName + "======================"))
 	err := r.parseTemplate(templateName, items)
 	if err != nil {
 		log.Fatal(err)
@@ -88,4 +89,3 @@ func (r *Request) Send(templateName string, items interface{}) {
 		log.Printf("Failed to send the email to %s\n", r.to)
 	}
 }
-

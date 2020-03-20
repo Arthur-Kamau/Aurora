@@ -54,7 +54,7 @@ const store = createStore(
 
         convertToSchemaShcema: '// paste your json on the left side panel \n// The generated shema model will apear here ',
         convertToSchemaJsonString: '',
-        authtoken: '',
+        authtoken:  window.localStorage.getItem('aurora_key'),
         jsonOperations : {
             jsonOperationsActions: 'convert_to_json',
             jsonPayloadReceived : '',
