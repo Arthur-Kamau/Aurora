@@ -80,4 +80,14 @@ dependencies {
     // k http
     compile "khttp:khttp:1.0.0"
 
+
+    //ktor auth
+    compile "io.ktor:ktor-auth:0.9.0"
+
+    //jwt
+    compile "com.auth0:jwks-rsa:0.3.0"
+
+    //log back and fuel
+    compile "ch.qos.logback:logback-classic:1.2.1"
+    compile "com.github.kittinunf.fuel:fuel:1.11.0"
 }

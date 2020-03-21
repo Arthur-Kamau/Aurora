@@ -3,6 +3,7 @@ package com.araizen.www.database.mysql.feedback
 
 import com.araizen.www.database.mysql.auth.AuthDatabaseDao
 import com.araizen.www.models.feedback.FeedbackModel
+import com.araizen.www.utils.console.Println
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
@@ -16,7 +17,7 @@ class FeedbackDatabaseDao {
         val userId = varchar("user_id", length = 50) // Column<String>
         val name = varchar("name", length = 50).nullable() // Column<String>
         val description = varchar("description", length = 50).nullable() // Column<String>
-        val fileLocation = varchar("fileLocation", length = 50)// Column<String>
+        val fileLocation = text("fileLocation")// Column<String>
         val createdAt = varchar("created_at", length = 50).default(LocalDateTime.now().toString()) // Column<String>
         val updateAt = varchar("updated_at", length = 50).default(LocalDateTime.now().toString()) // Column<String>
 
@@ -168,7 +169,8 @@ class FeedbackDatabaseDao {
                 it[description] = feedbackModel.description
                 it[userId] = feedbackModel.userId
 
-            } get AuthDatabaseDao.AuthTable.id
+            }
+            Println.yellow("result result");
         }
     }
 

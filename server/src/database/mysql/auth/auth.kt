@@ -1,6 +1,8 @@
 package com.araizen.www.database.mysql.auth
 
 import com.araizen.www.database.mysql.account.AccountDatabaseDao.AccountTable.uniqueIndex
+import com.araizen.www.database.mysql.user_profile.ProfileDatabaseDao
+import com.araizen.www.models.profile.ProfileModel
 import com.araizen.www.utils.console.Println
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -49,6 +51,44 @@ class AuthDatabaseDao {
     }
 
 
+
+
+
+    /**
+     *
+     * loginUserWithEmailKey
+     * check if email and key exit in the database
+     *
+     * @param email
+     * @param key
+     *
+     * @return Boolean whether success
+     */
+    fun loginUserWithEmailKey(email: String, key: String): Pair<Boolean, String> {
+        var isUserAuth = false
+        var userId = ""
+        transaction {
+            val res: Query = AuthTable.select { AuthTable.email.eq(email) and AuthTable.loginKey.eq(key) }
+
+            Println.yellow("loginUserWithEmailKey user id ${res.toString()}")
+            if (res.fetchSize == 0) {
+                Println.red("loginUser wrong email and passsword ")
+
+            } else {
+                Println.red("loginUser correct email and password ")
+                isUserAuth = true
+
+
+
+                for ((i, item) in res.withIndex()) {
+                    Println.yellow("loginUserWithEmailKey at index $i ")
+                    userId = item[AuthTable.userId]
+                }
+
+            }
+        }
+        return Pair(isUserAuth, userId)
+    }
     /**
      *
      * loginUser
@@ -104,12 +144,13 @@ class AuthDatabaseDao {
      *  @param emailPar -> user email
      *  @param userIdPar -
      */
-    fun registerUser(emailPar: String, userIdPar: String) {
+    fun registerUser(emailPar: String, userIdPar: String,loginKeyPar : String) {
       transaction {
 
           val result = AuthTable.insert{
                it[email] = emailPar
                it[userId] = userIdPar
+               it[loginKey] = loginKeyPar
           } get AuthTable.id
       }
 

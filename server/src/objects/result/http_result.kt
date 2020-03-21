@@ -23,6 +23,6 @@ class HttpResult {
        var errResponse = 400
 
         // email not registered
-        var emailNotExistInDatabase = 405
+        var userShouldRegister = 405
     }
 }
