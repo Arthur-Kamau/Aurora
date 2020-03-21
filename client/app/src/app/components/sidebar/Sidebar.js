@@ -3,6 +3,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { Collapse } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
 
+import { connect } from 'react-redux'
+
 class Sidebar extends Component {
   state = {};
 
@@ -72,25 +74,38 @@ class Sidebar extends Component {
 
           <div className="sidebar-brand brand-logo">
             <div className="row" >
-              <div className="col-md-2">
-                <button className="navbar-toggler navbar-toggler  " type="button" onClick={() => document.body.classList.toggle('sidebar-icon-only')}>
-                  <i className="mdi mdi-menu"></i>
+              <div className="col-md-2" onClick={() => document.body.classList.toggle('sidebar-icon-only')}>
+                <button className="navbar-toggler navbar-toggler  " type="button" > 
+                 {/* onClick={() => document.body.classList.toggle('sidebar-icon-only')}> */}
+                  {this.props.userProfile.theme === 'light' ?
+                    <i className="mdi mdi-menu"></i>
+                    :
+                    <i className="mdi mdi-menu" style={{ color: `white` }}></i>
+                  }
                 </button>
               </div>
               <div className="col-md-9">
-                {/* <span className="menu-title"><h3>Aurora Tool </h3></span> */}
-                <span className="menu-title"><h3>Aurora Tool </h3></span>
+
+                {this.props.userProfile.theme === 'light' ?
+                  <span className="menu-title"><h3 >Aurora Tool </h3></span>
+                  :
+                  <span className="menu-title"><h3 style={{ color: `white` }} >Aurora Tool </h3></span>
+                }
               </div>
             </div>
           </div>
 
           <button className="navbar-toggler navbar-toggler sidebar-brand  brand-logo-mini pt-3" type="button" onClick={() => document.body.classList.toggle('sidebar-icon-only')}>
-            <i className="mdi mdi-menu"></i>
+            {this.props.userProfile.theme === 'light' ?
+              <i className="mdi mdi-menu"></i>
+              :
+              <i className="mdi mdi-menu" style={{ color: `white` }}></i>
+            }
           </button>
 
         </div>
         <ul className="nav">
-         
+
 
 
           {/* <li className={this.isPathActive('/project') ? 'nav-item active' : 'nav-item'}>
@@ -129,7 +144,7 @@ class Sidebar extends Component {
             </Link>
           </li>
 
-     
+
         </ul>
       </nav>
     );
@@ -160,4 +175,11 @@ class Sidebar extends Component {
 
 }
 
-export default withRouter(Sidebar);
+const mapStateToProps = state => ({
+  userProfile: state.userProfile,
+});
+
+const mapActionsToProps = {
+
+}
+export default connect(mapStateToProps, mapActionsToProps)(withRouter(Sidebar));

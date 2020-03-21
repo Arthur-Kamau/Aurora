@@ -58,7 +58,7 @@ class AppGenerator extends Component {
 
         }
 
-        window.addEventListener("resize", this.updateDimensions);
+        // window.addEventListener("resize", this.updateDimensions);
 
     }
 
@@ -145,7 +145,7 @@ class AppGenerator extends Component {
                         <div className="row " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `black` }} >
                             <div ref="myImgContainer" className="col-lg-6 col-md-6 col-xs-12" style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `green` }}  >
 
-                                {/* {this.editor ||
+                                 {this.editor ||
                                     (this.editor = (
                                         // <ControlledEditor
                                         //     width={this.state.iuserInputWidth}
@@ -173,24 +173,25 @@ class AppGenerator extends Component {
                                                 enableBasicAutocompletion: true,
                                                 enableSnippets: true,
                                                 enableLiveAutocompletion: true,
-                                                value: this.state.rawModel
+                                                value: this.state.rawModel,
+                                                fontFamily : ''
                                             }}
                                             name="1"
                                             editorProps={{
                                                 $blockScrolling: true
                                             }}
                                         />
-                                    ))} */}
+                                    ))} 
 
 
-                                <MonacoEditor
+                                {/* <MonacoEditor
                                     language="javascript"
                                     width={this.state.thisEditorWidth}
                                     onChange={this.onChange.bind(this)}
                                     options={{
                                         theme: 'vs-dark',
                                     }}
-                                />
+                                /> */}
                             </div>
                             <div className="col-lg-6 col-md-6 col-xs-12 m-0 p-0">
                                 {this.state.activeItem == 'generate_schema' ?

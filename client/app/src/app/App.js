@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import ReactNotifications from 'react-notifications-component';
 
 import AppRoutes from './AppRoutes';
-import './App.scss';
+// import './App.scss';
 import Navbar from './components/navbar/Navbar';
 import DumpServerNavbar from './components/navbar/dump_server_navbar';
 import ConnectionToolAppBar from './components/navbar/connection_tool_navbar';
@@ -12,7 +12,7 @@ import EditorNavBar from './components/navbar/editor_navbar';
 import Sidebar from './components/sidebar/Sidebar';
 import Footer from './components/footer/Footer';
 import EditorHomePage from './components/editor/editor_home';
- import AppGenerator from './components/generator/generator';
+import AppGenerator from './components/generator/generator';
 
 import GeneratorNavBar from './components/navbar/generator_navbar';
 import JsonGeneratorNavBar from './components/navbar/json_generator_navbar';
@@ -59,6 +59,13 @@ class App extends Component {
     this.onRouteChanged();
     this.setState({ location: window.location.pathname });
 
+    //load css
+    if (this.props.userProfile.theme === 'light') {
+      require('./App_light.scss');
+    } else {
+      require('./App_dark.scss');
+    }
+
     window.location.pathname == "/create_tool" ? this.setState({ appBarStyle: "no style" })
       : this.setState({ appBarStyle: "style" })
 
@@ -79,7 +86,7 @@ class App extends Component {
       var obj = JSON.parse(evt.data)
 
       if (obj.action === 'generate_schema') {
- 
+
         this.props.onupdateSchemaDataForGenerateSchema(evt.data);
       } else {
 
@@ -108,10 +115,10 @@ class App extends Component {
       let isTogled = document.body.classList.contains('sidebar-icon-only');
 
       if (isTogled) {
-          console.log("ignore as sidebar already toggled");
+        console.log("ignore as sidebar already toggled");
 
       } else {
-          document.body.classList.toggle('sidebar-icon-only');
+        document.body.classList.toggle('sidebar-icon-only');
       }
     } else if (window.location.pathname == "/aurora/generator/tojson") {
       navbarTwo = <JsonGeneratorNavBar></JsonGeneratorNavBar>
@@ -132,7 +139,19 @@ class App extends Component {
   render() {
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar /> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer /> : '';
+    // let appBackground = '';
+    // let appContainerBackground = {
+    //   marginLeft: `5px`,
+    //   marginTop: `5px`,
+    //   backgroundColor : `red`
+    // }
+    // if (this.props.userProfile.theme == "light") {
 
+
+    // } else {
+    //   appBackground = { backgroundColor: `#494949` }
+
+    // } 
     return (
       <div className="container-scroller">
         {this.diplayAppropriateAppBAr(10)}
@@ -142,12 +161,12 @@ class App extends Component {
 
           {window.location.pathname != "/aurora/generator" ?
 
-            <div className="main-panel"    >
+            <div className="main-panel"
+
+            style={this.props.userProfile.theme == "light" ?  {} : {backgroundColor:`#494949`}}
+            >
               <div className="content-wrapper"
-                style={{
-                  marginLeft: `5px`,
-                  marginTop: `5px`,
-                }}
+                style={this.props.userProfile.theme == "light" ?  {} : {backgroundColor:`#494949`}}
               >
 
                 <AppRoutes websocket={this.state.ws} />
@@ -156,6 +175,7 @@ class App extends Component {
             </div>
             :
             <div className="main-panel" style={{ margin: `2px, 0, 0,0`, backgroundColor: `pink` }}  >
+           
               <AppGenerator />
               {footerComponent}
             </div>
@@ -176,8 +196,8 @@ class App extends Component {
     console.log("ROUTE CHANGED");
     window.scrollTo(0, 0);
     const fullPageLayoutRoutes = ['/logout', '/login', '/reset-password',
-     '/register', '/error-pages/error-404', '/error-pages/error-500', 
-     '/forgot-password', '/forgot-password-key' ];
+      '/register', '/error-pages/error-404', '/error-pages/error-500',
+      '/forgot-password', '/forgot-password-key'];
     for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
       if (this.props.location.pathname === fullPageLayoutRoutes[i]) {
         this.setState({
@@ -203,6 +223,7 @@ const mapStateToProps = state => ({
 
   convertToSchemaShcema: state.convertToSchemaShcema,
   convertToSchemaString: state.convertToSchemaString,
+  userProfile: state.userProfile,
 });
 
 const mapActionsToProps = {

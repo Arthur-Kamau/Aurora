@@ -39,8 +39,9 @@ class DumpServerPage extends Component {
         <div className="row">
           <div className="col-lg-3 col-md-4 grid-margin stretch-card">
 
-            <div className="card">
-              <div className="card-body">
+            <div className="card ml-3">
+              <div className="card-body"
+              >
 
                 {this.state.serverRunning == false ?
                   <h4 className="card-title">Server Operations</h4>
@@ -106,12 +107,24 @@ class DumpServerPage extends Component {
 
           </div>
 
-          <div className="col-md-8 grid-margin stretch-card">
+          <div className="col-md-8 grid-margin stretch-card"
+          style={this.props.userProfile.theme == "light" ?
+          {} :
+          this.state.serverRunning == false ?
+            { color: `black` } :
+            {  color: `white` }
+        } >
+            {/* style={this.props.userProfile.theme == "light" ? {} :
+               this.state.serverRunning == false ? { color: `black` } :
+                 { backgroundColor: `#494949`, color: `white` }
+             }> */}
             <div className="card">
-              {this.state.serverRunning == false ? <h4 className="align-self-center mt-5">Server is not running</h4> :
+              
+              {this.state.serverRunning == false ?
+                <h4 className="align-self-center mt-5" >
+                  Server is not running
+                </h4> :
                 <div>
-
-
 
                   {this.state.serverRequestList != null && this.state.serverRequestList.length > 0 ?
                     <div>
@@ -144,7 +157,6 @@ class DumpServerPage extends Component {
                       </div>
                     </div>
 
-
                     :
                     <h4 className="card-title mt-4 ml-4">Server has no History</h4>
 
@@ -164,7 +176,8 @@ class DumpServerPage extends Component {
 
 const mapStateToProps = state => ({
   dumpServer: state.dumpServer,
-  dumpServerLogs: state.dumpServer
+  dumpServerLogs: state.dumpServer,
+  userProfile: state.userProfile,
 });
 
 const mapActionsToProps = {

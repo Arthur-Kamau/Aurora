@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import userProfileAction from '../../../actions/userProfileAction';
 const theme = { borderStyle: `solid`, borderColor: `red`, backgroundColor: `lightgrey`, padding: `10px` };
 
 class ThemeSettingsPage extends Component {
@@ -52,4 +54,17 @@ class ThemeSettingsPage extends Component {
     }
 }
 
-export default ThemeSettingsPage;
+// export default ;
+
+const mapStateToProps = state => ({
+    userProfile: state.userProfile,
+  });
+  
+  const mapActionsToProps = {
+    onChangeAppTheme :  userProfileAction,
+  };
+  
+  
+  export default connect(mapStateToProps, mapActionsToProps)(ThemeSettingsPage);
+  
+  

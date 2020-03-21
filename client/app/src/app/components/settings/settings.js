@@ -69,7 +69,7 @@ export class SettingsPage extends Component {
 
       <div className="row">
 
-        <div className="col-lg-3 col-md-4 grid-margin stretch-card">
+        <div className="col-lg-3 col-md-4 grid-margin stretch-card ml-4">
           <div className="card">
             <div className="card-body">
               <h2 className="card-title">App Settings  </h2>
