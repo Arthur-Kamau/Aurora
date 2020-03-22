@@ -6,6 +6,7 @@ const AppUrls = {
   errrorPost: "http://0.0.0.0:8080/error",
   loginPost: "http://0.0.0.0:8080/login",
   loginKeyPost: "http://0.0.0.0:8080/login/key",
+  loginPostProfileDetails: "http://0.0.0.0:8080/login/profile-details",
 
   registerPost: "http://0.0.0.0:8080/register",
   forgotPasswordPost: "http://0.0.0.0:8080/forgot_password",
@@ -30,11 +31,13 @@ const AppUrls = {
   settingsPage: "http://127.0.0.1:4040/aurora/settings", 
   loginPage: "http://127.0.0.1:4040/aurora/login", 
   loginKeyPage: "http://127.0.0.1:4040/aurora/login-key", 
+  loginPersonalDetailsPage: "http://127.0.0.1:4040/aurora/login-personal-details", 
   logoutPage: "http://127.0.0.1:4040/aurora/logout", 
   registerPage: "http://127.0.0.1:4040/aurora/register", 
   forgotPasswordPage: "http://127.0.0.1:4040/aurora/forgot-password", 
   forgotPasswordKeyPage: "http://127.0.0.1:4040/aurora/forgot-password-key", 
   resetPasswordPage: "http://127.0.0.1:4040/aurora/reset-password", 
+  generatorPage: "http://127.0.0.1:4040/aurora/generator", 
 
 
 

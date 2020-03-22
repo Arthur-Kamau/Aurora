@@ -19,6 +19,7 @@ const ResetPasswordPage = lazy(() => import('./components/auth/reset-passsword')
 const RegisterPage = lazy(() => import('./components/auth/register'));
 const LoginPage = lazy(() => import('./components/auth/login'));
 const LoginKey = lazy(() => import('./components/auth/login-key'));
+const LoginFillPersonalDetails = lazy(() => import('./components/auth/login-fill-personal-details'));
 const LogoutPage = lazy(() => import('./components/auth/logout'));
 const ForgotPasswordPage = lazy(() => import('./components/auth/forgot-password'));
 const ForgotPasswordKeyPage = lazy(() => import('./components/auth/forgot-password-key'));
@@ -45,6 +46,7 @@ class AppRoutes extends Component {
                     <Route exact path="/logout" component={LogoutPage} />
                     <Route exact path="/login" component={LoginPage} />
                     <Route exact path="/login-key" component={LoginKey} />
+                    <Route exact path="/login-personal-details" component={LoginFillPersonalDetails} />
                     <Route exact path="/register" component={RegisterPage} />
                     <Route exact path="/forgot-password" component={ForgotPasswordPage} />
                     <Route exact path="/forgot-password-key" component={ForgotPasswordKeyPage} />

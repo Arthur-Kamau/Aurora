@@ -19,10 +19,14 @@ class HttpResult {
         //UnAuthroizedResponse return unauthorized in response data struct
        var  unAuthenticatedResponse = 300
 
+
         //ErrorResponse return err in response data struct
        var errResponse = 400
 
         // email not registered
         var userShouldRegister = 405
+
+        // load login page
+        var loadLoginPage = 410
     }
 }

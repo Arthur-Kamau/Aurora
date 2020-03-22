@@ -86,8 +86,19 @@ dependencies {
 
     //jwt
     compile "com.auth0:jwks-rsa:0.3.0"
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
+
+    // bind for jvm -> bas64 data conversion
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.1'
+
+
 
     //log back and fuel
     compile "ch.qos.logback:logback-classic:1.2.1"
     compile "com.github.kittinunf.fuel:fuel:1.11.0"
+
+
+
 }

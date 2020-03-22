@@ -4,7 +4,9 @@ import com.araizen.www.database.mysql.account.AccountDatabaseDao.AccountTable.un
 import com.araizen.www.database.mysql.user_profile.ProfileDatabaseDao
 import com.araizen.www.models.profile.ProfileModel
 import com.araizen.www.utils.console.Println
+import kotlinx.css.em
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
 
@@ -17,7 +19,7 @@ class AuthDatabaseDao {
         val resetKey = varchar("reset_key", length = 50).nullable() // Column<String>
         val isBlocked = bool("is_blocked").default(false) // Column<String>
         val loginKey = varchar("login_key", length = 50).default("0") // Column<String>
-        val email = varchar("email", length = 50) // Column<String>
+        val email = varchar("email", length = 50).uniqueIndex()  // Column<String>
         val password = varchar("password", length = 50).nullable() // Column<String>
         val createdAt = varchar("created_at", length = 50).default(LocalDateTime.now().toString()) // Column<String>
         val updateAt = varchar("updated_at", length = 50).default(LocalDateTime.now().toString()) // Column<String>
@@ -26,7 +28,29 @@ class AuthDatabaseDao {
         override val primaryKey = PrimaryKey(id, name = "PK_User_ID") // name is optional here
     }
 
+    /**
+     * getUserId
+     *  @param email the user email
+     *  @return String the user id
+      */
+fun getUserId(email : String) : String{
+        var userId = ""
+        transaction {
+            val res  = AuthTable.slice(AuthTable.userId).select { AuthTable.email eq email }
 
+            if (res.count() == 0) {
+                Println.red("doesUserExist no he does not ")
+
+            } else {
+                Println.red("doesUserExist yes he does  ")
+                res.forEach {
+                    userId =  it[AuthTable.userId]
+                }
+
+            }
+        }
+        return  userId
+}
     /**
      * doesUserExist
      *
@@ -36,9 +60,9 @@ class AuthDatabaseDao {
     fun doesUserExist(email: String): Boolean {
         var userExist = false
         transaction {
-            val res: Query = AuthTable.select { AuthTable.email eq email }
+            val res  = AuthTable.select { AuthTable.email eq email }.count()
 
-            if (res.fetchSize == 0) {
+            if (res == 0) {
                 Println.red("doesUserExist no he does not ")
 
             } else {
@@ -51,8 +75,21 @@ class AuthDatabaseDao {
     }
 
 
-
-
+    /**
+     * updateUserLoginKeyForTheEmail
+     *
+     *  *
+     * @param email
+     * @param loginKey
+     *
+     */
+    fun updateUserLoginKeyForTheEmail(email : String, loginKey : String){
+        transaction {
+            AuthTable.update({ AuthTable.email.eq(email) }) {
+                it[AuthTable.loginKey] = loginKey
+            }
+        }
+}
 
     /**
      *
@@ -71,7 +108,7 @@ class AuthDatabaseDao {
             val res: Query = AuthTable.select { AuthTable.email.eq(email) and AuthTable.loginKey.eq(key) }
 
             Println.yellow("loginUserWithEmailKey user id ${res.toString()}")
-            if (res.fetchSize == 0) {
+            if (res.count() == 0) {
                 Println.red("loginUser wrong email and passsword ")
 
             } else {

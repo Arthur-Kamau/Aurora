@@ -41,18 +41,18 @@ class LoginPage extends Component {
 
             console.log("response data " + decodedData.status);
             if (decodedData.status === AppResponseStatus.okResponse) {
-                localStorage.setItem("email", this.state.user_email);
+                window.localStorage.setItem("email", this.state.email);
                 window.location = "/login-key";
             } else if (decodedData.status === AppResponseStatus.emailNotExistInDatabase) {
-                localStorage.setItem("email", this.state.user_email);
+                window.localStorage.setItem("email", this.state.email);
                 window.location = "/register";
             } else {
                 this.setState({ isSendingEmail: false });
-                alert("erro response");
+                alert("error "+ decodedData.reason);
             }
 
         }).catch((erros) => {
-            alert("erro response");
+            alert("error , try again");
             this.setState({ isSendingEmail: false });
             console.log("Error " + erros);
         });

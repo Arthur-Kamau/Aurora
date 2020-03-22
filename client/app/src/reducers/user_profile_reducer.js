@@ -1,9 +1,13 @@
-import {UPDATE_USER} from '../actions/user_actions'
+import { USER_PROFILE_ACTION } from '../actions/user_profile_action'
 
-export default  function  userProfileReducer(state=[], {type, payload}) {
-    console.log("  productReducer type ="+ type + " payload "+payload);
+export default function userProfileReducer(state = [], { type, payload }) {
+    console.error("  userProfileReducer type =" + type + " payload " + payload);
+    if (payload != null)
+        for (var key of Object.keys(payload)) {
+            console.error("--> userProfileReducer " + key + " -> " + JSON.stringify(payload[key]))
+        }
     switch (type) {
-        case UPDATE_USER:
+        case USER_PROFILE_ACTION:
             return payload.user;
         default:
             return state;

@@ -85,7 +85,6 @@ class Sidebar extends Component {
                 </button>
               </div>
               <div className="col-md-9">
-
                 {this.props.userProfile.theme === 'light' ?
                   <span className="menu-title"><h3 >Aurora Tool </h3></span>
                   :

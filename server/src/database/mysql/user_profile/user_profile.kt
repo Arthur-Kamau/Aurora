@@ -86,8 +86,8 @@ class ProfileDatabaseDao {
         transaction {
             val res: Query = ProfileTable.select { ProfileTable.userId eq userId }
 
-             if (res.fetchSize == 0) {
-                 Println.red("getUserProfile at index ")
+             if (res.count() == 0) {
+                 Println.red("getUserProfile is  empty  ")
             } else {
                 for ((i, item) in res.withIndex()) {
                     Println.yellow("getUserProfile at index $i ")

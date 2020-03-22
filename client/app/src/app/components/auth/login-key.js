@@ -1,39 +1,50 @@
 import React, { Component } from 'react';
 import AppUrls from "../../../url/url";
-import AppResponseStatus from "../../../url/app_responses"; 
+import AppResponseStatus from "../../../url/app_responses";
 import axios from 'axios';
 
 class LoginKey extends Component {
     constructor(props) {
         super(props);
-        this.state = { loginKey: '', email : '' }
+        this.state = { loginKey: '', email: '' }
     }
-    
-    componentDidMount(){  
-           let email = window.localStorage.getItem('email');
-            if(email ==null || email.length == 0){
-                window.location= AppUrls.loginPage}else{}} changeLoginKey = (event) => {
+
+    componentDidMount() {
+        let email = window.localStorage.getItem('email');
+        console.error("email " + email)
+        if (email == null || email == undefined || email.length == 0) {
+            window.location = AppUrls.loginPage
+        } else {
+            this.setState({ email: email });
+        }
+    }
+    changeLoginKey = (event) => {
 
         console.log("loginKey " + event.target.value);
         this.setState({ loginKey: event.target.value })
     }
-     submitLoginKey = (e) => {
+    submitLoginKey = (e) => {
         e.preventDefault();
 
 
         axios.post(AppUrls.loginKeyPost, {
             email: this.state.email,
-            key : this.state.loginKey
+            key: this.state.loginKey
         }).then((response) => {
 
             let decodedData = response.data;
-            if (decodedData.status === AppResponseStatus.okResponse) {
-          window.location = "/generator";
-          window.localStorage.setItem("aurora_key",decodedData.data);
-            } else if (decodedData.status === AppResponseStatus.emailNotExistInDatabase) {
-               
 
-            } else { alert("erro response"); }
+            if (decodedData.status === AppResponseStatus.okResponse) {
+                window.localStorage.setItem("aurora_key", decodedData.data);
+                //todo set profile thats in decodedData.reason
+                window.location = AppUrls.generatorPage;// load  "/generator";
+
+            } else if (decodedData.status === AppResponseStatus.emailNotExistInDatabase) {
+                window.location = AppUrls.loginPersonalDetailsPage
+
+            } else {
+                alert("error " + decodedData.reason);
+            }
 
         });
     }
@@ -48,7 +59,7 @@ class LoginKey extends Component {
 
             <div className="form-group ">
                 <label>Login Key</label>
-                <input type="email" onChange={this.changeLoginKey} className="form-control" placeholder="Enter email" />
+                <input type="text" onChange={this.changeLoginKey} className="form-control" placeholder="Enter email" />
             </div>
 
 

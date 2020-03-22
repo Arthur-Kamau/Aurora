@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
 
 import userReducer from './reducers/user_reducer';
+import userProfileReducer from './reducers/user_profile_reducer';
 import productReducer from './reducers/products_reducer';
 import authtokenReducer from './reducers/auth_token_reducer';
 
@@ -27,7 +28,7 @@ import jsonOperationsReducer from './reducers/json_operattions_reducer';
 const allReducers = combineReducers({
     products: productReducer,
     user: userReducer,
-    userProfile: userReducer,
+    userProfile: userProfileReducer,
     userAccount: userReducer,
     authtoken:  authtokenReducer,
 
@@ -88,7 +89,7 @@ const store = createStore(
             userAvatar: 'https://picsum.photos/536/354',
             getNotifiedOfMinorUpdate: true,
             sendTelemetry: true,
-            theme: 'light'
+            theme: 'dark'
         }
     },
     window.devToolsExtension && window.devToolsExtension()

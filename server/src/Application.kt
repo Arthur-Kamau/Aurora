@@ -5,14 +5,18 @@ import com.araizen.www.core.generator.generate_json_data.GenerateJsonSeedData
 import com.araizen.www.core.generator.generate_model.GenerateModel
 import com.araizen.www.database.mysql.DatabaseObj
 import com.araizen.www.database.mysql.auth.AuthDatabaseDao
-import com.araizen.www.database.mysql.feedback.FeedbackDatabaseDao
 import com.araizen.www.database.mysql.user_profile.ProfileDatabaseDao
+import com.araizen.www.database.mysql.account.AccountDatabaseDao
+import com.araizen.www.database.mysql.settings.SettingsDatabaseDao
+import com.araizen.www.models.account.AccountModel
 import com.araizen.www.models.api_response.ApiResponse
 import com.araizen.www.models.auth.LoginKeyModel
 import com.araizen.www.models.auth.LoginModel
-import com.araizen.www.models.feedback.FeedbackModel
+import com.araizen.www.models.profile.ProfileModel
+import com.araizen.www.models.user_settings.UserSettingsModel
 import com.araizen.www.models.websockets.WebSocketPayloadModel
 import com.araizen.www.models.websockets.WebsSocketResponse
+import com.araizen.www.objects.plan_types.PlanTypes
 import com.araizen.www.objects.result.HttpResult
 import com.araizen.www.utils.console.Println
 import com.araizen.www.utils.random_generator.RandomGenerator
@@ -49,15 +53,16 @@ import io.ktor.routing.routing
 import io.ktor.websocket.WebSockets
 import io.ktor.websocket.webSocket
 import kotlinx.coroutines.channels.mapNotNull
+import models.profile.ProfileBasicModel
+import models.user_identity.UserIdentity
+import utils.jwt.AppJwt
 import utils.post.curl.AppCurl
 import java.io.*
 import java.io.File
 import java.net.URL
 import java.security.interfaces.RSAPublicKey
 import java.text.DateFormat
-import java.time.Duration
-import java.time.ZoneOffset
-import java.time.ZonedDateTime
+import java.time.*
 import java.time.format.DateTimeFormatter
 
 
@@ -141,13 +146,15 @@ fun Application.module(testing: Boolean = false) {
 
                 AppCurl().sendLoginEmail(post.email, key.toString())
 
-
-                AuthDatabaseDao().registerUser(
-                    emailPar = post.email,
-                    userIdPar = RandomGenerator().getAlphaNumericString(10)!!,
-                    loginKeyPar = key.toString()
-                )
-
+                if (doesUserExist) {
+                    AuthDatabaseDao().updateUserLoginKeyForTheEmail(email = post.email, loginKey = key.toString())
+                } else {
+                    AuthDatabaseDao().registerUser(
+                        emailPar = post.email,
+                        userIdPar = RandomGenerator().getAlphaNumericString(10)!!,
+                        loginKeyPar = key.toString()
+                    )
+                }
                 val apiResponse = ApiResponse(
                     status = HttpResult.okResponse,
                     data = "",
@@ -170,32 +177,53 @@ fun Application.module(testing: Boolean = false) {
         post("/login/key") {
 
             val post = call.receive<LoginKeyModel>()
-            Println.yellow("login key post data $post")
             var doesUserExistWithKey = AuthDatabaseDao().loginUserWithEmailKey(email = post.email, key = post.key)
 
             if (doesUserExistWithKey.first) {
-                Println.yellow("user exist and the user id is ${doesUserExistWithKey.second}")
 
                 var userProfile = ProfileDatabaseDao().getUserProfile(userId = doesUserExistWithKey.second)
 
 
-                if (userProfile?.name.isNullOrEmpty() || userProfile?.email.isNullOrEmpty() || userProfile?.userId.isNullOrEmpty()) {
+                var userIdentity =  UserIdentity(
+                    email = post.email,
+                    userId = doesUserExistWithKey.second
+                )
+
+var now=  LocalDateTime.now()
+                var whenToExpire = now.plusHours(24)
+                val whenToExpireMillis: Long = whenToExpire
+                    .atZone(ZoneId.systemDefault())
+                    .toInstant().toEpochMilli()
+
+                var userJwt = AppJwt().createJWT(
+                    id =doesUserExistWithKey.second,
+                    issuer = "aurora app",
+                    subject =  Klaxon().toJsonString(
+                        userIdentity
+                    ),
+                    ttlMillis = whenToExpireMillis
+                )
+
+                if (userProfile == null || userProfile.email.isNullOrEmpty() || userProfile.userId.isNullOrEmpty()) {
+
 
                     val apiResponse = ApiResponse(
                         status = HttpResult.userShouldRegister,
-                        data = "",
+                        data = userJwt!!,
                         reason = "user has no profile"
                     )
                     call.respond(Klaxon().toJsonString(apiResponse))
                 } else {
+                    Println.yellow("user profile is not null")
                     val apiResponse = ApiResponse(
                         status = HttpResult.okResponse,
-                        data = Klaxon().toJsonString(userProfile),
-                        reason = "ok"
+                        data = userJwt!!,
+                        reason = Klaxon().toJsonString(userProfile)
                     )
                     call.respond(Klaxon().toJsonString(apiResponse))
                 }
             } else {
+                Println.yellow("user profile invalid")
                 val apiResponse = ApiResponse(
                     status = HttpResult.errResponse,
                     data = "",
@@ -205,12 +233,51 @@ fun Application.module(testing: Boolean = false) {
             }
 
         }
+
+        post("/login/profile-details") {
+
+            val post = call.receive<ProfileBasicModel>()
+            Println.yellow("post data $post")
+
+            var userIdentityString = AppJwt().parseJWT(post.token)
+            if(!userIdentityString.isNullOrEmpty() ){
+
+                var  userIdentity: UserIdentity? = Klaxon().parse<UserIdentity>(userIdentityString!!)
+
+                //create ptofile
+                ProfileDatabaseDao().insertAUsersProfile(
+                    profile = ProfileModel(
+                        name = post.name,
+                        userId = userIdentity!!.userId,
+                        email = userIdentity!!.email,
+                        location = post.location,
+                        avatarUrl = "" ,
+                        phoneNumber = ""
+                    )
+                )
+                // create settings
+                SettingsDatabaseDao().insertAUserSettings(userSettings = UserSettingsModel( userId = userIdentity!!.userId  , theme="light", reportStats = true) )
+
+                //create account
+                AccountDatabaseDao().createAccount( accountModel = AccountModel( userId =userIdentity!!.userId,accountBalance = 0 , userPlan = PlanTypes.freePlan ))
+
+
+            }else{
+
+
+                val apiResponse = ApiResponse(
+                    status = HttpResult.errResponse,
+                    data = "",
+                    reason = "invalid token"
+                )
+                call.respond(Klaxon().toJsonString(apiResponse))
+            }
+
+        }
         post("/forgot_password") {
             val post = call.receive<LoginModel>()
             Println.yellow("post data $post")
 
-            val currentPath = File(".").canonicalPath
-            println("Current dir:$currentPath")
 
             var isValidEmail = ValidateInput().isValidEmail(post.email)
             if (isValidEmail) {
@@ -249,6 +316,7 @@ fun Application.module(testing: Boolean = false) {
 
 
         }
+
         post("/forgot_password_key") {
 
         }
@@ -279,13 +347,14 @@ fun Application.module(testing: Boolean = false) {
 
                                 try {
 
-                                    var stream   = part.streamProvider() // as InputStream
+                                    var stream = part.streamProvider() // as InputStream
                                     val buffer = ByteArray(stream.available())
                                     stream.read(buffer)
 
                                     val current = File(".").canonicalPath
                                     val utc = ZonedDateTime.now(ZoneOffset.UTC)
-                                    var finalDir = "$current/assets/profile/${utc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}"
+                                    var finalDir =
+                                        "$current/assets/profile/${utc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}"
 
                                     //Creating a File object
                                     val file = File(finalDir)
@@ -316,8 +385,16 @@ fun Application.module(testing: Boolean = false) {
 
                     ProfileDatabaseDao().updateUserProfile(
                         column = "avatar_url",
-                        userId = if (mapOfUserForm["user_id"].isNullOrEmpty()){"none"}else{mapOfUserForm.get("user_id")!!},
-                        newValue = if (mapOfUserForm["avatar_url"].isNullOrEmpty()){"none"}else{mapOfUserForm.get("avatar_url")!!}
+                        userId = if (mapOfUserForm["user_id"].isNullOrEmpty()) {
+                            "none"
+                        } else {
+                            mapOfUserForm.get("user_id")!!
+                        },
+                        newValue = if (mapOfUserForm["avatar_url"].isNullOrEmpty()) {
+                            "none"
+                        } else {
+                            mapOfUserForm.get("avatar_url")!!
+                        }
                     )
                 }
             }
@@ -347,13 +424,14 @@ fun Application.module(testing: Boolean = false) {
 
                                 try {
 
-                                    var stream   = part.streamProvider() // as InputStream
+                                    var stream = part.streamProvider() // as InputStream
                                     val buffer = ByteArray(stream.available())
                                     stream.read(buffer)
 
                                     val current = File(".").canonicalPath
                                     val utc = ZonedDateTime.now(ZoneOffset.UTC)
-                                    var finalDir = "$current/assets/feedback/${utc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}"
+                                    var finalDir =
+                                        "$current/assets/feedback/${utc.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}"
 
                                     //Creating a File object
                                     val file = File(finalDir)
