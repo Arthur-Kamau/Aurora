@@ -3,8 +3,11 @@ package com.araizen.www.database.mysql.account
 import com.araizen.www.models.account.AccountModel
 import com.araizen.www.objects.plan_types.PlanTypes
 import com.araizen.www.utils.console.Println
+import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.sql.BatchUpdateException
+import java.sql.SQLIntegrityConstraintViolationException
 import java.time.LocalDateTime
 
 class AccountDatabaseDao {
@@ -22,14 +25,23 @@ class AccountDatabaseDao {
     }
 
   fun  createAccount (accountModel : AccountModel){
-      transaction {
+    try{  transaction {
           AccountTable.insert {
 
               it[userId] = accountModel.userId
               it[userPlan] = accountModel.userPlan
               it[accountBalance] = accountModel.accountBalance
           }
-      }
+      } } catch (e: Exception) {
+        when ((e as? ExposedSQLException)?.cause) {
+            is SQLIntegrityConstraintViolationException ->
+                Println.red("createAccount SQL constraint violated")
+            is BatchUpdateException ->
+                Println.red("createAccount SQL constraint violated")
+            else ->
+                Println.red("createAccount Error ${e.message}")
+        }
+    }
   }
 
     fun getAllAccounts(): List<AccountModel>{

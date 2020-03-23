@@ -55,7 +55,7 @@ const store = createStore(
 
         convertToSchemaShcema: '// paste your json on the left side panel \n// The generated shema model will apear here ',
         convertToSchemaJsonString: '',
-        authtoken:  'hh',// window.localStorage.getItem('aurora_key'),
+        authtoken:   window.localStorage.getItem('aurora_key'),
         jsonOperations : {
             jsonOperationsActions: 'convert_to_json',
             jsonPayloadReceived : '',
@@ -89,7 +89,7 @@ const store = createStore(
             userAvatar: 'https://picsum.photos/536/354',
             getNotifiedOfMinorUpdate: true,
             sendTelemetry: true,
-            theme: 'dark'
+            theme: 'light'
         }
     },
     window.devToolsExtension && window.devToolsExtension()

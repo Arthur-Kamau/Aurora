@@ -4,9 +4,12 @@ import com.araizen.www.database.mysql.auth.AuthDatabaseDao
 import com.araizen.www.models.profile.ProfileModel
 import com.araizen.www.objects.database_transaction_state.DatabaseTransactionState
 import com.araizen.www.utils.console.Println
+import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.sql.BatchUpdateException
+import java.sql.SQLIntegrityConstraintViolationException
 import java.time.LocalDateTime
 
 class ProfileDatabaseDao {
@@ -17,7 +20,7 @@ class ProfileDatabaseDao {
         val userId = varchar("user_id", length = 50) // Column<String>
         val phoneNumber = varchar("phone_number", length = 50) // Column<String>
         val email = varchar("email", length = 50) // Column<String>
-        val location = varchar("location", length = 50) // Column<String>
+        val country = varchar("country", length = 50) // Column<String>
         val createdAt = varchar("created_at", length = 50).default(LocalDateTime.now().toString()) // Column<String>
         val updateAt = varchar("updated_at", length = 50).default(LocalDateTime.now().toString()) // Column<String>
         val avatarUrl = text("avatar_url") // Column<String>
@@ -33,17 +36,27 @@ class ProfileDatabaseDao {
      * @param profile the profile model containing users data
      */
     fun insertAUsersProfile(profile: ProfileModel) {
-
+try{
         transaction {
             ProfileTable.insert {
                 it[name] = profile.name
                 it[userId] = profile.userId
                 it[phoneNumber] = profile.phoneNumber
                 it[email] = profile.email
-                it[location] = profile.location
+                it[country] = profile.country
                 it[avatarUrl] = profile.avatarUrl
             }
         }
+    } catch (e: Exception) {
+        when ((e as? ExposedSQLException)?.cause) {
+            is SQLIntegrityConstraintViolationException ->
+                Println.red("insertAUsersProfile SQL constraint violated")
+            is BatchUpdateException ->
+                Println.red("insertAUsersProfile SQL constraint violated")
+            else ->
+                Println.red("insertAUsersProfile Error ${e.message}")
+        }
+    }
     }
 
     /**
@@ -63,7 +76,7 @@ class ProfileDatabaseDao {
                         name = item[ProfileTable.name],
                         email = item[ProfileTable.email],
                         userId = item[ProfileTable.userId],
-                        location = item[ProfileTable.location],
+                        country = item[ProfileTable.country],
                         avatarUrl = item[ProfileTable.avatarUrl],
                         phoneNumber = item[ProfileTable.phoneNumber]
 
@@ -95,7 +108,7 @@ class ProfileDatabaseDao {
                         name = item[ProfileTable.name],
                         email = item[ProfileTable.email],
                         userId = item[ProfileTable.userId],
-                        location = item[ProfileTable.location],
+                        country = item[ProfileTable.country],
                         avatarUrl = item[ProfileTable.avatarUrl],
                         phoneNumber = item[ProfileTable.phoneNumber]
                     )
@@ -142,7 +155,7 @@ class ProfileDatabaseDao {
            "location" ->{
                transaction {
                    ProfileTable.update({ ProfileTable.userId.eq(userId) }) {
-                       it[ProfileTable.location] = newValue
+                       it[ProfileTable.country] = newValue
                    }
                }
                Pair(DatabaseTransactionState.OK,"column $column updated")

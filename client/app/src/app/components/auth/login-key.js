@@ -35,11 +35,22 @@ class LoginKey extends Component {
             let decodedData = response.data;
 
             if (decodedData.status === AppResponseStatus.okResponse) {
-                window.localStorage.setItem("aurora_key", decodedData.data);
-                //todo set profile thats in decodedData.reason
-                window.location = AppUrls.generatorPage;// load  "/generator";
+                window.localStorage.setItem("aurora_key", decodedData.data); 
 
+                 var profile = decodedData.reason ;
+                 var settings  = decodedData.meta ;
+
+                //  alert("prof"+profile)
+                //  alert("sett"+settings)
+
+                 window.localStorage.setItem("prof",JSON.stringify(profile) );
+                 window.localStorage.setItem("sett", JSON.stringify(settings) );
+
+                 window.location = AppUrls.generatorPage;// load  "/generator";\
+                 
             } else if (decodedData.status === AppResponseStatus.emailNotExistInDatabase) {
+                
+                window.localStorage.setItem("aurora_key", decodedData.data); 
                 window.location = AppUrls.loginPersonalDetailsPage
 
             } else {
@@ -49,7 +60,8 @@ class LoginKey extends Component {
         });
     }
     render() {
-        return (<form className="container card ml-auto" style={{ maxWidth: `400px` }}>
+        return (
+        <form className="container card ml-auto mt-5" style={{ maxWidth: `400px` }}>
             <br></br>
             <br></br>
             <h4 className="text-center mb-2">Aurora App</h4>
@@ -59,7 +71,7 @@ class LoginKey extends Component {
 
             <div className="form-group ">
                 <label>Login Key</label>
-                <input type="text" onChange={this.changeLoginKey} className="form-control" placeholder="Enter email" />
+                <input type="text" onChange={this.changeLoginKey} className="form-control" placeholder="Enter Login Key" />
             </div>
 
 

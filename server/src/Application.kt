@@ -4,10 +4,10 @@ import com.araizen.www.core.generator.generate_json.GenerateJson
 import com.araizen.www.core.generator.generate_json_data.GenerateJsonSeedData
 import com.araizen.www.core.generator.generate_model.GenerateModel
 import com.araizen.www.database.mysql.DatabaseObj
-import com.araizen.www.database.mysql.auth.AuthDatabaseDao
-import com.araizen.www.database.mysql.user_profile.ProfileDatabaseDao
 import com.araizen.www.database.mysql.account.AccountDatabaseDao
+import com.araizen.www.database.mysql.auth.AuthDatabaseDao
 import com.araizen.www.database.mysql.settings.SettingsDatabaseDao
+import com.araizen.www.database.mysql.user_profile.ProfileDatabaseDao
 import com.araizen.www.models.account.AccountModel
 import com.araizen.www.models.api_response.ApiResponse
 import com.araizen.www.models.auth.LoginKeyModel
@@ -55,6 +55,7 @@ import io.ktor.websocket.webSocket
 import kotlinx.coroutines.channels.mapNotNull
 import models.profile.ProfileBasicModel
 import models.user_identity.UserIdentity
+import models.user_settings.UserSettingsUpdate
 import utils.jwt.AppJwt
 import utils.post.curl.AppCurl
 import java.io.*
@@ -184,21 +185,21 @@ fun Application.module(testing: Boolean = false) {
                 var userProfile = ProfileDatabaseDao().getUserProfile(userId = doesUserExistWithKey.second)
 
 
-                var userIdentity =  UserIdentity(
+                var userIdentity = UserIdentity(
                     email = post.email,
                     userId = doesUserExistWithKey.second
                 )
 
-var now=  LocalDateTime.now()
+                var now = LocalDateTime.now()
                 var whenToExpire = now.plusHours(24)
                 val whenToExpireMillis: Long = whenToExpire
                     .atZone(ZoneId.systemDefault())
                     .toInstant().toEpochMilli()
 
                 var userJwt = AppJwt().createJWT(
-                    id =doesUserExistWithKey.second,
+                    id = doesUserExistWithKey.second,
                     issuer = "aurora app",
-                    subject =  Klaxon().toJsonString(
+                    subject = Klaxon().toJsonString(
                         userIdentity
                     ),
                     ttlMillis = whenToExpireMillis
@@ -215,10 +216,14 @@ var now=  LocalDateTime.now()
                     call.respond(Klaxon().toJsonString(apiResponse))
                 } else {
                     Println.yellow("user profile is not null")
+
+                    //get user seettings
+                    var settingsFoUser = SettingsDatabaseDao().getUserSettings(userIdPar = doesUserExistWithKey.second)
                     val apiResponse = ApiResponse(
                         status = HttpResult.okResponse,
                         data = userJwt!!,
-                        reason = Klaxon().toJsonString(userProfile)
+                        reason = Klaxon().toJsonString(userProfile) ,
+                    meta = Klaxon().toJsonString(settingsFoUser)
                     )
                     call.respond(Klaxon().toJsonString(apiResponse))
                 }
@@ -240,29 +245,50 @@ var now=  LocalDateTime.now()
             Println.yellow("post data $post")
 
             var userIdentityString = AppJwt().parseJWT(post.token)
-            if(!userIdentityString.isNullOrEmpty() ){
+            if (!userIdentityString.isNullOrEmpty()) {
 
-                var  userIdentity: UserIdentity? = Klaxon().parse<UserIdentity>(userIdentityString!!)
+                var userIdentity: UserIdentity? = Klaxon().parse<UserIdentity>(userIdentityString)
 
-                //create ptofile
+
+                val prof = ProfileModel(
+                    name = post.name,
+                    userId = userIdentity!!.userId,
+                    email = userIdentity.email,
+                    country = post.country,
+                    avatarUrl = "",
+                    phoneNumber = ""
+                )
+                val set = UserSettingsModel(
+                    userId = userIdentity.userId,
+                    theme = "light",
+                    reportStats = true,
+                    notifySmallVersions = true
+                )
+
+                val acc = AccountModel(
+                    userId = userIdentity.userId,
+                    accountBalance = 0,
+                    userPlan = PlanTypes.freePlan.toString()
+                )
+
+                //create profile
                 ProfileDatabaseDao().insertAUsersProfile(
-                    profile = ProfileModel(
-                        name = post.name,
-                        userId = userIdentity!!.userId,
-                        email = userIdentity!!.email,
-                        location = post.location,
-                        avatarUrl = "" ,
-                        phoneNumber = ""
-                    )
+                    profile = prof
                 )
                 // create settings
-                SettingsDatabaseDao().insertAUserSettings(userSettings = UserSettingsModel( userId = userIdentity!!.userId  , theme="light", reportStats = true) )
+                SettingsDatabaseDao().insertAUserSettings(userSettings = set)
 
                 //create account
-                AccountDatabaseDao().createAccount( accountModel = AccountModel( userId =userIdentity!!.userId,accountBalance = 0 , userPlan = PlanTypes.freePlan ))
+                AccountDatabaseDao().createAccount(accountModel = acc)
 
+                val apiResponse = ApiResponse(
+                    status = HttpResult.okResponse,
+                    data = Klaxon().toJsonString(prof),
+                    reason = Klaxon().toJsonString(set)
+                )
+                call.respond(Klaxon().toJsonString(apiResponse))
 
-            }else{
+            } else {
 
 
                 val apiResponse = ApiResponse(
@@ -326,6 +352,50 @@ var now=  LocalDateTime.now()
 
         post("/update_settings") {
 
+            val post = call.receive<UserSettingsUpdate>()
+            Println.yellow("post data $post")
+
+            var userIdentityString = AppJwt().parseJWT(post.token)
+            if (!userIdentityString.isNullOrEmpty()) {
+
+                var userIdentity: UserIdentity? = Klaxon().parse<UserIdentity>(userIdentityString)
+
+                when (post.column) {
+                    "theme" -> {
+                        SettingsDatabaseDao().updateUserTheme(userId = userIdentity!!.userId, theme = post.value)
+                    }
+                    "report_stats" -> {
+                        val reportStats = post.value == "true"
+                        SettingsDatabaseDao().updateUserReportStats(
+                            userId = userIdentity!!.userId,
+                            reportStat = reportStats
+                        )
+                    }
+                    "notify_small_versions" -> {
+                        val notifySmallRelease = post.value == "true"
+                        SettingsDatabaseDao().updateMinorVersions(
+                            userId = userIdentity!!.userId,
+                            minorVersionNotify = notifySmallRelease
+                        )
+                    }
+                }
+
+                val apiResponse = ApiResponse(
+                    status = HttpResult.okResponse,
+                    data = "",
+                    reason = ""
+                )
+                call.respond(Klaxon().toJsonString(apiResponse))
+            } else {
+
+
+                val apiResponse = ApiResponse(
+                    status = HttpResult.errResponse,
+                    data = "",
+                    reason = "invalid token"
+                )
+                call.respond(Klaxon().toJsonString(apiResponse))
+            }
         }
         post("/update_profile_image") {
             val multipart = call.receiveMultipart()

@@ -13,24 +13,56 @@ class LoginFillPersonalDetails extends Component {
         this.state = {
             email: '',
             name: '',
-            location: ''
+            country: '',
+            token: '',
+            country_list: [
+                'kenya',
+                'Uganda',
+                'Rwanda',
+                'Tanzania',
+                'Burundi']
         }
     }
 
     componentDidMount() {
-var mail = window.localStorage.getItem("email");
-this.setState({email: mail});
+        var mail = window.localStorage.getItem("email");
+        console.error("email " + mail)
+        this.setState({ email: mail });
+        var keys = window.localStorage.getItem("aurora_key");
+        this.setState({ token: keys });
+        // var list = require('../../../data/country_list');
+        // this.setState({     country_list: [     ]  });
+
+
 
     }
 
-
-    submitUserData = (e)=>{ 
+    changeName = (event) => {
+        event.preventDefault();
+        console.log("name " + event.target.value);
+        this.setState({ name: event.target.value })
+    }
+    changeLocationSelect = (event) => {
+        event.preventDefault();
+        console.log("location " + event.target.value);
+        this.setState({ country: event.target.value })
+    }
+    changeLocationText = (event) => {
+        event.preventDefault();
+        console.log("location " + event.target.value);
+        this.setState({ country: event.target.value })
+    }
+    submitUserData = (e) => {
 
         e.preventDefault();
 
         this.setState({ isSendingEmail: true });
         axios.post(AppUrls.loginPostProfileDetails, {
-            email: this.state.email
+            email: this.state.email,
+            token: this.state.token,
+            country: this.state.country,
+            name: this.state.name,
+
         }).then((response) => {
 
 
@@ -38,8 +70,13 @@ this.setState({email: mail});
 
             console.log("response data " + decodedData.status);
             if (decodedData.status === AppResponseStatus.okResponse) {
-               
-                window.location = AppUrls.generatorPage;// load  "/generator";
+
+                // alert("prof -> "+decodedData.data);
+                // alert("reason -> "+decodedData.reason);
+                //store settings  and profile
+                window.localStorage.setItem("prof", JSON.stringify(decodedData.data));
+                window.localStorage.setItem("sett", JSON.stringify(decodedData.reason));
+                 window.location = AppUrls.generatorPage;// load  "/generator";
             } else {
                 alert("erro response");
             }
@@ -65,12 +102,25 @@ this.setState({email: mail});
 
                 <div className="form-group">
                     <label>Name</label>
-                    <input type="text" className="form-control" placeholder="First name" />
+                    <input type="text" onChange={this.changeName} className="form-control" placeholder="First name" />
                 </div>
 
                 <div className="form-group">
                     <label>Country</label>
-                    <input type="text" className="form-control" placeholder="Last name" />
+                    {this.state.country_list != null ?
+                        <select onChange={this.changeLocationSelect} className="form-control ">
+
+
+                            <option selected disabled hidden>Choose ...</option>
+                            {this.state.country_list.map(
+                                (item, index) => (<option key={index}>{item}</option>))
+                            }  </select>
+
+
+                        :
+                        <input type="text" onChange={this.changeLocationText} className="form-control" placeholder="Last name" />
+                    }
+
                 </div>
 
                 <div className="form-group">
@@ -79,9 +129,19 @@ this.setState({email: mail});
                 </div>
 
                 <div className="align-self-center" >
-                    <button onClick={this.submitUserData} type="submit" className="btn btn-primary btn-block" style={{ width: `200px` }}>Load App</button>
+
+                    {
+                        this.state.name == null || this.state.name.length == 0 ?
+                            <p>Fill in name</p>
+                            :
+                            this.state.country == null || this.state.country.length == 0 ?
+                                <p>Select a country</p>
+                                :
+                                <button onClick={this.submitUserData} type="submit" className="btn btn-primary btn-block" style={{ width: `200px` }}>Load App</button>
+
+                    }
                 </div>
-<br></br>
+                <br></br>
             </form>
         </div>);
     }

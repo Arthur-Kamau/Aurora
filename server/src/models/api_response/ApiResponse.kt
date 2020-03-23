@@ -8,5 +8,7 @@ data class ApiResponse(
     @Json(name = "data")
     val data: String,
     @Json(name = "reason")
-    val reason: String
+    val reason: String,
+    @Json(name = "meta")
+    val meta: String = ""
 )

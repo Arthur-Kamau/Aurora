@@ -17,8 +17,8 @@ class ProfileBasicModel(
     val name: String,
     @Json(name = "email")
     val email: String,
-    @Json(name = "location")
-    val location: String,
+    @Json(name = "country")
+    val country: String,
     @Json(name = "token")
 val token: String
 )

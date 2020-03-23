@@ -9,6 +9,8 @@ class AppVersion extends Component {
       startDate: new Date(),
       version: "",
       isElectronApp: false,
+      notifyMinorVersions : true,
+      reportStats : true
     };
   }
 
@@ -24,6 +26,15 @@ class AppVersion extends Component {
     };
   }
 
+  reportAnonymousStats= (e) => {
+    // alert( "reportStats state "+e.target.checked);
+    this.setState({reportStats: e.target.checked});
+  }
+
+  notifyAboutMinorVersions = (e)=>{
+    // alert( "state "+e.target.checked);
+    this.setState({notifyMinorVersions: e.target.checked});
+  }
 
   componentDidMount() {
 
@@ -70,6 +81,8 @@ class AppVersion extends Component {
   render() {
     return (
       <div>
+        <h1>k {window.localStorage.getItem('prof')}</h1>
+        <h1>k {window.localStorage.getItem('sett')}</h1>
         <ul className="list-group list-group-flush">
           <li className="list-group-item">Araizen Aurora App</li>
           <li className="list-group-item">Build : Prelease </li>
@@ -77,7 +90,7 @@ class AppVersion extends Component {
           <li className="list-group-item">
             <div className="form-check">
               <label className="form-check-label">
-                <input type="checkbox" defaultChecked className="form-check-input" />
+                <input type="checkbox" value={this.state.notifyMinorVersions} className="form-check-input"  onChange={this.notifyAboutMinorVersions}/>
                 <i className="input-helper"></i>
                 Do not Get notified of minor versions
             </label>
@@ -87,7 +100,7 @@ class AppVersion extends Component {
           <li className="list-group-item">
             <div className="form-check">
               <label className="form-check-label">
-                <input type="checkbox" defaultChecked className="form-check-input" />
+                <input type="checkbox" value={this.state.reportStats}   className="form-check-input"  onChange={this.reportAnonymousStats}/>
                 <i className="input-helper"></i>
                 Report anonymous statistics
             </label>
