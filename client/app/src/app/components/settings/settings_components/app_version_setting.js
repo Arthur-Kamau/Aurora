@@ -11,11 +11,11 @@ class AppVersion extends Component {
       version: "",
       isElectronApp: false,
 
-      notify: "true",
-      stats: "true"
 
-      // notifyMinorVersions : false,
-      // reportStats : true
+      sett: {
+        notify: "false",
+        stats: "false"
+      }
     };
   }
 
@@ -25,17 +25,15 @@ class AppVersion extends Component {
     try {
       var sett = JSON.parse(window.localStorage.getItem('sett'));
 
-      this.setState({ notify: sett.notify });
-      this.setState({ stats: sett.stats });
+      this.setState({ sett: sett });
 
-      console.error("sett " + sett);
+      console.error("sett " + JSON.parse(window.localStorage.getItem('sett')).notify);
     } catch (objError) {
-      this.setState({ notify: this.props.userSettings.notify });
-      this.setState({ stats: this.props.userSettings.stats });
+
+      this.setState({ sett: this.props.userSettings });
+      console.error("error " + objError + " \n sett " + this.state.sett);
+      window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
     }
-
-
-
 
     var userAgent = navigator.userAgent.toLowerCase();
     if (userAgent.indexOf(' electron/') > -1) {
@@ -93,14 +91,48 @@ class AppVersion extends Component {
 
   reportAnonymousStats = (e) => {
 
+    // this.setState({ : e.target.checked });
 
-    this.setState({ stats: e.target.checked });
-    alert("ths" + e.target.checked + "val" + this.state.stats)
+    //    var set = this.state.sett;
+    //    set.theme = "light"
+    //    this.setState({ sett: set });
 
+
+    // // for (var key of Object.keys(window.localStorage.getItem('sett'))) {
+    // //     console.log("--> "+key + " -> " + window.localStorage.getItem('sett')[key])
+    // // }
+
+
+
+    //local storage
+    var set = this.state.sett;
+    set.stats = e.target.checked;
+    this.setState({ sett: set });
+    window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
+    console.log("app ver  " + window.localStorage.getItem('sett'))
+
+
+    //redux
+    let settings = this.props.userSettings;
+    settings.stats = e.target.checked;
+    this.props.onChangeAppTheme(settings);
   }
 
   notifyAboutMinorVersions = (e) => {
-    this.setState({ notify: e.target.checked });
+
+    //local storage
+    var set = this.state.sett;
+    set.notify = e.target.checked
+    this.setState({ sett: set });
+
+    window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
+    console.log("app ver  " + window.localStorage.getItem('sett'))
+
+
+    //redux
+    let settings = this.props.userSettings;
+    settings.stats = e.target.checked;
+    this.props.onChangeAppTheme(settings);
   }
 
 
@@ -120,7 +152,7 @@ class AppVersion extends Component {
           <li className="list-group-item">
             <div className="form-check">
               <label className="form-check-label">
-                <input type="checkbox" checked={this.state.notify == "true" ? true : false} className="form-check-input" onChange={this.notifyAboutMinorVersions} />
+                <input type="checkbox" checked={this.state.sett.notify == "true" ? true : false} className="form-check-input" onChange={this.notifyAboutMinorVersions} />
                 <i className="input-helper"></i>
                 Do not Get notified of minor versions
               </label>
@@ -130,7 +162,7 @@ class AppVersion extends Component {
           <li className="list-group-item">
             <div className="form-check">
               <label className="form-check-label">
-                <input type="checkbox" checked={this.state.stats == "true" ? true : false} className="form-check-input" onChange={this.reportAnonymousStats} />
+                <input type="checkbox" checked={this.state.sett.stats == "true" ? true : false} className="form-check-input" onChange={this.reportAnonymousStats} />
                 <i className="input-helper"></i>
                 Report anonymous statistics
             </label>

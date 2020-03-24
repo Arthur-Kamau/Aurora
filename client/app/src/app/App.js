@@ -63,11 +63,10 @@ class App extends Component {
     if (this.props.userSettings != null && this.props.userSettings.theme != null && this.props.userSettings.theme === 'light') {
       console.error("light"+this.props.userSettings)
       require('./App_light.scss');
-      this.setState({})
+      // this.setState({})
     } else {
       console.error("darkr"+this.props.userSettings)
       require('./App_dark.scss');
-      this.setState({})
     }
 
     window.location.pathname == "/create_tool" ? this.setState({ appBarStyle: "no style" })

@@ -40,11 +40,14 @@ class LoginKey extends Component {
                  var profile = decodedData.reason ;
                  var settings  = decodedData.meta ;
 
-                //  alert("prof"+profile)
-                //  alert("sett"+settings)
+                //  alert("prof    "+profile)
+                //  alert("sett    "+settings)
 
-                 window.localStorage.setItem("prof",profile);
-                 window.localStorage.setItem("sett", settings );
+                 window.localStorage.setItem("prof",JSON.stringify(profile));
+                 window.localStorage.setItem("sett", JSON.stringify(settings) );
+
+                 console.log(" Setings "+window.localStorage.getItem("sett"));
+                 console.log(" Profile "+window.localStorage.getItem("prof"));
 
                  window.location = AppUrls.generatorPage;// load  "/generator";\
                  

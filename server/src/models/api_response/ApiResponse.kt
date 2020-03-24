@@ -6,9 +6,9 @@ data class ApiResponse(
     @Json(name = "status")
     val status: Int,
     @Json(name = "data")
-    val data: String,
+    val data: Any,
     @Json(name = "reason")
-    val reason: String,
+    val reason: Any,
     @Json(name = "meta")
-    val meta: String = ""
+    val meta: Any = ""
 )

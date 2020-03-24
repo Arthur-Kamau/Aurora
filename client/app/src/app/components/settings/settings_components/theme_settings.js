@@ -33,9 +33,9 @@ class ThemeSettingsPage extends Component {
         window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
 console.log("p e "+window.localStorage.getItem('sett'))
 
-for (var key of Object.keys(window.localStorage.getItem('sett'))) {
-    console.log("--> "+key + " -> " + window.localStorage.getItem('sett')[key])
-}
+// for (var key of Object.keys(window.localStorage.getItem('sett'))) {
+//     console.log("--> "+key + " -> " + window.localStorage.getItem('sett')[key])
+// }
         //redux
         let profile = this.props.userSettings;
         profile.theme = "light";

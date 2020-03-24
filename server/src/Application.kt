@@ -213,7 +213,8 @@ fun Application.module(testing: Boolean = false) {
                         data = userJwt!!,
                         reason = "user has no profile"
                     )
-                    call.respond(Klaxon().toJsonString(apiResponse))
+//                    call.respond(Klaxon().toJsonString(apiResponse))
+                    call.respond(apiResponse)
                 } else {
                     Println.yellow("user profile is not null")
 
@@ -222,8 +223,8 @@ fun Application.module(testing: Boolean = false) {
                     val apiResponse = ApiResponse(
                         status = HttpResult.okResponse,
                         data = userJwt!!,
-                        reason = Klaxon().toJsonString(userProfile) ,
-                    meta = Klaxon().toJsonString(settingsFoUser)
+                        reason = userProfile,
+                        meta = settingsFoUser!!
                     )
                     call.respond(Klaxon().toJsonString(apiResponse))
                 }
