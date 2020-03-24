@@ -43,8 +43,8 @@ class LoginKey extends Component {
                 //  alert("prof"+profile)
                 //  alert("sett"+settings)
 
-                 window.localStorage.setItem("prof",JSON.stringify(profile) );
-                 window.localStorage.setItem("sett", JSON.stringify(settings) );
+                 window.localStorage.setItem("prof",profile);
+                 window.localStorage.setItem("sett", settings );
 
                  window.location = AppUrls.generatorPage;// load  "/generator";\
                  

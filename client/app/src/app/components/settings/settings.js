@@ -11,14 +11,21 @@ import { connect } from 'react-redux';
 export class SettingsPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { pageActive: "" }
+    this.state = { 
+      pageActive: "",
+      prof : "",
+      sett : ""
+     }
   }
+
+ 
 
   openSharePage = (event) => {
     this.setState({
       pageActive: "share"
     });
   }
+
   openDocumentationTab = (event) => {
     this.setState({
       pageActive: "docementation"
@@ -62,7 +69,12 @@ export class SettingsPage extends Component {
     this.setState({
       pageActive: "theme"
     });
-  }
+  } 
+
+
+
+
+
   render() {
 
     return (
@@ -117,13 +129,13 @@ export class SettingsPage extends Component {
           <div className="card">
             <div className="card-body">
               {this.state.pageActive === "account" ?
-                <AccountSettings></AccountSettings>
+                <AccountSettings   ></AccountSettings>
                 : this.state.pageActive === "version" ?
-                  <AppVersion></AppVersion> :
+                  <AppVersion  ></AppVersion> :
                   this.state.pageActive == "billing" ?
                     <UserBilling></UserBilling>
                     : this.state.pageActive == "theme" ?
-                      <ThemeSettingsPage></ThemeSettingsPage>
+                      <ThemeSettingsPage ></ThemeSettingsPage>
                       : this.state.pageActive == "feedback" ?
                         <FeedBackPage></FeedBackPage>
                         : this.state.pageActive == "docementation" ?

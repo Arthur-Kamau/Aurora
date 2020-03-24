@@ -8,39 +8,72 @@ class ThemeSettingsPage extends Component {
 
     constructor(props) {
         super(props);
-        // this.props.userProfile = {
-        //     theme: 'light'
-        // }
+        this.state = {
+            sett: ''
+        };
     }
+    componentDidMount() {
+       try{
+        var sett = JSON.parse(window.localStorage.getItem('sett'));
 
+        this.setState({ sett: sett });
+
+        console.error("sett " + sett);
+       } catch (objError) { 
+        this.setState({ sett: this.props.userSettings });
+    }
+    }
     changeThemeToLight = (newTheme) => {
-        // this.setState({ theme: "light" });
-        let profile =  this.props.userProfile;
-        profile.theme = "light" ;
+
+
+        //local storage
+        var set = this.state.sett;
+        set.theme = "light"
+        this.setState({ sett: set });
+        window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
+console.log("p e "+window.localStorage.getItem('sett'))
+
+for (var key of Object.keys(window.localStorage.getItem('sett'))) {
+    console.log("--> "+key + " -> " + window.localStorage.getItem('sett')[key])
+}
+        //redux
+        let profile = this.props.userSettings;
+        profile.theme = "light";
         this.props.onChangeAppTheme(profile)
+
+        window.location.reload(true);
     }
 
     changeThemeToDark = (newTheme) => {
-        // this.setState({ theme: "dark" });
-        let profile =  this.props.userProfile;
-        profile.theme = "dark" ;
-        this.props.onChangeAppTheme(profile)
+
+
+
+        //local storage
+        var set = this.state.sett;
+        set.theme = "dark"
+        this.setState({ sett: set });
+        window.localStorage.setItem("sett", this.state.sett);
+        //redux
+        let profile = this.props.userSettings;
+        profile.theme = "dark";
+        this.props.onChangeAppTheme(profile);
+
+        window.location.reload(true);
     }
 
     render() {
 
-        const selectedStyle = { backgroundColor: 'lightgrey', borderColor: `blue`,borderStyle:`solid`, padding: `5px` }
-        const normalStyle = { backgroundColor: 'white',  padding: `5px` }
-        const lightTheme=  this.props.userProfile.theme == 'light' ? selectedStyle : normalStyle ;
-        const darkTheme=  this.props.userProfile.theme == 'dark' ? selectedStyle : normalStyle ;
+        const selectedStyle = { backgroundColor: 'lightgrey', borderColor: `blue`, borderStyle: `solid`, padding: `5px` }
+        const normalStyle = { backgroundColor: 'white', padding: `5px` }
+        const lightTheme = this.state.sett.theme == 'light' ? selectedStyle : normalStyle;
+        const darkTheme = this.state.sett.theme == 'dark' ? selectedStyle : normalStyle;
 
         return (<div>
 
             <h1>Theme settings  </h1>
-        <h5>{JSON.stringify(this.props.userProfile)}</h5>
             <div className="d-flex align-items-center text-center error-page  pt-5 pb-4 h-100">
                 <div className="row flex-grow">
-                    <div className="col-lg-6 col-md-8 col-sm-12 col-xs-12 mx-auto "  style={lightTheme} onClick={this.changeThemeToLight}>
+                    <div className="col-lg-6 col-md-8 col-sm-12 col-xs-12 mx-auto " style={lightTheme} onClick={this.changeThemeToLight}>
 
                         <div  >
                             <div ><img className=" img-thumbnail " src={require("../../../../assets/images/theme/light_theme.png")} alt="light theme" />
@@ -49,11 +82,11 @@ class ThemeSettingsPage extends Component {
                     </div>
                 </div>
                 <div className="row flex-grow">
-                        <div className="col-lg-6 col-md-8 col-sm-12 col-xs-12"  style={darkTheme} onClick={this.changeThemeToDark}>
+                    <div className="col-lg-6 col-md-8 col-sm-12 col-xs-12" style={darkTheme} onClick={this.changeThemeToDark}>
 
-                            <img className=" img-thumbnail"  src={require("../../../../assets/images/theme/dark_theme.png")} alt="dark theme" />
-                            <h4>Dark theme</h4>
-                        </div>
+                        <img className=" img-thumbnail" src={require("../../../../assets/images/theme/dark_theme.png")} alt="dark theme" />
+                        <h4>Dark theme</h4>
+                    </div>
                 </div>
             </div>
         </div>
@@ -64,14 +97,13 @@ class ThemeSettingsPage extends Component {
 // export default ;
 
 const mapStateToProps = state => ({
-    userProfile: state.userProfile,
-  });
-  
-  const mapActionsToProps = {
-    onChangeAppTheme :  userProfileAction,
-  };
-  
-  
-  export default connect(mapStateToProps, mapActionsToProps)(ThemeSettingsPage);
-  
-  
+    userSettings: state.userSettings,
+});
+
+const mapActionsToProps = {
+    onChangeAppTheme: userProfileAction,
+};
+
+
+export default connect(mapStateToProps, mapActionsToProps)(ThemeSettingsPage);
+

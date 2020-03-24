@@ -66,8 +66,15 @@ class Sidebar extends Component {
 
   }
   render() {
+
+      var appStyle =  {
+        backgroundColor :  this.props.userSettings.theme === 'light' ?  `#fff` : `#242424`
+      } //    
     return (
-      <nav className="sidebar sidebar-offcanvas" id="sidebar">
+      <nav className="sidebar sidebar-offcanvas" id="sidebar" 
+      style= {appStyle}
+
+>
         <div className="text-center sidebar-brand-wrapper d-flex align-items-center">
           {/* <a className="sidebar-brand brand-logo" href="index.html"><img src={require("../../assets/images/logo.svg")} alt="logo" /></a>
           <a className="sidebar-brand brand-logo-mini pt-3" href="index.html"><img src={require("../../assets/images/logo-mini.svg" )} alt="logo" /></a> */}
@@ -77,7 +84,7 @@ class Sidebar extends Component {
               <div className="col-md-2" onClick={() => document.body.classList.toggle('sidebar-icon-only')}>
                 <button className="navbar-toggler navbar-toggler  " type="button" > 
                  {/* onClick={() => document.body.classList.toggle('sidebar-icon-only')}> */}
-                  {this.props.userProfile.theme === 'light' ?
+                  {this.props.userSettings.theme === 'light' ?
                     <i className="mdi mdi-menu"></i>
                     :
                     <i className="mdi mdi-menu" style={{ color: `white` }}></i>
@@ -85,7 +92,7 @@ class Sidebar extends Component {
                 </button>
               </div>
               <div className="col-md-9">
-                {this.props.userProfile.theme === 'light' ?
+                {this.props.userSettings.theme === 'light' ?
                   <span className="menu-title"><h3 >Aurora Tool </h3></span>
                   :
                   <span className="menu-title"><h3 style={{ color: `white` }} >Aurora Tool </h3></span>
@@ -95,7 +102,7 @@ class Sidebar extends Component {
           </div>
 
           <button className="navbar-toggler navbar-toggler sidebar-brand  brand-logo-mini pt-3" type="button" onClick={() => document.body.classList.toggle('sidebar-icon-only')}>
-            {this.props.userProfile.theme === 'light' ?
+            {this.props.userSettings.theme === 'light' ?
               <i className="mdi mdi-menu"></i>
               :
               <i className="mdi mdi-menu" style={{ color: `white` }}></i>
@@ -176,6 +183,7 @@ class Sidebar extends Component {
 
 const mapStateToProps = state => ({
   userProfile: state.userProfile,
+  userSettings: state.userSettings,
 });
 
 const mapActionsToProps = {

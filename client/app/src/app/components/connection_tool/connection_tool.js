@@ -78,7 +78,7 @@ class ConnectionTool extends Component {
             <div className="card ml-4 mt-2" style={{ height: `88vh` }}>
                 {this.props.connectionTool == null || this.props.connectionTool.connectionMethod.length == 0 ?
 
-                    <div className="card-body"  style={this.props.userProfile.theme == "light" ?  {} : {backgroundColor:`#494949` , color :`white`}}>
+                    <div className="card-body"  style={this.props.userSettings.theme == "light" ?  {} : {backgroundColor:`#494949` , color :`white`}}>
                         <h4>No Connection configured</h4>
                     </div>
 
@@ -267,6 +267,7 @@ class ConnectionTool extends Component {
 const mapStateToProps = state => ({
     connectionTool: state.connectionTool,
     userProfile: state.userProfile,
+    userSettings: state.userSettings,
 });
 
 

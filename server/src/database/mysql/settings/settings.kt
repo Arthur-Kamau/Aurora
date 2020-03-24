@@ -45,8 +45,8 @@ class SettingsDatabaseDao {
                     userSettings = UserSettingsModel(
                         userId = userIdPar,
                         theme = item[SettingsTable.theme],
-                        reportStats = item[SettingsTable.reportStats],
-                        notifySmallVersions = item[SettingsTable.notifySmallVersion]
+                        reportStats = item[SettingsTable.reportStats].toString(),
+                        notifySmallVersions = item[SettingsTable.notifySmallVersion].toString()
                     )
                 }
             }
@@ -65,8 +65,8 @@ class SettingsDatabaseDao {
                 SettingsTable.insert {
                     it[userId] = userSettings.userId
                     it[theme] = userSettings.theme
-                    it[reportStats] = userSettings.reportStats
-                    it[notifySmallVersion] = userSettings.notifySmallVersions
+                    it[reportStats] = userSettings.reportStats == "true"
+                    it[notifySmallVersion] = userSettings.notifySmallVersions== "true"
                 }
 
             }

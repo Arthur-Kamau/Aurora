@@ -261,8 +261,8 @@ fun Application.module(testing: Boolean = false) {
                 val set = UserSettingsModel(
                     userId = userIdentity.userId,
                     theme = "light",
-                    reportStats = true,
-                    notifySmallVersions = true
+                    reportStats = true.toString(),
+                    notifySmallVersions = true.toString()
                 )
 
                 val acc = AccountModel(

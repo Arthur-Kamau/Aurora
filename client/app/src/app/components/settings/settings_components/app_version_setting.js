@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import style from "./app_version_settings.css";
-
+import { connect } from 'react-redux';
+import userProfileAction from '../../../../actions/user_profile_action';
 
 class AppVersion extends Component {
   constructor(props) {
@@ -9,34 +10,32 @@ class AppVersion extends Component {
       startDate: new Date(),
       version: "",
       isElectronApp: false,
-      notifyMinorVersions : true,
-      reportStats : true
+
+      notify: "true",
+      stats: "true"
+
+      // notifyMinorVersions : false,
+      // reportStats : true
     };
-  }
-
-  closeNotification = event => {
-
-  };
-  restartApp = event => {
-    var userAgent = navigator.userAgent.toLowerCase();
-    if (userAgent.indexOf(' electron/') > -1) {
-      // Electron-specific code
-      const { ipcRenderer } = window.require("electron");
-      ipcRenderer.send("restart_app_install_update");
-    };
-  }
-
-  reportAnonymousStats= (e) => {
-    // alert( "reportStats state "+e.target.checked);
-    this.setState({reportStats: e.target.checked});
-  }
-
-  notifyAboutMinorVersions = (e)=>{
-    // alert( "state "+e.target.checked);
-    this.setState({notifyMinorVersions: e.target.checked});
   }
 
   componentDidMount() {
+
+    //please dont touch
+    try {
+      var sett = JSON.parse(window.localStorage.getItem('sett'));
+
+      this.setState({ notify: sett.notify });
+      this.setState({ stats: sett.stats });
+
+      console.error("sett " + sett);
+    } catch (objError) {
+      this.setState({ notify: this.props.userSettings.notify });
+      this.setState({ stats: this.props.userSettings.stats });
+    }
+
+
+
 
     var userAgent = navigator.userAgent.toLowerCase();
     if (userAgent.indexOf(' electron/') > -1) {
@@ -76,31 +75,62 @@ class AppVersion extends Component {
     } else {
       this.setState({ isElectronApp: false });
     }
+  }
+
+
+
+  closeNotification = event => {
+
+  };
+  restartApp = event => {
+    var userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.indexOf(' electron/') > -1) {
+      // Electron-specific code
+      const { ipcRenderer } = window.require("electron");
+      ipcRenderer.send("restart_app_install_update");
+    };
+  }
+
+  reportAnonymousStats = (e) => {
+
+
+    this.setState({ stats: e.target.checked });
+    alert("ths" + e.target.checked + "val" + this.state.stats)
 
   }
+
+  notifyAboutMinorVersions = (e) => {
+    this.setState({ notify: e.target.checked });
+  }
+
+
   render() {
     return (
       <div>
-        <h1>k {window.localStorage.getItem('prof')}</h1>
-        <h1>k {window.localStorage.getItem('sett')}</h1>
         <ul className="list-group list-group-flush">
           <li className="list-group-item">Araizen Aurora App</li>
           <li className="list-group-item">Build : Prelease </li>
-          <li className="list-group-item"> You app is {this.state.version}</li>
+          <li className="list-group-item">
+            {this.state.isElectronApp == true ?
+              <div>You app is {this.state.version}</div>
+              :
+              <div>Aurora Web Version</div>
+            }
+          </li>
           <li className="list-group-item">
             <div className="form-check">
               <label className="form-check-label">
-                <input type="checkbox" value={this.state.notifyMinorVersions} className="form-check-input"  onChange={this.notifyAboutMinorVersions}/>
+                <input type="checkbox" checked={this.state.notify == "true" ? true : false} className="form-check-input" onChange={this.notifyAboutMinorVersions} />
                 <i className="input-helper"></i>
                 Do not Get notified of minor versions
-            </label>
+              </label>
             </div>
           </li>
 
           <li className="list-group-item">
             <div className="form-check">
               <label className="form-check-label">
-                <input type="checkbox" value={this.state.reportStats}   className="form-check-input"  onChange={this.reportAnonymousStats}/>
+                <input type="checkbox" checked={this.state.stats == "true" ? true : false} className="form-check-input" onChange={this.reportAnonymousStats} />
                 <i className="input-helper"></i>
                 Report anonymous statistics
             </label>
@@ -135,4 +165,16 @@ class AppVersion extends Component {
   }
 }
 
-export default AppVersion;
+
+
+const mapStateToProps = state => ({
+  userSettings: state.userSettings,
+});
+
+const mapActionsToProps = {
+  onChangeAppTheme: userProfileAction,
+};
+
+
+export default connect(mapStateToProps, mapActionsToProps)(AppVersion);
+

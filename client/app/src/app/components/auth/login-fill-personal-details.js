@@ -74,8 +74,8 @@ class LoginFillPersonalDetails extends Component {
                 // alert("prof -> "+decodedData.data);
                 // alert("reason -> "+decodedData.reason);
                 //store settings  and profile
-                window.localStorage.setItem("prof", JSON.stringify(decodedData.data));
-                window.localStorage.setItem("sett", JSON.stringify(decodedData.reason));
+                window.localStorage.setItem("prof",decodedData.data);
+                window.localStorage.setItem("sett", decodedData.reason);
                  window.location = AppUrls.generatorPage;// load  "/generator";
             } else {
                 alert("erro response");

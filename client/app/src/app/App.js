@@ -60,10 +60,14 @@ class App extends Component {
     this.setState({ location: window.location.pathname });
 
     //load css
-    if (this.props.userProfile.theme === 'light') {
+    if (this.props.userSettings != null && this.props.userSettings.theme != null && this.props.userSettings.theme === 'light') {
+      console.error("light"+this.props.userSettings)
       require('./App_light.scss');
+      this.setState({})
     } else {
+      console.error("darkr"+this.props.userSettings)
       require('./App_dark.scss');
+      this.setState({})
     }
 
     window.location.pathname == "/create_tool" ? this.setState({ appBarStyle: "no style" })
@@ -145,7 +149,7 @@ class App extends Component {
     //   marginTop: `5px`,
     //   backgroundColor : `red`
     // }
-    // if (this.props.userProfile.theme == "light") {
+    // if (this.props.userSettings.theme == "light") {
 
 
     // } else {
@@ -163,10 +167,10 @@ class App extends Component {
 
             <div className="main-panel"
 
-            style={this.props.userProfile.theme == "light" ?  {} : {backgroundColor:`#494949`}}
+            style={this.props.userSettings.theme == "light" ?  {} : {backgroundColor:`#494949`}}
             >
               <div className="content-wrapper"
-                style={this.props.userProfile.theme == "light" ?  {} : {backgroundColor:`#494949`}}
+                style={this.props.userSettings.theme == "light" ?  {} : {backgroundColor:`#494949`}}
               >
 
                 <AppRoutes websocket={this.state.ws} />
@@ -224,6 +228,7 @@ const mapStateToProps = state => ({
   convertToSchemaShcema: state.convertToSchemaShcema,
   convertToSchemaString: state.convertToSchemaString,
   userProfile: state.userProfile,
+  userSettings: state.userSettings,
 });
 
 const mapActionsToProps = {

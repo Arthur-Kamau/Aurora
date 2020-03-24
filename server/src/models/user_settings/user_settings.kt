@@ -11,11 +11,11 @@ data class UserSettingsModel(
     @Json(name = "theme")
     val theme: String,
 
-    @Json(name = "report_stats")
-    val reportStats: Boolean,
+    @Json(name = "stats")
+    val reportStats: String,
 
-    @Json(name = "notify_small_versions")
-val notifySmallVersions: Boolean
+    @Json(name = "notify")
+val notifySmallVersions: String
 
 
 )

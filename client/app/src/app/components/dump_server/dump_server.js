@@ -108,13 +108,13 @@ class DumpServerPage extends Component {
           </div>
 
           <div className="col-md-8 grid-margin stretch-card"
-          style={this.props.userProfile.theme == "light" ?
+          style={this.props.userSettings.theme == "light" ?
           {} :
           this.state.serverRunning == false ?
             { color: `black` } :
             {  color: `white` }
         } >
-            {/* style={this.props.userProfile.theme == "light" ? {} :
+            {/* style={this.props.userSettings.theme == "light" ? {} :
                this.state.serverRunning == false ? { color: `black` } :
                  { backgroundColor: `#494949`, color: `white` }
              }> */}
@@ -178,6 +178,7 @@ const mapStateToProps = state => ({
   dumpServer: state.dumpServer,
   dumpServerLogs: state.dumpServer,
   userProfile: state.userProfile,
+  userSettings: state.userSettings,
 });
 
 const mapActionsToProps = {
