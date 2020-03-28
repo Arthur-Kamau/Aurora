@@ -16,46 +16,31 @@ class GeneratorNavBar extends Component {
   }
 
   convertToJsonCheckBox_ConvertToJson_label = (e) => { 
-    e.preventDefault();
-    // alert("convertToJsonCheckBox__ConvertToJson value label convert_to_json");
-    this.props.onjsonOperationsActions('convert_to_json');
     this.setState({action : 'convert_to_json'});
+    this.props.onjsonOperationsActions('convert_to_json');
   }
 
   convertToJsonCheckBox_GeneratSchema_label = (e) => { 
-    e.preventDefault();
-    // alert("convertToJsonCheckBox__ConvertToJson value label generate_schema");
-    this.props.onjsonOperationsActions('generate_schema');
     this.setState({action : 'generate_schema'});
+    this.props.onjsonOperationsActions('generate_schema');
   }
+  convertToJsonCheckBox_ConvertToJsonFromXml_label = (e) => { 
+    this.setState({action : 'convert_to_json_from_xml'});
+    this.props.onjsonOperationsActions('convert_to_json_from_xml');
 
+  } 
+  convertToJsonCheckBox_ConvertToXmlFromJson_label = (e) => { 
+    this.setState({action : 'convert_to_xml_from_json'});
+    this.props.onjsonOperationsActions('convert_to_xml_from_json');
+ 
+  } 
   convertToJsonCheckBox_GenerateData_label = (e) => { 
-    e.preventDefault();
-    // alert("convertToJsonCheckBox__ConvertToJson value label generate_data");
     this.props.onjsonOperationsActions('generate_data');
     this.setState({action : 'generate_data'});
   }
 
 
-  convertToJsonCheckBox__ConvertToJson = (e) => {
-    e.preventDefault();
-    // alert("convertToJsonCheckBox__ConvertToJson value " + e.target.value);
-    this.props.onjsonOperationsActions(e.target.value);
-    this.setState({action : 'convert_to_json'});
-  }
-
-  convertToJsonCheckBox_GeneratSchema = (e) => {
-    e.preventDefault();
-    // alert(" convertToJsonCheckBox_GeneratSchema value " + e.target.value);
-    this.props.onjsonOperationsActions(e.target.value);
-    this.setState({action : 'generate_schema'});
-  }
-  convertToJsonCheckBox_GenerateData = (e) => {
-    e.preventDefault();
-    // alert("convertToJsonCheckBox_GenerateData value " + e.target.value);
-    this.props.onjsonOperationsActions(e.target.value);
-    this.setState({action : 'generate_data'});
-  }
+  
 
   render() {
     return (
@@ -70,8 +55,14 @@ class GeneratorNavBar extends Component {
 
             " (generate schema)" :  this.props.jsonOperations.jsonOperationsActions == 'generate_data' ? 
 
+            " (generate data)" :  this.props.jsonOperations.jsonOperationsActions == 'convert_to_json_from_xml' ? 
 
-            " (generate data)" : '.'
+
+            " (convert xml to json)" : this.props.jsonOperations.jsonOperationsActions == 'convert_to_xml_from_json' ?   
+            
+            "(convert json to xml)":
+            
+            'option unknown'
 
             
             }
@@ -86,54 +77,85 @@ class GeneratorNavBar extends Component {
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="preview-list navbar-dropdown pb-3">
 
-                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={evt => evt.preventDefault()}>
+                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2"  onClick={this.convertToJsonCheckBox_ConvertToJson_label} >
 
                     <div className="form-check">
-                      <label className="form-check-label" onClick={this.convertToJsonCheckBox_ConvertToJson_label} for="defaultCheck1">
-                        convert to json
+                      <label className="form-check-label"  >
+                        convert schema to json
 
                         {
-                        this.props.jsonOperations.jsonOperationsActions == "convert_to_json" ?
-                        <span class="badge badge-secondary">active</span> : <span></span>
+                        this.state.action   == "convert_to_json" ?
+                        <span className="badge badge-secondary">active</span> : <span></span>
                         }
                       </label>
                     </div>
                   </Dropdown.Item>
 
 
-                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={evt => evt.preventDefault()}>
+                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={this.convertToJsonCheckBox_GeneratSchema_label}  >
 
                     <div className="form-check">
 
 
 
-                      <label  className="form-check-label" onClick={this.convertToJsonCheckBox_GeneratSchema_label} for="defaultCheck2">
-                        generate schema
+                      <label  className="form-check-label"  >
+                        generate schema from json
 
                         {
-                        this.props.jsonOperations.jsonOperationsActions == "generate_schema" ?
-                        <span class="badge badge-secondary">active</span> : <span></span>
+                        this.state.action   == "generate_schema" ?
+                        <span className="badge badge-secondary">active</span> : <span></span>
                             }
                       </label>
                     </div>
                   </Dropdown.Item>
 
-                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={evt => evt.preventDefault()}>
+                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={this.convertToJsonCheckBox_GenerateData_label}   >
 
                     <div className="form-check">
 
-                      <label className="form-check-label" onClick={this.convertToJsonCheckBox_GenerateData_label} for="defaultCheck3">
-                        generate data
+                      <label className="form-check-label" >
+                        generate random data from json or schema
                         {
-                        this.props.jsonOperations.jsonOperationsActions == "generate_data" ?
-                        <span class="badge badge-secondary">active</span> : <span></span>
+                        this.state.action   == "generate_data" ?
+                        <span className="badge badge-secondary">active</span> : <span></span>
                         }
                       </label>
                     </div>
                   </Dropdown.Item>
 
 
+                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2"  onClick={this.convertToJsonCheckBox_ConvertToXmlFromJson_label}  >
+
+                  <div className="form-check">
+
+                    <label className="form-check-label"  >
+                      convert json to xml
+                      {
+                      this.state.action   == "convert_to_xml_from_json" ?
+                      <span className="badge badge-secondary">active</span> : <span></span>
+                      }
+                    </label>
+                  </div>
+                  </Dropdown.Item>
+
+
+
+                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={this.convertToJsonCheckBox_ConvertToJsonFromXml_label} >
+
+                  <div className="form-check">
+
+                    <label className="form-check-label"  >
+                      convert xml to json
+                      {
+                      this.state.action   == "convert_to_json_from_xml" ?
+                      <span className="badge badge-secondary">active</span> : <span></span>
+                      }
+                    </label>
+                  </div>
+                  </Dropdown.Item>
+
                 </Dropdown.Menu>
+
               </Dropdown>
             </li>
 

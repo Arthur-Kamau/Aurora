@@ -114,20 +114,14 @@ class Sidebar extends Component {
 
 
 
-          {/* <li className={this.isPathActive('/project') ? 'nav-item active' : 'nav-item'}>
-            <Link className="nav-link" to="/project">
-              <i className="mdi mdi-television menu-icon"></i>
-              <span className="menu-title">Application</span>
-            </Link>
-          </li> */}
 
-          <li className={this.isPathActive('/generator') ? 'nav-item active' : 'nav-item'}>
+           <li className={this.isPathActive('/generator') ? 'nav-item active' : 'nav-item'}>
             <Link className="nav-link" to="/generator">
               <i className="mdi   mdi-shuffle menu-icon"></i>
               <span className="menu-title">Json Operations</span>
             </Link>
           </li>
-
+{/*
           <li className={this.isPathActive('/connection_tool') ? 'nav-item active' : 'nav-item'}>
             <Link className="nav-link" to="/connection_tool">
               <i className="mdi  mdi-swap-horizontal fa-lg menu-icon"></i>
@@ -141,7 +135,7 @@ class Sidebar extends Component {
               <i className="mdi   mdi-server menu-icon"></i>
               <span className="menu-title">Dump  server</span>
             </Link>
-          </li>
+          </li> */}
 
           <li className={this.isPathActive('/settings') ? 'nav-item active' : 'nav-item'}>
             <Link className="nav-link" to="/settings">
