@@ -28,7 +28,7 @@ export class SettingsPage extends Component {
 
   openDocumentationTab = (event) => {
     this.setState({
-      pageActive: "docementation"
+      pageActive: "documentation "
     });
     var userAgent = navigator.userAgent.toLowerCase();
     if (userAgent.indexOf(' electron/') > -1) {
@@ -81,7 +81,7 @@ export class SettingsPage extends Component {
 
       <div className="row">
 
-        <div className="col-lg-3 col-md-4 grid-margin stretch-card ml-4">
+        <div className="col-lg-3 col-md-5  col-sm-5 col-xs-6 grid-margin stretch-card ml-4">
           <div className="card">
             <div className="card-body">
               <h2 className="card-title">App Settings  </h2>
@@ -93,7 +93,7 @@ export class SettingsPage extends Component {
                   <div className="template-demo">
 
                     <div className="btn btn-light btn-lg" onClick={this.changePageToFeedBackPage}>  <i className="mdi  mdi-email icon-sm text-secondary"></i> &emsp;Feedback &emsp;   </div>
-                    <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Docoumentation &emsp;   </div>
+                    <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Docs &emsp;   </div>
                     <div className="btn btn-light btn-lg" onClick={this.openLoginPage}>  <i className="mdi  mdi-lock icon-sm text-dark"></i> &emsp;Login &emsp;   </div>
 
                   </div>
@@ -115,7 +115,7 @@ export class SettingsPage extends Component {
 
                     }
 
-                    <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Documentation &emsp;   </div>
+                    <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Docs &emsp;   </div>
                   </div>
 
 
@@ -138,7 +138,7 @@ export class SettingsPage extends Component {
                       <ThemeSettingsPage ></ThemeSettingsPage>
                       : this.state.pageActive == "feedback" ?
                         <FeedBackPage></FeedBackPage>
-                        : this.state.pageActive == "docementation" ?
+                        : this.state.pageActive == "documentation " ?
                           <DocumentationPageInSettings ></DocumentationPageInSettings>
                           : this.state.pageActive == "share" ?
                             <SharePageComponent ></SharePageComponent>

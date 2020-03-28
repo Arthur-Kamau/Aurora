@@ -11,7 +11,6 @@ import EditorNavBar from './components/navbar/editor_navbar';
 
 import Sidebar from './components/sidebar/Sidebar';
 import Footer from './components/footer/Footer';
-import EditorHomePage from './components/editor/editor_home';
 import AppGenerator from './components/generator/generator';
 
 import GeneratorNavBar from './components/navbar/generator_navbar';

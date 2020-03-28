@@ -8,7 +8,15 @@ class GeneratorNavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      action : 'convert_to_json'
+      action : 'convert_to_json',
+      targetLanguage: '',
+
+      schemaLanguage:[
+        "dart",
+        "c#",
+        "kotlin",
+        "java"
+      ]
       }
 }
   toggleOffcanvas() {
@@ -40,7 +48,14 @@ class GeneratorNavBar extends Component {
   }
 
 
-  
+  languageSchemaOptions = (event) =>{
+    event.preventDefault();
+  }
+  schemaLanguageChange = (event) =>{
+    event.preventDefault();
+    console.log("language " + event.target.value);
+    this.setState({targetLanguage : event.target.value})
+  }
 
   render() {
     return (
@@ -68,6 +83,33 @@ class GeneratorNavBar extends Component {
             }
             </h4>
           <ul className="navbar-nav navbar-nav-right ml-lg-auto">
+          
+{ 
+                        this.state.action   == "generate_schema" ?
+            <li className="nav-item  nav-profile border-0"> 
+            <Dropdown alignRight>
+                            <Dropdown.Toggle className="nav-link count-indicator bg-transparent">
+                              {/* <img className="img-xs rounded-circle" src={require("../../../assets/images/faces/face8.jpg")} alt="Profile" /> */}
+                              <i className="mdi   mdi-settings menu-icon"></i>
+
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu className="preview-list navbar-dropdown pb-3">
+
+                              <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={this.languageSchemaOptions}  >
+                       
+                              <div className="form-group">
+                              <label>Target language</label>
+                              <select onChange={this.schemaLanguageChange}>
+                                  {this.state.schemaLanguage.map((item, index)=>{ 
+                                   return  <option key={index}  >  {item}</option>
+                                    })}
+                              </select>
+                              </div>
+            </Dropdown.Item> 
+            </Dropdown.Menu>
+            </Dropdown>
+              </li> : <div></div>
+  }
             <li className="nav-item  nav-profile border-0">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator bg-transparent">
