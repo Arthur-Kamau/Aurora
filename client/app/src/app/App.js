@@ -17,11 +17,6 @@ import GeneratorNavBar from './components/navbar/generator_navbar';
 import JsonGeneratorNavBar from './components/navbar/json_generator_navbar';
 import SchemaGeneratorNavBar from './components/navbar/schema_generetor_navbar';
 
-import updateSchemaDataForGenerateSchema from '../actions/generate_schema_shema_data_action';
-import updateRawJsonForGenerateSchema from '../actions/generate_schema_raw_json_string_action';
-
-import updateSchemaForGenerateJson from '../actions/generate_json_schema_action';
-import updateJsonForGenerateJson from '../actions/generate_json_raw_string_action';
 
 import { connect } from 'react-redux'
 
@@ -85,15 +80,6 @@ class App extends Component {
       // this.setState({ dataFromServer: evt.data })
       console.log("message from websocket" + evt.data)
 
-      var obj = JSON.parse(evt.data)
-
-      if (obj.action === 'generate_schema') {
-
-        this.props.onupdateSchemaDataForGenerateSchema(evt.data);
-      } else {
-
-        this.props.onupdateJsonForGenerateJson(evt.data);
-      }
 
 
     }
@@ -230,10 +216,6 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-  onupdateSchemaDataForGenerateSchema: updateSchemaDataForGenerateSchema,
-  onupdateRawJsonForGenerateSchema: updateRawJsonForGenerateSchema,
-  onupdateSchemaForGenerateJson: updateSchemaForGenerateJson,
-  onupdateJsonForGenerateJson: updateJsonForGenerateJson,
 
 }
 export default connect(mapStateToProps, mapActionsToProps)(withRouter(App));

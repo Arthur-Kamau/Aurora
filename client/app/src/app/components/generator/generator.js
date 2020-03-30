@@ -9,12 +9,7 @@ import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/theme-gruvbox";
 import { connect } from 'react-redux';
-import updateSchemaDataForGenerateSchema from '../../../actions/generate_schema_shema_data_action';
-import updateRawJsonForGenerateSchema from '../../../actions/generate_schema_raw_json_string_action';
-
-import updateSchemaForGenerateJson from '../../../actions/generate_json_schema_action';
-import updateJsonForGenerateJson from '../../../actions/generate_json_raw_string_action';
-import { appInputXmlToJson, appInputJsonToXml } from "./generator_tool";
+import { appInputXmlToJson, appInputJsonToXml , generateSchemaFromJson, generateJsonFromSchema} from "./generator_tool";
 import MonacoEditor from '@uiw/react-monacoeditor';
 
 class AppGenerator extends Component {
@@ -24,7 +19,14 @@ class AppGenerator extends Component {
             ws: '',
             dataFromServer: '',
             xmlToJson: '',
-            jsonToXml: ''
+            jsonToXml: '',
+            jsonToSchema: '',
+            schemaToJson:'',
+            width:0,
+            height:0,
+
+            targetLanguage:'',
+            targetLanguageNameSpaceOrClassName:'',
         }
 
 
@@ -38,6 +40,16 @@ class AppGenerator extends Component {
 
         var jsonToXml = new appInputJsonToXml();
         this.setState({ jsonToXml: jsonToXml });
+
+
+        var jsonToSchema = new generateSchemaFromJson();
+        this.setState({ jsonToSchema: jsonToSchema });
+        
+
+        var schemaToJson = new generateJsonFromSchema();
+        this.setState({ schemaToJson: schemaToJson });
+        
+
 
         // initialize websocket connection
         this.state.ws = new WebSocket("ws://0.0.0.0:8080/generator")
@@ -60,16 +72,18 @@ class AppGenerator extends Component {
 
         }
 
-
-
+this.setState({width: window.innerWidth, height: window.innerHeight});
+        window.addEventListener('resize', this.updateDimensions);
 
     }
-
+    updateDimensions = () => {
+        this.setState({ width: window.innerWidth, height: window.innerHeight });
+      };
     onChange = (newValue, e) => {
         console.log('onChange', newValue, e);
         this.handleEditorChange(newValue)
       }
-    handleEditorChange = (value) => {
+    handleEditorChange = async (value) => {
 
         // var input = value;
         // var data = JSON.stringify({ payload: input, action: this.state.activeItem });
@@ -83,22 +97,51 @@ class AppGenerator extends Component {
         // }
 
 
-        if (this.props.jsonOperations.jsonOperationsActions == 'convert_to_json') {
+        if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_json') {
             alert(" (convert to json)")
-        } else if (this.props.jsonOperations.jsonOperationsActions == 'generate_schema') {
 
-            alert(" (generate schema)");
-        } else if (this.props.jsonOperations.jsonOperationsActions == 'generate_data') {
+        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema') {
+
+            var classNameOrNameSpace = this.state.targetLanguageNameSpaceOrClassName == null ||  this.state.targetLanguageNameSpaceOrClassName.length == 0 ?
+            "Aurorora" : this.state.targetLanguageNameSpaceOrClassName
+       
+            // this.state.targetLanguage
+            // var res = this.quicktypeJSON("dart",
+            // classNameOrNameSpace,
+            // value)
+
+
+            // console.error("response "+JSON.stringify(res) )
+            // console.log("response " + typeof res)
+            // let jsonString = '{"age":22}';
+ 
+            const { lines: res } = await this.quicktypeJSON(
+              "dart",
+              classNameOrNameSpace,
+              value
+            );
+            console.log("==>"+res.join("\n"));
+            if (   res !== null && typeof res === 'object') {   
+
+                const disp =  res .join("\n");
+                this.setState({ dataFromServer: disp});  
+                this.setState({ dataFromServer: disp});  
+            } else if (res == null) {
+                this.setState({ dataFromServer: "Encoutered an error" })
+            } else {
+                this.setState({ dataFromServer: JSON.stringify(res) })
+            }
+        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_data') {
 
             alert(" (generate data)")
-        } else if (this.props.jsonOperations.jsonOperationsActions == 'convert_to_json_from_xml') {
+
+        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_json_from_xml') {
 
             var res = this.state.xmlToJson.convert(value)
             console.log("response " + typeof res)
             if (Array.isArray(res)) {
-                alert("array")
-            } else if (typeof res === 'object' && res !== null) {
-                console.log("response  obj" + JSON.stringify(res))
+                this.setState({dataFromServer : res});
+            } else if (   res !== null && typeof res === 'object') {
                 this.setState({ dataFromServer: JSON.stringify(res) })
             } else if (res == null) {
                 this.setState({ dataFromServer: "Encoutered an error" })
@@ -106,7 +149,7 @@ class AppGenerator extends Component {
                 this.setState({ dataFromServer: JSON.stringify(res) })
             }
 
-        } else if (this.props.jsonOperations.jsonOperationsActions == 'convert_to_xml_from_json') {
+        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json') {
 
 
             var res = this.state.jsonToXml.convert(value)
@@ -130,7 +173,34 @@ class AppGenerator extends Component {
     };
 
 
+        quicktypeJSON  = async (targetLanguage, typeName, jsonString) =>  { 
 
+        const {
+          quicktype,
+          InputData,
+          jsonInputForTargetLanguage,
+          JSONSchemaInput,
+          JSONSchemaStore
+        } = require("quicktype-core");
+        
+        const jsonInput = jsonInputForTargetLanguage(targetLanguage);
+    
+        // We could add multiple samples for the same desired
+        // type, or many sources for other types. Here we're
+        // just making one type from one piece of sample JSON.
+        await jsonInput.addSource({
+          name: typeName,
+          samples: [jsonString]
+        });
+      
+        const inputData = new InputData();
+        inputData.addInput(jsonInput);
+      
+        return await quicktype({
+          inputData,
+          lang: targetLanguage
+        });
+    }
 
 
     render() {
@@ -173,8 +243,10 @@ class AppGenerator extends Component {
 
                                 <MonacoEditor
                                     language="javascript"
-                                    width="100%"
-                                    height="92vh"
+                                    // width="100%"
+                                    // height="92vh"
+                                    width={this.state.width}
+                                    height={this.state.height}
                                     onChange={this.onChange}
                                     options={{
                                         theme: 'vs-dark',
@@ -219,7 +291,7 @@ class AppGenerator extends Component {
 
 const mapStateToProps = state => ({
     account: state.userAccount,
-    jsonOperations: state.jsonOperations,
+    appGeneratorOperations: state.appGeneratorOperations,
     convertJsonJsonString: state.convertJsonJsonString,
     convertToJsonRawShcema: state.convertToJsonRawShcema,
 
@@ -229,10 +301,6 @@ const mapStateToProps = state => ({
 
 
 const mapActionsToProps = {
-    onupdateSchemaDataForGenerateSchema: updateSchemaDataForGenerateSchema,
-    onupdateRawJsonForGenerateSchema: updateRawJsonForGenerateSchema,
-    onupdateSchemaForGenerateJson: updateSchemaForGenerateJson,
-    onupdateJsonForGenerateJson: updateJsonForGenerateJson,
 
 };
 

@@ -44,7 +44,7 @@ class ConnectionTool extends Component {
     openModal = () => {
         this.setState({ modalIsOpen: true });
     }
-    closeModal() {
+    closeModal =() => {
         this.setState({ modalIsOpen: false });
     }
     afterOpenModal = () => {

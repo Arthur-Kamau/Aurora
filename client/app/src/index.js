@@ -12,17 +12,11 @@ import userSettingsReducer from './reducers/user_settings_reducer';
 import productReducer from './reducers/products_reducer';
 import authtokenReducer from './reducers/auth_token_reducer';
 
-import generateJsonJsonStringReducer from './reducers/generate_json_raw_string_reducer';
-import generateJsonSchemaReducer from './reducers/generate_json_schema_reducer';
-
-import generateSchemaJsonStringReducer from './reducers/generate_schema_raw_json_string_reducer';
-import generateSchemaSchemaReducer from './reducers/generate_schema_shema_data_reducer';
-
 import changeDumpServerStatusReducer from './reducers/dump_server_reducer';
 import changeDumpServerLogsReducer from './reducers/dump_server_log_reducer';
 
 import connectionToolReducer from './reducers/connection_tool_reducer';
-import jsonOperationsReducer from './reducers/json_operattions_reducer';
+import appGeneratorOperationsReducer from './reducers/json_operattions_reducer';
 
 
 
@@ -34,17 +28,12 @@ const allReducers = combineReducers({
     userAccount: userReducer,
     authtoken: authtokenReducer,
 
-    convertJsonJsonString: generateJsonJsonStringReducer,
-    convertToJsonRawShcema: generateJsonSchemaReducer,
-
-    convertToSchemaShcema: generateSchemaSchemaReducer,
-    convertToSchemaJsonString: generateSchemaJsonStringReducer,
 
     dumpServer: changeDumpServerStatusReducer,
     dumpServerLogs: changeDumpServerLogsReducer,
 
     connectionTool: connectionToolReducer,
-    jsonOperations: jsonOperationsReducer
+    appGeneratorOperations: appGeneratorOperationsReducer
 })
 
 let setVar;
@@ -81,14 +70,9 @@ const store = createStore(
     {
         products: [{ "name": "galaxy" }],
         user: 'kamau',
-        convertJsonJsonString: '// paste your schema on the left side panel \n// The generated json string will apear here ',
-        convertToJsonRawShcema: '',
-
-        convertToSchemaShcema: '// paste your json on the left side panel \n// The generated shema model will apear here ',
-        convertToSchemaJsonString: '',
         authtoken: window.localStorage.getItem('aurora_key'),
-        jsonOperations: {
-            jsonOperationsActions: 'convert_to_json',
+        appGeneratorOperations: {
+            appGeneratorOperationsActions: 'convert_to_json',
             jsonPayloadReceived: '',
             jsonInput: ''
         },

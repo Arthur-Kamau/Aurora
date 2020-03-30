@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { jsonOperationsActions, } from '../../../actions/json_operations_actions';
+import { appGeneratorOperationsActions, } from '../../../actions/json_operations_actions';
 
 class GeneratorNavBar extends Component {
 
@@ -10,7 +10,8 @@ class GeneratorNavBar extends Component {
     this.state = {
       action : 'convert_to_json',
       targetLanguage: '',
-
+      generatorPopUpShowState : false,
+      generatorSchemaPopUpShowState : false,
       schemaLanguage:[
         "dart",
         "c#",
@@ -25,37 +26,109 @@ class GeneratorNavBar extends Component {
 
   convertToJsonCheckBox_ConvertToJson_label = (e) => { 
     this.setState({action : 'convert_to_json'});
-    this.props.onjsonOperationsActions('convert_to_json');
+    this.props.onappGeneratorOperationsActions('convert_to_json');
   }
 
   convertToJsonCheckBox_GeneratSchema_label = (e) => { 
     this.setState({action : 'generate_schema'});
-    this.props.onjsonOperationsActions('generate_schema');
+    this.props.onappGeneratorOperationsActions('generate_schema');
   }
   convertToJsonCheckBox_ConvertToJsonFromXml_label = (e) => { 
     this.setState({action : 'convert_to_json_from_xml'});
-    this.props.onjsonOperationsActions('convert_to_json_from_xml');
+    this.props.onappGeneratorOperationsActions('convert_to_json_from_xml');
 
   } 
   convertToJsonCheckBox_ConvertToXmlFromJson_label = (e) => { 
     this.setState({action : 'convert_to_xml_from_json'});
-    this.props.onjsonOperationsActions('convert_to_xml_from_json');
+    this.props.onappGeneratorOperationsActions('convert_to_xml_from_json');
  
   } 
   convertToJsonCheckBox_GenerateData_label = (e) => { 
-    this.props.onjsonOperationsActions('generate_data');
+    this.props.onappGeneratorOperationsActions('generate_data');
     this.setState({action : 'generate_data'});
   }
+  
 
+  generatorSchemaPopUpShow = (event) =>{ 
 
+    event.preventDefault(); 
+    if(this.state.generatorPopUpShowState){
+      this.setState({ generatorPopUpShowState : false});
+    }
+    this.setState({ generatorSchemaPopUpShowState : !this.state.generatorSchemaPopUpShowState });
+
+  }
+  generatorPopUpShow = (event) =>{ 
+
+    event.preventDefault(); 
+    
+    if(this.state.generatorSchemaPopUpShowState){
+      this.setState({ generatorSchemaPopUpShowState : false});
+    }
+    
+    this.setState({ generatorPopUpShowState : !this.state.generatorPopUpShowState });
+
+  }
   languageSchemaOptions = (event) =>{
-    event.preventDefault();
+    event.preventDefault(); 
+    event.stopPropagation();
   }
   schemaLanguageChange = (event) =>{
     event.preventDefault();
+   
     console.log("language " + event.target.value);
     this.setState({targetLanguage : event.target.value})
   }
+
+
+// sample code
+  quicktypeJSON = async  (targetLanguage, typeName, jsonString) => { 
+
+    const {
+      quicktype,
+      InputData,
+      jsonInputForTargetLanguage,
+      JSONSchemaInput,
+      JSONSchemaStore
+    } = require("quicktype-core");
+    
+    const jsonInput = jsonInputForTargetLanguage(targetLanguage);
+
+    // We could add multiple samples for the same desired
+    // type, or many sources for other types. Here we're
+    // just making one type from one piece of sample JSON.
+    await jsonInput.addSource({
+      name: typeName,
+      samples: [jsonString]
+    });
+  
+    const inputData = new InputData();
+    inputData.addInput(jsonInput);
+  
+    return await quicktype({
+      inputData,
+      lang: targetLanguage
+    });
+}
+
+
+ 
+
+
+runCode = async (e) =>{
+  
+  let jsonString = '{"age":22}';
+ 
+    const { lines: swiftPerson } = await this.quicktypeJSON(
+      "dart",
+      "Person",
+      jsonString
+    );
+    console.log(swiftPerson.join("\n"));
+  
+    
+  
+}
 
   render() {
     return (
@@ -64,16 +137,16 @@ class GeneratorNavBar extends Component {
           <h4>
             Json Operations 
             
-            {this.props.jsonOperations.jsonOperationsActions == 'convert_to_json' ?  
+            {this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_json' ?  
             
-            " (convert to json)" : this.props.jsonOperations.jsonOperationsActions == 'generate_schema' ?
+            " (convert to json)" : this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema' ?
 
-            " (generate schema)" :  this.props.jsonOperations.jsonOperationsActions == 'generate_data' ? 
+            " (generate schema)" :  this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_data' ? 
 
-            " (generate data)" :  this.props.jsonOperations.jsonOperationsActions == 'convert_to_json_from_xml' ? 
+            " (generate data)" :  this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_json_from_xml' ? 
 
 
-            " (convert xml to json)" : this.props.jsonOperations.jsonOperationsActions == 'convert_to_xml_from_json' ?   
+            " (convert xml to json)" : this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json' ?   
             
             "(convert json to xml)":
             
@@ -87,34 +160,34 @@ class GeneratorNavBar extends Component {
 { 
                         this.state.action   == "generate_schema" ?
             <li className="nav-item  nav-profile border-0"> 
-            <Dropdown alignRight>
-                            <Dropdown.Toggle className="nav-link count-indicator bg-transparent">
-                              {/* <img className="img-xs rounded-circle" src={require("../../../assets/images/faces/face8.jpg")} alt="Profile" /> */}
-                              <i className="mdi   mdi-settings menu-icon"></i>
-
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu className="preview-list navbar-dropdown pb-3">
-
-                              <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={this.languageSchemaOptions}  >
-                       
-                              <div className="form-group">
-                              <label>Target language</label>
-                              <select onChange={this.schemaLanguageChange}>
+            <Dropdown alignRight={true} show={this.state.generatorSchemaPopUpShowState} >
+              <Dropdown.Toggle className="nav-link count-indicator bg-transparent" onClick={this.generatorSchemaPopUpShow}>
+                <i className="mdi   mdi-settings menu-icon"></i>
+              </Dropdown.Toggle>
+             
+             <Dropdown.Menu className="preview-list navbar-dropdown pb-3">
+                <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={this.languageSchemaOptions}  >
+                  <div className="form-group">
+                      <label>Target language</label>
+                              <select className="form-control" onChange={this.schemaLanguageChange}>
                                   {this.state.schemaLanguage.map((item, index)=>{ 
                                    return  <option key={index}  >  {item}</option>
                                     })}
                               </select>
-                              </div>
-            </Dropdown.Item> 
-            </Dropdown.Menu>
+                  </div>
+
+                  
+                </Dropdown.Item> 
+              </Dropdown.Menu>
+        
             </Dropdown>
               </li> : <div></div>
-  }
-            <li className="nav-item  nav-profile border-0">
-              <Dropdown alignRight>
-                <Dropdown.Toggle className="nav-link count-indicator bg-transparent">
+  } 
+            <li className="nav-item  nav-profile border-0" >  
+              <Dropdown alignRight={false} show={this.state.generatorPopUpShowState} >
+                <Dropdown.Toggle className="nav-link count-indicator bg-transparent" onClick={this.generatorPopUpShow} >
                   {/* <img className="img-xs rounded-circle" src={require("../../../assets/images/faces/face8.jpg")} alt="Profile" /> */}
-                  <i className="mdi   mdi-compass-outline menu-icon"></i>
+                      <i className="mdi   mdi-compass-outline menu-icon" ></i>
 
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="preview-list navbar-dropdown pb-3">
@@ -201,7 +274,7 @@ class GeneratorNavBar extends Component {
               </Dropdown>
             </li>
 
-            <button type="submit" className="btn btn-success mb-2  btn-sm ">
+            <button type="submit" className="btn btn-success mb-2  btn-sm " onClick={this.runCode}>
               run
             </button>
           </ul>
@@ -212,11 +285,11 @@ class GeneratorNavBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  jsonOperations: state.jsonOperations
+  appGeneratorOperations: state.appGeneratorOperations
 });
 
 const mapActionsToProps = {
-  onjsonOperationsActions: jsonOperationsActions,
+  onappGeneratorOperationsActions: appGeneratorOperationsActions,
 };
 
 
