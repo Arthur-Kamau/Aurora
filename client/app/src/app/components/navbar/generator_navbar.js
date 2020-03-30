@@ -196,7 +196,7 @@ runCode = async (e) =>{
 
                     <div className="form-check">
                       <label className="form-check-label"  >
-                        convert schema to json
+                      Generate json from  schema
 
                         {
                         this.state.action   == "convert_to_json" ?
@@ -214,7 +214,7 @@ runCode = async (e) =>{
 
 
                       <label  className="form-check-label"  >
-                        generate schema from json
+                        Generate schema from json
 
                         {
                         this.state.action   == "generate_schema" ?
@@ -229,7 +229,7 @@ runCode = async (e) =>{
                     <div className="form-check">
 
                       <label className="form-check-label" >
-                        generate random data from json or schema
+                        Generate random data from  schema
                         {
                         this.state.action   == "generate_data" ?
                         <span className="badge badge-secondary">active</span> : <span></span>
@@ -244,7 +244,7 @@ runCode = async (e) =>{
                   <div className="form-check">
 
                     <label className="form-check-label"  >
-                      convert json to xml
+                      Convert json to xml
                       {
                       this.state.action   == "convert_to_xml_from_json" ?
                       <span className="badge badge-secondary">active</span> : <span></span>
@@ -260,7 +260,7 @@ runCode = async (e) =>{
                   <div className="form-check">
 
                     <label className="form-check-label"  >
-                      convert xml to json
+                      Convert xml to json
                       {
                       this.state.action   == "convert_to_json_from_xml" ?
                       <span className="badge badge-secondary">active</span> : <span></span>
