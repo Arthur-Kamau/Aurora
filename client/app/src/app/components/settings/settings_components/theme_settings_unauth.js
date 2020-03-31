@@ -3,44 +3,40 @@ import { connect } from 'react-redux';
 import userProfileAction from '../../../../actions/user_profile_action';
 const theme = { borderStyle: `solid`, borderColor: `red`, backgroundColor: `lightgrey`, padding: `10px` };
 
-class ThemeSettingsPage extends Component {
+class ThemeSettingsPageAppUnAuth extends Component {
 
 
     constructor(props) {
         super(props);
         this.state = {
-            sett: ''
+            theme: ''
         };
     }
     componentDidMount() {
-       try{
-        var sett = JSON.parse(window.localStorage.getItem('sett'));
+        try {
+            var theme = window.localStorage.getItem('theme_unauth');
 
-        this.setState({ sett: sett });
+            this.setState({ theme: theme });
 
-        console.error("sett " + sett);
-       } catch (objError) { 
-        this.setState({ sett: this.props.userSettings });
-    }
+            console.error("theme " + theme);
+        } catch (objError) {
+            this.setState({ theme: this.props.userSettings.theme });
+        }
     }
     changeThemeToLight = (newTheme) => {
 
 
         //local storage
-        var set = this.state.sett;
-        set.theme = "light"
-        this.setState({ sett: set });
-        window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
-console.log("p e "+window.localStorage.getItem('sett'))
+        // var set = this.state.theme;
+        // set.theme = "light"
+        this.setState({ theme: "light" });
+        window.localStorage.setItem("theme_unauth", "light");
 
-// for (var key of Object.keys(window.localStorage.getItem('sett'))) {
-//     console.log("--> "+key + " -> " + window.localStorage.getItem('sett')[key])
-// }
         //redux
         let profile = this.props.userSettings;
         profile.theme = "light";
         this.props.onChangeAppTheme(profile)
-
+        console.error("chanhge theme light " + JSON.stringify(profile));
         window.location.reload(true);
     }
 
@@ -49,15 +45,13 @@ console.log("p e "+window.localStorage.getItem('sett'))
 
 
         //local storage
-        var set = this.state.sett;
-        set.theme = "dark"
-        this.setState({ sett: set });
-        window.localStorage.setItem("sett", this.state.sett);
+        this.setState({ theme: "dark" });
+        window.localStorage.setItem("theme_unauth", "dark");
         //redux
         let profile = this.props.userSettings;
         profile.theme = "dark";
         this.props.onChangeAppTheme(profile);
-
+        console.error("chanhge theme dark" + JSON.stringify(profile));
         window.location.reload(true);
     }
 
@@ -65,8 +59,8 @@ console.log("p e "+window.localStorage.getItem('sett'))
 
         const selectedStyle = { backgroundColor: 'lightgrey', borderColor: `blue`, borderStyle: `solid`, padding: `5px` }
         const normalStyle = { backgroundColor: 'white', padding: `5px` }
-        const lightTheme = this.state.sett.theme == 'light' ? selectedStyle : normalStyle;
-        const darkTheme = this.state.sett.theme == 'dark' ? selectedStyle : normalStyle;
+        const lightTheme = this.state.theme == 'light' ? selectedStyle : normalStyle;
+        const darkTheme = this.state.theme == 'dark' ? selectedStyle : normalStyle;
 
         return (<div>
 
@@ -105,5 +99,5 @@ const mapActionsToProps = {
 };
 
 
-export default connect(mapStateToProps, mapActionsToProps)(ThemeSettingsPage);
+export default connect(mapStateToProps, mapActionsToProps)(ThemeSettingsPageAppUnAuth);
 

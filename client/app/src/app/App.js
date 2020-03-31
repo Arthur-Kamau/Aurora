@@ -53,6 +53,7 @@ class App extends Component {
     this.onRouteChanged();
     this.setState({ location: window.location.pathname });
 
+    console.error("settings  "+ JSON.stringify(this.props.userSettings))
     //load css
     if (this.props.userSettings != null && this.props.userSettings.theme != null && this.props.userSettings.theme === 'light') {
       console.error("light"+this.props.userSettings)

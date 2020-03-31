@@ -45,6 +45,8 @@ class Sidebar extends Component {
     );
 
   }
+
+  
   onRouteChanged() {
     document.querySelector('#sidebar').classList.remove('active');
     Object.keys(this.state).forEach(i => {
@@ -89,6 +91,7 @@ class Sidebar extends Component {
 
         </div>
         <ul className="nav">
+
           <li className="nav-item nav-profile not-navigation-link">
             <div className="nav-link">
               <div className="nav-link user-switch-dropdown-toggler p-0 toggle-arrow-hide bg-transparent border-0 w-100">

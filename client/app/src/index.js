@@ -37,26 +37,40 @@ const allReducers = combineReducers({
 })
 
 let setVar;
-let profileVar; 
+let profileVar;
+let appThemeUserUnauth;
 
-try {
-    
-    setVar =  JSON.parse(window.localStorage.getItem('sett')) 
-} catch (objError) {
-    if (objError instanceof SyntaxError) {
-        console.error(objError.name);
-    } else {
-        console.error(objError.message);
+var token = window.localStorage.getItem('aurora_key');
+if (token == null || token.length == 0) {
+    setVar = null;
+} else {
+    try {
+
+        setVar = JSON.parse(window.localStorage.getItem('sett'))
+    } catch (objError) {
+        if (objError instanceof SyntaxError) {
+            console.error(objError.name);
+        } else {
+            console.error(objError.message);
+        }
     }
 }
 
 
- 
+appThemeUserUnauth = window.localStorage.getItem('theme_unauth');
 
+
+console.error("theme unauth " + appThemeUserUnauth);
+console.error("sett  varr  " + setVar);
+if (appThemeUserUnauth == null || appThemeUserUnauth.length == 0) {
+    appThemeUserUnauth = "light"
+    window.localStorage.setItem("theme_unauth", "light");
+}
+    
 
 try {
-    
-    profileVar =  JSON.parse(window.localStorage.getItem('prof')) == null 
+
+    profileVar = JSON.parse(window.localStorage.getItem('prof')) == null
 } catch (objError) {
     if (objError instanceof SyntaxError) {
         console.error(objError.name);
@@ -98,7 +112,7 @@ const store = createStore(
             accountExpendture: 'None',
         },
         userSettings: setVar == null ? {
-            theme: "dark", notify: "true", stats: "true"
+            theme: appThemeUserUnauth, notify: "true", stats: "true"
         } : setVar,
         userProfile: profileVar == null ? {
             name: 'name',

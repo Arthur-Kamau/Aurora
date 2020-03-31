@@ -65,6 +65,29 @@ class Sidebar extends Component {
     }));
 
   }
+
+
+  ShowNewModal = (event) => {
+    const remote = window.require('electron').remote;
+    const path = window.require("path");
+    const isDev = window.require("electron-is-dev");
+    const BrowserWindow = remote.BrowserWindow;
+    const win = new BrowserWindow({
+      height: 150,
+      width: 700,
+      parent: remote.getCurrentWindow(),
+      modal: true
+    });
+    win.setMenuBarVisibility(false);
+    win.setTitle("");
+    win.loadURL(
+      isDev
+        ? "http://localhost:3000/create_tool"
+        : `file://${path.join(__dirname, "../build/index.html")}`
+    );
+
+  }
+  
   render() {
 
       var appStyle =  {
@@ -112,7 +135,28 @@ class Sidebar extends Component {
         </div>
         <ul className="nav">
 
-
+{/* 
+        <li className="nav-item nav-profile not-navigation-link">
+            <div className="nav-link">
+              <div className="nav-link user-switch-dropdown-toggler p-0 toggle-arrow-hide bg-transparent border-0 w-100">
+                <div className="d-flex justify-content-between align-items-start">
+                  <div className="profile-image">
+                    <img src={require("../../../assets/images/faces/face8.jpg")} alt="profile" />
+                  </div>
+                  <div className="text-left ml-3">
+                    <p className="profile-name">Richard V.Welsh</p>
+                    <small className="designation text-muted text-small">Manager</small>
+                    <span className="status-indicator online"></span>
+                  </div>
+                </div>
+              </div>
+              <br></br>
+              <button onClick={this.ShowNewModal} className="btn btn-success btn-block">
+                New
+                 <i className="mdi mdi-plus"></i></button>
+            </div>
+          </li>
+ */}
 
 
            <li className={this.isPathActive('/generator') ? 'nav-item active' : 'nav-item'}>
@@ -121,8 +165,7 @@ class Sidebar extends Component {
               <span className="menu-title">Json Operations</span>
             </Link>
           </li>
-{/*
-          <li className={this.isPathActive('/connection_tool') ? 'nav-item active' : 'nav-item'}>
+          {/* <li className={this.isPathActive('/connection_tool') ? 'nav-item active' : 'nav-item'}>
             <Link className="nav-link" to="/connection_tool">
               <i className="mdi  mdi-swap-horizontal fa-lg menu-icon"></i>
               <span className="menu-title">Connection  tool</span>
@@ -135,7 +178,7 @@ class Sidebar extends Component {
               <i className="mdi   mdi-server menu-icon"></i>
               <span className="menu-title">Dump  server</span>
             </Link>
-          </li> */}
+          </li>  */}
 
           <li className={this.isPathActive('/settings') ? 'nav-item active' : 'nav-item'}>
             <Link className="nav-link" to="/settings">

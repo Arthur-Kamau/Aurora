@@ -6,7 +6,7 @@ import Spinner from './components/spinner/spinner';
 const Error404Page = lazy(() => import('./components/error/error_404'));
 const Error500Page = lazy(() => import('./components/error/error_500'));
 
-
+const CreateToolPage = lazy(() => import('./components/create_tool/create_tool'));
 const ConnectionTool = lazy(() => import('./components/connection_tool/connection_tool'));
 const DumpServerPage = lazy(() => import('./components/dump_server/dump_server'));
 const SettingsPage = lazy(() => import('./components/settings/settings'));
@@ -38,6 +38,7 @@ class AppRoutes extends Component {
                     {/* <Route path="/generator" websocket={this.props.websocket} component={AppGenerator} /> */}
                     <Route path="/generator" component={() => <AppGenerator  websocket={this.props.websocket} />}  />
                     <Route exact path="/dump_server" component={DumpServerPage} />
+                    <Route exact path="/create_tool" component={ CreateToolPage} />
                     <Route exact path="/connection_tool" component={ConnectionTool} />
                     <Route exact path="/505" component={Error500Page} />
                     <Route exact path="/404" component={Error404Page} />

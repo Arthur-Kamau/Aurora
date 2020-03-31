@@ -139,58 +139,78 @@ class AppVersion extends Component {
   render() {
     return (
       <div>
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item">Araizen Aurora App</li>
-          <li className="list-group-item">Build : Prelease </li>
-          <li className="list-group-item">
-            {this.state.isElectronApp == true ?
-              <div>You app is {this.state.version}</div>
-              :
-              <div>Aurora Web Version</div>
-            }
-          </li>
-          <li className="list-group-item">
-            <div className="form-check">
-              <label className="form-check-label">
-                <input type="checkbox" checked={this.state.sett.notify == "true" ? true : false} className="form-check-input" onChange={this.notifyAboutMinorVersions} />
-                <i className="input-helper"></i>
+
+
+        {this.props.authToken == null || this.props.authToken.length == 0 ?
+
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">Araizen Aurora App</li>
+            <li className="list-group-item">Build : Prelease </li>
+            <li className="list-group-item">
+              {this.state.isElectronApp == true ?
+                <div>You app is {this.state.version}</div>
+                :
+                <div>Aurora Web Version</div>
+              }
+            </li>
+          </ul>
+          :
+          <div>
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">Araizen Aurora App</li>
+              <li className="list-group-item">Build : Prelease </li>
+              <li className="list-group-item">
+                {this.state.isElectronApp == true ?
+                  <div>You app is {this.state.version}</div>
+                  :
+                  <div>Aurora Web Version</div>
+                }
+              </li>
+
+
+              <li className="list-group-item">
+                <div className="form-check">
+                  <label className="form-check-label">
+                    <input type="checkbox" checked={this.state.sett.notify == "true" ? true : false} className="form-check-input" onChange={this.notifyAboutMinorVersions} />
+                    <i className="input-helper"></i>
                 Do not Get notified of minor versions
               </label>
-            </div>
-          </li>
+                </div>
+              </li>
 
-          <li className="list-group-item">
-            <div className="form-check">
-              <label className="form-check-label">
-                <input type="checkbox" checked={this.state.sett.stats == "true" ? true : false} className="form-check-input" onChange={this.reportAnonymousStats} />
-                <i className="input-helper"></i>
+              <li className="list-group-item">
+                <div className="form-check">
+                  <label className="form-check-label">
+                    <input type="checkbox" checked={this.state.sett.stats == "true" ? true : false} className="form-check-input" onChange={this.reportAnonymousStats} />
+                    <i className="input-helper"></i>
                 Report anonymous statistics
             </label>
-            </div></li>
-        </ul>
+                </div></li>
+            </ul>
 
-        {this.state.isElectronApp == true ?
-          <div className="align-content-lg-end">
-            <div id={style.notification} className={style.hidden}>
-              <p id="message"></p>
-              <button
-                className="btn btn-success btn-md"
-                onClick={this.restartApp}
-              >
-                Restart
+            {this.state.isElectronApp == true ?
+              <div className="align-content-lg-end">
+                <div id={style.notification} className={style.hidden}>
+                  <p id="message"></p>
+                  <button
+                    className="btn btn-success btn-md"
+                    onClick={this.restartApp}
+                  >
+                    Restart
             </button>
               &nbsp;
             <button
-                className="btn btn-warning btn-md"
-                onClick={this.closeNotification}
-              >
-                Close
+                    className="btn btn-warning btn-md"
+                    onClick={this.closeNotification}
+                  >
+                    Close
             </button>
-            </div>
+                </div>
+              </div>
+              : <div></div>
+            }
           </div>
-          : <div></div>
         }
-
 
       </div>
     );

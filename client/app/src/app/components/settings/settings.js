@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import AppVersion from "./settings_components/app_version_setting";
 import AccountSettings from "./settings_components/account_settings";
 import UserBilling from "./settings_components/billing_setting";
-import ThemeSettingsPage from "./settings_components/theme_settings";
+import ThemeSettingsPage from "./settings_components/theme_settings_auth";
+import ThemeSettingsPageAppUnAuth from "./settings_components/theme_settings_unauth";
 import SharePageComponent from "./settings_components/share_page";
 import BlackSettingsPage from "./settings_components/blank_settings";
 import DocumentationPageInSettings from "./settings_components/documentation";
@@ -11,14 +12,14 @@ import { connect } from 'react-redux';
 export class SettingsPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       pageActive: "",
-      prof : "",
-      sett : ""
-     }
+      prof: "",
+      sett: ""
+    }
   }
 
- 
+
 
   openSharePage = (event) => {
     this.setState({
@@ -65,11 +66,18 @@ export class SettingsPage extends Component {
       pageActive: "billing"
     });
   }
+  changePageToThemeUnAuth = (event) => {
+    this.setState({
+      pageActive: "themeUnAuth"
+    });
+
+  }
+
   changePageToTheme = (event) => {
     this.setState({
       pageActive: "theme"
     });
-  } 
+  }
 
 
 
@@ -91,6 +99,11 @@ export class SettingsPage extends Component {
               {
                 this.props.authToken == null || this.props.authToken.length == 0 ?
                   <div className="template-demo">
+                    <div className="btn btn-light btn-lg" onClick={this.changePageToVersion} >            <i className="mdi mdi-compass icon-sm text-warning"></i> &emsp; App  Version  </div>
+
+
+                    <div className="btn btn-light btn-lg" onClick={this.changePageToThemeUnAuth}>  <i className="mdi  mdi-invert-colors icon-sm text-primary"></i> &emsp; App Theme &emsp;  </div>
+
 
                     <div className="btn btn-light btn-lg" onClick={this.changePageToFeedBackPage}>  <i className="mdi  mdi-email icon-sm text-secondary"></i> &emsp;Feedback &emsp;   </div>
                     <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Docs &emsp;   </div>
@@ -105,7 +118,7 @@ export class SettingsPage extends Component {
                     <div className="btn btn-light btn-lg" onClick={this.changePageToBilling}>  <i className="mdi  mdi-credit-card icon-sm text-info"></i> &emsp; User Billing &emsp;  </div>
                     <div className="btn btn-light btn-lg" onClick={this.changePageToTheme}>  <i className="mdi  mdi-invert-colors icon-sm text-primary"></i> &emsp; App Theme &emsp;  </div>
                     <div className="btn btn-light btn-lg" onClick={this.changePageToFeedBackPage}>  <i className="mdi  mdi-email icon-sm text-secondary"></i> &emsp;Feedback &emsp;   </div>
-                    {
+                    {/* {
                       navigator.userAgent.toLowerCase().indexOf(' electron/') > -1 ?
 
                         <div className="btn btn-light btn-lg" onClick={this.openSharePage}>  <i className="mdi  mdi-share-variant icon-sm text-dark"></i> &emsp;share &emsp;   </div>
@@ -113,7 +126,7 @@ export class SettingsPage extends Component {
                         :
                         <div></div>
 
-                    }
+                    } */}
 
                     <div className="btn btn-light btn-lg" onClick={this.openDocumentationTab}>  <i className="mdi  mdi-book icon-sm text-dark"></i> &emsp;Docs &emsp;   </div>
                   </div>
@@ -136,13 +149,15 @@ export class SettingsPage extends Component {
                     <UserBilling></UserBilling>
                     : this.state.pageActive == "theme" ?
                       <ThemeSettingsPage ></ThemeSettingsPage>
-                      : this.state.pageActive == "feedback" ?
-                        <FeedBackPage></FeedBackPage>
-                        : this.state.pageActive == "documentation " ?
-                          <DocumentationPageInSettings ></DocumentationPageInSettings>
-                          : this.state.pageActive == "share" ?
-                            <SharePageComponent ></SharePageComponent>
-                            : <BlackSettingsPage authToken={this.props.authToken}></BlackSettingsPage>}
+                      : this.state.pageActive == "themeUnAuth" ?
+                        <ThemeSettingsPageAppUnAuth></ThemeSettingsPageAppUnAuth>
+                        : this.state.pageActive == "feedback" ?
+                          <FeedBackPage></FeedBackPage>
+                          : this.state.pageActive == "documentation " ?
+                            <DocumentationPageInSettings ></DocumentationPageInSettings>
+                            : this.state.pageActive == "share" ?
+                              <SharePageComponent ></SharePageComponent>
+                              : <BlackSettingsPage authToken={this.props.authToken}></BlackSettingsPage>}
             </div>
           </div>
         </div>
