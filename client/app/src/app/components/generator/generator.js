@@ -9,7 +9,7 @@ import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/theme-gruvbox";
 import { connect } from 'react-redux';
-import { appInputXmlToJson, appInputJsonToXml , generateSchemaFromJson, generateJsonFromSchema} from "./generator_tool";
+import { appInputXmlToJson, appInputJsonToXml, generateSchemaFromJson, generateJsonFromSchema } from "./generator_tool";
 import MonacoEditor from '@uiw/react-monacoeditor';
 
 class AppGenerator extends Component {
@@ -21,18 +21,24 @@ class AppGenerator extends Component {
             xmlToJson: '',
             jsonToXml: '',
             jsonToSchema: '',
-            schemaToJson:'',
-            width:0,
-            height:0,
+            schemaToJson: '',
+            width: 0,
+            height: 0,
 
-            targetLanguage:'',
-            targetLanguageNameSpaceOrClassName:'',
+            targetLanguage: '',
+            targetLanguageNameSpaceOrClassName: '',
         }
 
 
     }
     componentDidMount() {
 
+//confirm windo location
+if(window.location.pathname!="/aurora/generator"){
+window.location="/aurora/generator"
+}else{
+console.log("window location okay.");
+}
 
         // initialize conversion classes
         var xmlToJson = new appInputXmlToJson();
@@ -44,11 +50,11 @@ class AppGenerator extends Component {
 
         var jsonToSchema = new generateSchemaFromJson();
         this.setState({ jsonToSchema: jsonToSchema });
-        
+
 
         var schemaToJson = new generateJsonFromSchema();
         this.setState({ schemaToJson: schemaToJson });
-        
+
 
 
         // initialize websocket connection
@@ -72,17 +78,17 @@ class AppGenerator extends Component {
 
         }
 
-this.setState({width: window.innerWidth, height: window.innerHeight});
+        this.setState({ width: window.innerWidth, height: window.innerHeight });
         window.addEventListener('resize', this.updateDimensions);
 
     }
     updateDimensions = () => {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
-      };
+    };
     onChange = (newValue, e) => {
         console.log('onChange', newValue, e);
         this.handleEditorChange(newValue)
-      }
+    }
     handleEditorChange = async (value) => {
 
         // var input = value;
@@ -102,30 +108,31 @@ this.setState({width: window.innerWidth, height: window.innerHeight});
 
         } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema') {
 
-            var classNameOrNameSpace = this.state.targetLanguageNameSpaceOrClassName == null ||  this.state.targetLanguageNameSpaceOrClassName.length == 0 ?
-            "Aurorora" : this.state.targetLanguageNameSpaceOrClassName
-       
-            // this.state.targetLanguage
-            // var res = this.quicktypeJSON("dart",
-            // classNameOrNameSpace,
-            // value)
+            // var classNameOrNameSpace = this.state.targetLanguageNameSpaceOrClassName == null || this.state.targetLanguageNameSpaceOrClassName.length == 0 ?
+            //     "Aurorora" : this.state.targetLanguageNameSpaceOrClassName
+            let classNameOrNameSpace = 
+            this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName == null  ||
+            this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName == undefined 
+            ? 'App' :
+                this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName;
 
 
-            // console.error("response "+JSON.stringify(res) )
-            // console.log("response " + typeof res)
-            // let jsonString = '{"age":22}';
- 
+            let languageItem = 
+            this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage == null  || 
+            this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage == undefined
+            ? "c#" : this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage;
+
             const { lines: res } = await this.quicktypeJSON(
-              "dart",
-              classNameOrNameSpace,
-              value
+                languageItem,
+                classNameOrNameSpace,
+                value
             );
-            console.log("==>"+res.join("\n"));
-            if (   res !== null && typeof res === 'object') {   
+            console.log("==>" + res.join("\n"));
+            if (res !== null && typeof res === 'object') {
 
-                const disp =  res .join("\n");
-                this.setState({ dataFromServer: disp});  
-                this.setState({ dataFromServer: disp});  
+                const disp = res.join("\n");
+                this.setState({ dataFromServer: disp });
+                this.setState({ dataFromServer: disp });
             } else if (res == null) {
                 this.setState({ dataFromServer: "Encoutered an error" })
             } else {
@@ -140,8 +147,8 @@ this.setState({width: window.innerWidth, height: window.innerHeight});
             var res = this.state.xmlToJson.convert(value)
             console.log("response " + typeof res)
             if (Array.isArray(res)) {
-                this.setState({dataFromServer : res});
-            } else if (   res !== null && typeof res === 'object') {
+                this.setState({ dataFromServer: res });
+            } else if (res !== null && typeof res === 'object') {
                 this.setState({ dataFromServer: JSON.stringify(res) })
             } else if (res == null) {
                 this.setState({ dataFromServer: "Encoutered an error" })
@@ -173,32 +180,32 @@ this.setState({width: window.innerWidth, height: window.innerHeight});
     };
 
 
-        quicktypeJSON  = async (targetLanguage, typeName, jsonString) =>  { 
+    quicktypeJSON = async (targetLanguage, typeName, jsonString) => {
 
         const {
-          quicktype,
-          InputData,
-          jsonInputForTargetLanguage,
-          JSONSchemaInput,
-          JSONSchemaStore
+            quicktype,
+            InputData,
+            jsonInputForTargetLanguage,
+            JSONSchemaInput,
+            JSONSchemaStore
         } = require("quicktype-core");
-        
+
         const jsonInput = jsonInputForTargetLanguage(targetLanguage);
-    
+
         // We could add multiple samples for the same desired
         // type, or many sources for other types. Here we're
         // just making one type from one piece of sample JSON.
         await jsonInput.addSource({
-          name: typeName,
-          samples: [jsonString]
+            name: typeName,
+            samples: [jsonString]
         });
-      
+
         const inputData = new InputData();
         inputData.addInput(jsonInput);
-      
+
         return await quicktype({
-          inputData,
-          lang: targetLanguage
+            inputData,
+            lang: targetLanguage
         });
     }
 
@@ -241,12 +248,13 @@ this.setState({width: window.innerWidth, height: window.innerHeight});
                                 {/* /> */}
                                 {/* ))} */}
 
+                                {/* height -64 because of appp bar and footer */}
                                 <MonacoEditor
                                     language="javascript"
                                     // width="100%"
                                     // height="92vh"
-                                    width={this.state.width}
-                                    height={this.state.height}
+                                    width={this.state.width - 50}
+                                    height={this.state.height - 64}
                                     onChange={this.onChange}
                                     options={{
                                         theme: 'vs-dark',

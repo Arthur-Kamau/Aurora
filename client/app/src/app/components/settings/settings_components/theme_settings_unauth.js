@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import userProfileAction from '../../../../actions/user_profile_action';
+import { store } from 'react-notifications-component';
 const theme = { borderStyle: `solid`, borderColor: `red`, backgroundColor: `lightgrey`, padding: `10px` };
 
 class ThemeSettingsPageAppUnAuth extends Component {
@@ -26,9 +27,24 @@ class ThemeSettingsPageAppUnAuth extends Component {
     changeThemeToLight = (newTheme) => {
 
 
-        //local storage
-        // var set = this.state.theme;
-        // set.theme = "light"
+        let prevState = this.state.theme;
+
+        if(prevState == "light"){
+            // store.addNotification({
+            //     title: "Already in Light theme",
+            //     message: "Theme not changed",
+            //     type: "success",
+            //     insert: "bottom",
+            //     container: "top-right",
+            //     animationIn: ["animated", "fadeIn"],
+            //     animationOut: ["animated", "fadeOut"],
+            //     dismiss: {
+            //       duration: 5000,
+            //       onScreen: true
+            //     }
+            //   });
+        }else{
+        
         this.setState({ theme: "light" });
         window.localStorage.setItem("theme_unauth", "light");
 
@@ -38,12 +54,28 @@ class ThemeSettingsPageAppUnAuth extends Component {
         this.props.onChangeAppTheme(profile)
         console.error("chanhge theme light " + JSON.stringify(profile));
         window.location.reload(true);
+        }
     }
 
     changeThemeToDark = (newTheme) => {
 
-
-
+        let prevState = this.state.theme;
+        if(prevState == "dark"){
+            // store.addNotification({
+            //     title: "Already in Dark theme",
+            //     message: "Theme not changed",
+            //     type: "success",
+            //     insert: "top",
+            //     container: "top-right",
+            //     animationIn: ["animated", "fadeIn"],
+            //     animationOut: ["animated", "fadeOut"],
+            //     dismiss: {
+            //       duration: 5000,
+            //       onScreen: true
+            //     }
+            //   });
+        }else{
+        
         //local storage
         this.setState({ theme: "dark" });
         window.localStorage.setItem("theme_unauth", "dark");
@@ -53,6 +85,7 @@ class ThemeSettingsPageAppUnAuth extends Component {
         this.props.onChangeAppTheme(profile);
         console.error("chanhge theme dark" + JSON.stringify(profile));
         window.location.reload(true);
+        }
     }
 
     render() {

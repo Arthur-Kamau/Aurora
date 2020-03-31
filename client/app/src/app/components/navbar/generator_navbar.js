@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { appGeneratorOperationsActions, } from '../../../actions/json_operations_actions';
+import { appGeneratorOperationsActions, generateSchemaConfiguraion} from '../../../actions/app_generator_actions';
 
 class GeneratorNavBar extends Component {
 
@@ -9,14 +9,19 @@ class GeneratorNavBar extends Component {
     super(props);
     this.state = {
       action : 'convert_to_json',
-      targetLanguage: '',
+      targetLanguage: this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage,
+      classNameOrNameSpaceNameGenerateSchema : this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName,
       generatorPopUpShowState : false,
       generatorSchemaPopUpShowState : false,
       schemaLanguage:[
-        "dart",
-        "c#",
-        "kotlin",
-        "java"
+        "Dart",
+        "C#",
+        "Kotlin",
+        "Java",
+        "Go",
+        "Rust",
+        "Python",
+        "C++"
       ]
       }
 }
@@ -78,53 +83,34 @@ class GeneratorNavBar extends Component {
    
     console.log("language " + event.target.value);
     this.setState({targetLanguage : event.target.value})
+    this.props.onGenerateSchemaConfiguraion({
+      targetLanguage : event.target.value ,
+      classOrNameSpaceName : this.state.classNameOrNameSpaceNameGenerateSchema
+    });
+
+    
   }
 
-
-// sample code
-  quicktypeJSON = async  (targetLanguage, typeName, jsonString) => { 
-
-    const {
-      quicktype,
-      InputData,
-      jsonInputForTargetLanguage,
-      JSONSchemaInput,
-      JSONSchemaStore
-    } = require("quicktype-core");
-    
-    const jsonInput = jsonInputForTargetLanguage(targetLanguage);
-
-    // We could add multiple samples for the same desired
-    // type, or many sources for other types. Here we're
-    // just making one type from one piece of sample JSON.
-    await jsonInput.addSource({
-      name: typeName,
-      samples: [jsonString]
-    });
-  
-    const inputData = new InputData();
-    inputData.addInput(jsonInput);
-  
-    return await quicktype({
-      inputData,
-      lang: targetLanguage
+  changeClassOrNameSpaceNameGenerateSchema = (event) => {
+    event.preventDefault();
+    console.log("name " + event.target.value);
+    this.setState({ classNameOrNameSpaceNameGenerateSchema: event.target.value });
+    this.props.onGenerateSchemaConfiguraion({
+      targetLanguage : this.state.targetLanguage ,
+      classOrNameSpaceName : event.target.value,
     });
 }
 
-
- 
-
-
 runCode = async (e) =>{
   
-  let jsonString = '{"age":22}';
+  // let jsonString = '{"age":22}';
  
-    const { lines: swiftPerson } = await this.quicktypeJSON(
-      "dart",
-      "Person",
-      jsonString
-    );
-    console.log(swiftPerson.join("\n"));
+  //   const { lines: swiftPerson } = await this.quicktypeJSON(
+  //     "dart",
+  //     "Person",
+  //     jsonString
+  //   );
+  //   console.log(swiftPerson.join("\n"));
   
     
   
@@ -160,21 +146,34 @@ runCode = async (e) =>{
 { 
                         this.state.action   == "generate_schema" ?
             <li className="nav-item  nav-profile border-0"> 
-            <Dropdown alignRight={true} show={this.state.generatorSchemaPopUpShowState} >
+            <Dropdown alignRight={true} show={this.state.generatorSchemaPopUpShowState}  >
               <Dropdown.Toggle className="nav-link count-indicator bg-transparent" onClick={this.generatorSchemaPopUpShow}>
                 <i className="mdi   mdi-settings menu-icon"></i>
               </Dropdown.Toggle>
              
              <Dropdown.Menu className="preview-list navbar-dropdown pb-3">
                 <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={this.languageSchemaOptions}  >
+                  
+                  
+          <form style={{ minWidth: `250px` }}>
+
+          <div className="form-group">
+                    <p>Name</p>
+                    <input type="text" value={this.state.classNameOrNameSpaceNameGenerateSchema} onChange={this.changeClassOrNameSpaceNameGenerateSchema} className="form-control" placeholder="First name" />
+                </div>
+
                   <div className="form-group">
-                      <label>Target language</label>
+                      <p>Target language</p>
                               <select className="form-control" onChange={this.schemaLanguageChange}>
                                   {this.state.schemaLanguage.map((item, index)=>{ 
-                                   return  <option key={index}  >  {item}</option>
+                                  return  this.state.targetLanguage == item  ?  
+                                  <option key={index}  selected>  {item}</option>
+                                  :
+                                     <option key={index} >  {item}</option>
                                     })}
                               </select>
                   </div>
+          </form>
 
                   
                 </Dropdown.Item> 
@@ -285,11 +284,13 @@ runCode = async (e) =>{
 }
 
 const mapStateToProps = state => ({
-  appGeneratorOperations: state.appGeneratorOperations
+  appGeneratorOperations: state.appGeneratorOperations,
+
 });
 
 const mapActionsToProps = {
   onappGeneratorOperationsActions: appGeneratorOperationsActions,
+  onGenerateSchemaConfiguraion : generateSchemaConfiguraion
 };
 
 

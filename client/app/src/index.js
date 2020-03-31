@@ -9,19 +9,18 @@ import { combineReducers, createStore } from 'redux';
 import userReducer from './reducers/user_reducer';
 import userProfileReducer from './reducers/user_profile_reducer';
 import userSettingsReducer from './reducers/user_settings_reducer';
-import productReducer from './reducers/products_reducer';
+
 import authtokenReducer from './reducers/auth_token_reducer';
 
 import changeDumpServerStatusReducer from './reducers/dump_server_reducer';
 import changeDumpServerLogsReducer from './reducers/dump_server_log_reducer';
 
 import connectionToolReducer from './reducers/connection_tool_reducer';
-import appGeneratorOperationsReducer from './reducers/json_operattions_reducer';
-
+import appGeneratorOperationsReducer from './reducers/app_generator_reducer';
 
 
 const allReducers = combineReducers({
-    products: productReducer,
+
     user: userReducer,
     userSettings: userSettingsReducer,
     userProfile: userProfileReducer,
@@ -66,7 +65,7 @@ if (appThemeUserUnauth == null || appThemeUserUnauth.length == 0) {
     appThemeUserUnauth = "light"
     window.localStorage.setItem("theme_unauth", "light");
 }
-    
+
 
 try {
 
@@ -82,18 +81,21 @@ try {
 const store = createStore(
     allReducers,
     {
-        products: [{ "name": "galaxy" }],
-        user: 'kamau',
+
+        user: '',
         authtoken: window.localStorage.getItem('aurora_key'),
-        appGeneratorOperations: {
-            appGeneratorOperationsActions: 'convert_to_json',
-            jsonPayloadReceived: '',
-            jsonInput: ''
-        },
         dumpServer: {
             isStarted: false,
             ip: "",
             port: 0
+        },
+        appGeneratorOperations: {
+            appGeneratorOperationsActions: 'convert_to_json',
+            convertToSchemaSettings:{
+                targetLanguage:"C#",
+                classOrNameSpaceName:"App"
+            }
+           
         },
         dumpServerLogs: [],
         connectionTool: {
@@ -112,7 +114,9 @@ const store = createStore(
             accountExpendture: 'None',
         },
         userSettings: setVar == null ? {
-            theme: appThemeUserUnauth, notify: "true", stats: "true"
+            theme: appThemeUserUnauth,
+            notify: "true",
+            stats: "true"
         } : setVar,
         userProfile: profileVar == null ? {
             name: 'name',
