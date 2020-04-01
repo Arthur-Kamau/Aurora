@@ -121,19 +121,29 @@ class AppGenerator extends Component {
         return previousWord;
     }
 
+    wordContainsAnyForbiddenCharacters(word, characters) {
+        for (var i = 0; i != characters.length; i++) {
+            var charItem = characters[i];
+            if (word.indexOf(charItem) != - 1) {
+                return charItem;
+            }
+        }
+        return null;
+    }
     // read through the line and split by whitespace
     // loop through the list generated above.
     //  chack if item in array is key word or class and ignore if item i whitespace add to array
     //  if anything else get the previous word and  check if its a keyword  if it is genrate a key value pair ,
     // if its space , { , } or class ignore .
     // if its unknown return an error 
-    ConvertToJsonLine = (value , lineNumber) => {
+    ConvertToJsonLine = (value, lineNumber, maxLines) => {
         let finalStringArray = [];
         let keyWords = ["int", "string", "date", "datetime", "double"];
+        let forBiddenCharactersInWords = ["{", "}", "[", "]"];
         //split string by space 
         var stringArray = value.split(/(\s+)/);
         for (var i = 0; i < stringArray.length; i++) {
-            console.log("looping item " + stringArray[i])
+            console.log(" line " + lineNumber + " max line " + maxLines + " looping item " + stringArray[i] + "final array " + finalStringArray)
             if (keyWords.includes(stringArray[i].toLowerCase())) {
 
 
@@ -142,38 +152,67 @@ class AppGenerator extends Component {
             }
             else if (stringArray[i].trim().length == 0) {
 
-                finalStringArray.push(stringArray[i]);
+                // finalStringArray.push(stringArray[i]);
+            } else if (stringArray[i] == "{") {
+                console.log("previous word is { ")
+                // finalStringArray.push(stringArray[i].trim()); 
+
+                finalStringArray.push(stringArray[i] + " \n");
+                // finalStringArray.push("h");
+                console.error("after appending } array " + finalStringArray);
             }
-
+            else if (stringArray[i] == "}") {
+                console.log("previous word is } ");
+                //add a traili , if not end of line 
+                let trailing = lineNumber != maxLines ? " , " : ""
+                let charData = "\n " + stringArray[i] + trailing
+                finalStringArray.push(charData);
+                console.error("after appending } array " + finalStringArray);
+            }
             else {
+                let containsForbidenChar = this.wordContainsAnyForbiddenCharacters(stringArray[i], forBiddenCharactersInWords);
 
+                if (containsForbidenChar != null) {
+
+                    finalStringArray.push(("Error in line " + lineNumber + " at word " + stringArray[i] +
+                        " names are not allowed to contain { or } \n probably you forgot to whitespace between " +
+                        " { or } and " + stringArray[i]));
+                    break;
+                }
                 //get previous word or sign 
-                let slicedArray = stringArray.slice(0, i-1);
-                console.log("find previous word from " + slicedArray + " and its length "+ slicedArray.length);
-                let previousWordOrSign ;
-                if(slicedArray ==null || slicedArray.length==0){
+                let slicedArray = stringArray.slice(0, i - 1);
+                console.log("find previous word from " + slicedArray + " and its length " + slicedArray.length);
+                let previousWordOrSign;
+                if (slicedArray == null || slicedArray.length == 0) {
                     console.log("slicedArray is null or 0 ")
                     previousWordOrSign = "";
-                }else{
+                } else {
                     previousWordOrSign = this.getPreviousWord(slicedArray);
                 }
 
-                // finalStringArray.push();
                 if (previousWordOrSign != null || previousWordOrSign != undefined) {
                     if (previousWordOrSign.trim().length == 0) {
                         console.log("previous word " + previousWordOrSign + "  is space");
-                        // finalStringArray.push( previousWordOrSign);
                     } else if (keyWords.includes(previousWordOrSign.toLowerCase())) {
                         console.log("previous word " + previousWordOrSign + "  is keyword");
-                        // finalStringArray.push(stringArray[i] ,":" ,"key",",");
-                        finalStringArray.push("key : value , \n");
-                    } else if (previousWordOrSign == "}" || previousWordOrSign == "{" || previousWordOrSign == "class") {
-                        console.log("previous word or sign == { or  } or class ")
+
+                        let term =lineNumber != maxLines ? " , " : " ";
+                        let gen = " " + stringArray[i].trim() + " : value  " + term + "\n"
+                        finalStringArray.push(gen);
+                        console.error("gen " + gen + "after appending key and valu name array  " + finalStringArray);
+                    } else if (previousWordOrSign.trim() == "}") {
+                        console.log("Should not runn previous word is } ");
+                    } else if (previousWordOrSign.trim() == "{") {
+                        console.log("Should not runn previous word is { ")
+                    } else if (previousWordOrSign.trim().toLowerCase() == "class") {
+                        console.log("previous word is class ")
+                        finalStringArray.push( stringArray[i] + " : ")
+                  
+                        console.error("after appending class name array " + finalStringArray);
                     } else {
                         console.log("previous word " + previousWordOrSign + "  is unknown");
-                        // finalString += "key"
-                        // finalString += ","
-                        finalStringArray.push("Error in line "+lineNumber +" at word " + previousWordOrSign  + "expected a keyword  "+keyWords+"  try int "+stringArray[i] +" or string " +stringArray[i] );
+
+                        finalStringArray.push(("Error in line " + lineNumber + " at word " + previousWordOrSign + " expected a keyword  " + keyWords + "  try int " + stringArray[i] + " or string " + stringArray[i]));
 
                         break;
                     }
@@ -185,9 +224,15 @@ class AppGenerator extends Component {
             }
 
         }
-        return finalStringArray.filter(function (str) {
-            return /\S/.test(str);
-        }).join();
+        // return finalStringArray.filter(function (str) {
+        //     return /\S/.test(str);
+        // }).join();
+        let finalString = "";
+        finalStringArray.forEach((item, index) => {
+            console.log("item " + item + " index " + index);
+            if (item.length != 0) { finalString += item }
+        });
+        return finalString;
     }
     // split the lines by new line 
     // split the lines by ;
@@ -201,25 +246,39 @@ class AppGenerator extends Component {
         var lines = value.split("\n");
         for (var e = 0; e < lines.length; e++) {
 
-            if (lines.includes(";")) {
-                let lineInLines = lines.split(";");
+
+            if (lines[e].includes(";")) {
+                let lineInLines = lines[e].split(";");
                 for (var f = 0; f < lineInLines.length; f++) {
-                    var returnData = this.ConvertToJsonLine(lines[f], e);
-                    console.log("line in lines return " + returnData + "  final string " + finalString);
-                    finalString += returnData
+                    if (lineInLines[f].startsWith("//")) {
+                        console.log("line starts with a comment");
+                    } else if (lines[e].length == 0) {
+                        console.log("ignore empty line");
+                    } else {
+                        // array starts at 0 humans start counting from one
+                        var returnData = this.ConvertToJsonLine(lineInLines[f], e + 1, lines.length);
+                        console.log("line in lines return " + returnData + "  final string " + finalString);
+                        finalString += returnData
+                    }
                 }
             } else {
-                var returnData = this.ConvertToJsonLine(lines[e], e);
+                if (lines[e].startsWith("//")) {
+                    console.log("line starts with a comment");
+                } else if (lines[e].length == 0) {
+                    console.log("ignore empty line");
+                } else {
+                    var returnData = this.ConvertToJsonLine(lines[e], e + 1, lines.length);
 
-                finalString += returnData;
-                console.log("line item return " + returnData + "  final string " + finalString);
+                    finalString += returnData;
+                    console.log("line item return " + returnData + "  final string " + finalString);
+                }
             }
 
 
 
         }
 
-        return finalString+="}";
+        return finalString += " \n }";
 
     }
     handleEditorChange = async (value) => {
@@ -393,7 +452,7 @@ class AppGenerator extends Component {
 
                                 {/* height -64 because of appp bar and footer */}
                                 <MonacoEditor
-                                    language="javascript"
+                                    language="java"
                                     // width="100%"
                                     // height="92vh"
                                     width={this.state.width - 50}
@@ -426,7 +485,7 @@ class AppGenerator extends Component {
                                     }}
                                 /> */}
                                 <MonacoEditor
-                                    language="javascript"
+                                    language="json"
 
                                     // width={this.state.width - 100}
                                     height={this.state.height - 64}
