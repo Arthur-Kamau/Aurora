@@ -170,7 +170,9 @@ export class SettingsPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  authToken: state.authtoken
+  authToken: state.authtoken,
+  userSettings: state.userSettings
+
 });
 
 const mapActionsToProps = {

@@ -24,7 +24,7 @@ class AppGenerator extends Component {
             schemaToJson: '',
             width: 0,
             height: 0,
-
+            theme: '',
             targetLanguage: '',
             targetLanguageNameSpaceOrClassName: '',
         }
@@ -33,12 +33,28 @@ class AppGenerator extends Component {
     }
     componentDidMount() {
 
-//confirm windo location
-if(window.location.pathname!="/aurora/generator"){
-window.location="/aurora/generator"
-}else{
-console.log("window location okay.");
-}
+        //confirm windo location
+        if (window.location.pathname != "/aurora/generator") {
+            window.location = "/aurora/generator"
+        } else {
+            console.log("window location okay.");
+        }
+
+
+        // set theme 
+        if (this.props.authToken == null || this.props.authToken.length == 0) {
+            try {
+                var theme = window.localStorage.getItem('theme_unauth');
+
+                this.setState({ theme: theme });
+
+                console.error("theme " + theme);
+            } catch (objError) {
+                this.setState({ theme: this.props.userSettings.theme });
+            }
+        } else {
+            this.setState({ theme: this.props.userSettings.theme });
+        }
 
         // initialize conversion classes
         var xmlToJson = new appInputXmlToJson();
@@ -89,38 +105,153 @@ console.log("window location okay.");
         console.log('onChange', newValue, e);
         this.handleEditorChange(newValue)
     }
+
+    //loop through the array in reverese finding any character that is not white space and return it
+    getPreviousWord = (wordsList) => {
+        let previousWord = "";
+        for (var i = wordsList.length - 1; i >= 0; i--) {
+            if (wordsList[i].trim().length == 0) {
+                console.log("Ignoring space at postion " + i + "inspect " + wordsList)
+            } else {
+                previousWord = wordsList[i];
+                break;
+            }
+        }
+        console.log("previous word found " + previousWord);
+        return previousWord;
+    }
+
+    // read through the line and split by whitespace
+    // loop through the list generated above.
+    //  chack if item in array is key word or class and ignore if item i whitespace add to array
+    //  if anything else get the previous word and  check if its a keyword  if it is genrate a key value pair ,
+    // if its space , { , } or class ignore .
+    // if its unknown return an error 
+    ConvertToJsonLine = (value , lineNumber) => {
+        let finalStringArray = [];
+        let keyWords = ["int", "string", "date", "datetime", "double"];
+        //split string by space 
+        var stringArray = value.split(/(\s+)/);
+        for (var i = 0; i < stringArray.length; i++) {
+            console.log("looping item " + stringArray[i])
+            if (keyWords.includes(stringArray[i].toLowerCase())) {
+
+
+            } else if (stringArray[i].toLowerCase() == "class") {
+
+            }
+            else if (stringArray[i].trim().length == 0) {
+
+                finalStringArray.push(stringArray[i]);
+            }
+
+            else {
+
+                //get previous word or sign 
+                let slicedArray = stringArray.slice(0, i-1);
+                console.log("find previous word from " + slicedArray + " and its length "+ slicedArray.length);
+                let previousWordOrSign ;
+                if(slicedArray ==null || slicedArray.length==0){
+                    console.log("slicedArray is null or 0 ")
+                    previousWordOrSign = "";
+                }else{
+                    previousWordOrSign = this.getPreviousWord(slicedArray);
+                }
+
+                // finalStringArray.push();
+                if (previousWordOrSign != null || previousWordOrSign != undefined) {
+                    if (previousWordOrSign.trim().length == 0) {
+                        console.log("previous word " + previousWordOrSign + "  is space");
+                        // finalStringArray.push( previousWordOrSign);
+                    } else if (keyWords.includes(previousWordOrSign.toLowerCase())) {
+                        console.log("previous word " + previousWordOrSign + "  is keyword");
+                        // finalStringArray.push(stringArray[i] ,":" ,"key",",");
+                        finalStringArray.push("key : value , \n");
+                    } else if (previousWordOrSign == "}" || previousWordOrSign == "{" || previousWordOrSign == "class") {
+                        console.log("previous word or sign == { or  } or class ")
+                    } else {
+                        console.log("previous word " + previousWordOrSign + "  is unknown");
+                        // finalString += "key"
+                        // finalString += ","
+                        finalStringArray.push("Error in line "+lineNumber +" at word " + previousWordOrSign  + "expected a keyword  "+keyWords+"  try int "+stringArray[i] +" or string " +stringArray[i] );
+
+                        break;
+                    }
+                } else {
+                    console.error("previous word is undifined");
+                }
+
+
+            }
+
+        }
+        return finalStringArray.filter(function (str) {
+            return /\S/.test(str);
+        }).join();
+    }
+    // split the lines by new line 
+    // split the lines by ;
+    // process each word in the line
+    // return the result 
+    ConvertToJson = (value) => {
+        let finalString = "{ \n"
+
+        // efghi
+        //split by new line
+        var lines = value.split("\n");
+        for (var e = 0; e < lines.length; e++) {
+
+            if (lines.includes(";")) {
+                let lineInLines = lines.split(";");
+                for (var f = 0; f < lineInLines.length; f++) {
+                    var returnData = this.ConvertToJsonLine(lines[f], e);
+                    console.log("line in lines return " + returnData + "  final string " + finalString);
+                    finalString += returnData
+                }
+            } else {
+                var returnData = this.ConvertToJsonLine(lines[e], e);
+
+                finalString += returnData;
+                console.log("line item return " + returnData + "  final string " + finalString);
+            }
+
+
+
+        }
+
+        return finalString+="}";
+
+    }
     handleEditorChange = async (value) => {
 
-        // var input = value;
-        // var data = JSON.stringify({ payload: input, action: this.state.activeItem });
-        // console.log("user input " + input)
-
-
-        // if (this.state.ws.readyState === 1) {
-        //     this.state.ws.send(data);
-        // } else {
-        //     console.error("unable to send message")
-        // }
 
 
         if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_json') {
-            alert(" (convert to json)")
+
+            const res = this.ConvertToJson(value);
+            if (res !== null && typeof res === 'object') {
+                this.setState({ dataFromServer: JSON.stringify(res) });
+            } else if (res == null) {
+                this.setState({ dataFromServer: "Encoutered an error" });
+            } else {
+                this.setState({ dataFromServer: res });
+            }
 
         } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema') {
 
             // var classNameOrNameSpace = this.state.targetLanguageNameSpaceOrClassName == null || this.state.targetLanguageNameSpaceOrClassName.length == 0 ?
             //     "Aurorora" : this.state.targetLanguageNameSpaceOrClassName
-            let classNameOrNameSpace = 
-            this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName == null  ||
-            this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName == undefined 
-            ? 'App' :
-                this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName;
+            let classNameOrNameSpace =
+                this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName == null ||
+                    this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName == undefined
+                    ? 'App' :
+                    this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName;
 
 
-            let languageItem = 
-            this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage == null  || 
-            this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage == undefined
-            ? "c#" : this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage;
+            let languageItem =
+                this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage == null ||
+                    this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage == undefined
+                    ? "c#" : this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage;
 
             const { lines: res } = await this.quicktypeJSON(
                 languageItem,
@@ -211,7 +342,19 @@ console.log("window location okay.");
 
 
     render() {
+        let editOnlyStyle =
+        {
+            // theme: 'vs-dark',
+            theme: this.state.theme == "light" ? 'vs' : 'vs-dark',
+        }
 
+        let readOnlyStyle =
+        {
+            theme: this.state.theme == "light" ? 'vs' : 'vs-dark',
+            readOnly: true
+        }
+
+        console.error("edit olyth theme" + JSON.stringify(editOnlyStyle));
         return (
 
             <div style={{ height: `99%`, width: `100%`, backgroundColor: `black`, margin: `0px`, padding: `0px` }}>
@@ -256,13 +399,11 @@ console.log("window location okay.");
                                     width={this.state.width - 50}
                                     height={this.state.height - 64}
                                     onChange={this.onChange}
-                                    options={{
-                                        theme: 'vs-dark',
-                                    }}
+                                    options={editOnlyStyle}
                                 />
                             </div>
                             <div className="col-lg-6 col-md-6 col-xs-12 m-0 p-0">
-                                <AceEditor
+                                {/* <AceEditor
                                     mode="java"
                                     theme="gruvbox"
                                     style={{
@@ -283,8 +424,15 @@ console.log("window location okay.");
                                     editorProps={{
                                         $blockScrolling: true
                                     }}
-                                />
+                                /> */}
+                                <MonacoEditor
+                                    language="javascript"
 
+                                    // width={this.state.width - 100}
+                                    height={this.state.height - 64}
+                                    value={this.state.dataFromServer}
+                                    options={readOnlyStyle}
+                                />
                             </div>
                         </div>
                     </div>
@@ -299,6 +447,9 @@ console.log("window location okay.");
 
 const mapStateToProps = state => ({
     account: state.userAccount,
+    authToken: state.authtoken,
+    userSettings: state.userSettings,
+
     appGeneratorOperations: state.appGeneratorOperations,
     convertJsonJsonString: state.convertJsonJsonString,
     convertToJsonRawShcema: state.convertToJsonRawShcema,
