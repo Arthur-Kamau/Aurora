@@ -9,7 +9,7 @@ import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/theme-gruvbox";
 import { connect } from 'react-redux';
-import { appInputXmlToJson, appInputJsonToXml, generateSchemaFromJson, generateJsonFromSchema } from "./generator_tool";
+import { appInputXmlToJson, appInputJsonToXml, generateSchemaFromJson, generateJsonFromSchema, generateYamFromJson, generateHtmlFromMarkdown, generateJsonFromYaml } from "./generator_tool";
 import MonacoEditor from '@uiw/react-monacoeditor';
 
 class AppGenerator extends Component {
@@ -106,188 +106,70 @@ class AppGenerator extends Component {
         this.handleEditorChange(newValue)
     }
 
-    //loop through the array in reverese finding any character that is not white space and return it
-    getPreviousWord = (wordsList) => {
-        let previousWord = "";
-        for (var i = wordsList.length - 1; i >= 0; i--) {
-            if (wordsList[i].trim().length == 0) {
-                console.log("Ignoring space at postion " + i + "inspect " + wordsList)
-            } else {
-                previousWord = wordsList[i];
-                break;
-            }
-        }
-        console.log("previous word found " + previousWord);
-        return previousWord;
-    }
-
-    wordContainsAnyForbiddenCharacters(word, characters) {
-        for (var i = 0; i != characters.length; i++) {
-            var charItem = characters[i];
-            if (word.indexOf(charItem) != - 1) {
-                return charItem;
-            }
-        }
-        return null;
-    }
-    // read through the line and split by whitespace
-    // loop through the list generated above.
-    //  chack if item in array is key word or class and ignore if item i whitespace add to array
-    //  if anything else get the previous word and  check if its a keyword  if it is genrate a key value pair ,
-    // if its space , { , } or class ignore .
-    // if its unknown return an error 
-    ConvertToJsonLine = (value, lineNumber, maxLines) => {
-        let finalStringArray = [];
-        let keyWords = ["int", "string", "date", "datetime", "double"];
-        let forBiddenCharactersInWords = ["{", "}", "[", "]"];
-        //split string by space 
-        var stringArray = value.split(/(\s+)/);
-        for (var i = 0; i < stringArray.length; i++) {
-            console.log(" line " + lineNumber + " max line " + maxLines + " looping item " + stringArray[i] + "final array " + finalStringArray)
-            if (keyWords.includes(stringArray[i].toLowerCase())) {
-
-
-            } else if (stringArray[i].toLowerCase() == "class") {
-
-            }
-            else if (stringArray[i].trim().length == 0) {
-
-                // finalStringArray.push(stringArray[i]);
-            } else if (stringArray[i] == "{") {
-                console.log("previous word is { ")
-                // finalStringArray.push(stringArray[i].trim()); 
-
-                finalStringArray.push(stringArray[i] + " \n");
-                // finalStringArray.push("h");
-                console.error("after appending } array " + finalStringArray);
-            }
-            else if (stringArray[i] == "}") {
-                console.log("previous word is } ");
-                //add a traili , if not end of line 
-                let trailing = lineNumber != maxLines ? " , " : ""
-                let charData = "\n " + stringArray[i] + trailing
-                finalStringArray.push(charData);
-                console.error("after appending } array " + finalStringArray);
-            }
-            else {
-                let containsForbidenChar = this.wordContainsAnyForbiddenCharacters(stringArray[i], forBiddenCharactersInWords);
-
-                if (containsForbidenChar != null) {
-
-                    finalStringArray.push(("Error in line " + lineNumber + " at word " + stringArray[i] +
-                        " names are not allowed to contain { or } \n probably you forgot to whitespace between " +
-                        " { or } and " + stringArray[i]));
-                    break;
-                }
-                //get previous word or sign 
-                let slicedArray = stringArray.slice(0, i - 1);
-                console.log("find previous word from " + slicedArray + " and its length " + slicedArray.length);
-                let previousWordOrSign;
-                if (slicedArray == null || slicedArray.length == 0) {
-                    console.log("slicedArray is null or 0 ")
-                    previousWordOrSign = "";
-                } else {
-                    previousWordOrSign = this.getPreviousWord(slicedArray);
-                }
-
-                if (previousWordOrSign != null || previousWordOrSign != undefined) {
-                    if (previousWordOrSign.trim().length == 0) {
-                        console.log("previous word " + previousWordOrSign + "  is space");
-                    } else if (keyWords.includes(previousWordOrSign.toLowerCase())) {
-                        console.log("previous word " + previousWordOrSign + "  is keyword");
-
-                        let term =lineNumber != maxLines ? " , " : " ";
-                        let gen = " " + stringArray[i].trim() + " : value  " + term + "\n"
-                        finalStringArray.push(gen);
-                        console.error("gen " + gen + "after appending key and valu name array  " + finalStringArray);
-                    } else if (previousWordOrSign.trim() == "}") {
-                        console.log("Should not runn previous word is } ");
-                    } else if (previousWordOrSign.trim() == "{") {
-                        console.log("Should not runn previous word is { ")
-                    } else if (previousWordOrSign.trim().toLowerCase() == "class") {
-                        console.log("previous word is class ")
-                        finalStringArray.push( stringArray[i] + " : ")
-                  
-                        console.error("after appending class name array " + finalStringArray);
-                    } else {
-                        console.log("previous word " + previousWordOrSign + "  is unknown");
-
-                        finalStringArray.push(("Error in line " + lineNumber + " at word " + previousWordOrSign + " expected a keyword  " + keyWords + "  try int " + stringArray[i] + " or string " + stringArray[i]));
-
-                        break;
-                    }
-                } else {
-                    console.error("previous word is undifined");
-                }
-
-
-            }
-
-        }
-        // return finalStringArray.filter(function (str) {
-        //     return /\S/.test(str);
-        // }).join();
-        let finalString = "";
-        finalStringArray.forEach((item, index) => {
-            console.log("item " + item + " index " + index);
-            if (item.length != 0) { finalString += item }
-        });
-        return finalString;
-    }
-    // split the lines by new line 
-    // split the lines by ;
-    // process each word in the line
-    // return the result 
-    ConvertToJson = (value) => {
-        let finalString = "{ \n"
-
-        // efghi
-        //split by new line
-        var lines = value.split("\n");
-        for (var e = 0; e < lines.length; e++) {
-
-
-            if (lines[e].includes(";")) {
-                let lineInLines = lines[e].split(";");
-                for (var f = 0; f < lineInLines.length; f++) {
-                    if (lineInLines[f].startsWith("//")) {
-                        console.log("line starts with a comment");
-                    } else if (lines[e].length == 0) {
-                        console.log("ignore empty line");
-                    } else {
-                        // array starts at 0 humans start counting from one
-                        var returnData = this.ConvertToJsonLine(lineInLines[f], e + 1, lines.length);
-                        console.log("line in lines return " + returnData + "  final string " + finalString);
-                        finalString += returnData
-                    }
-                }
-            } else {
-                if (lines[e].startsWith("//")) {
-                    console.log("line starts with a comment");
-                } else if (lines[e].length == 0) {
-                    console.log("ignore empty line");
-                } else {
-                    var returnData = this.ConvertToJsonLine(lines[e], e + 1, lines.length);
-
-                    finalString += returnData;
-                    console.log("line item return " + returnData + "  final string " + finalString);
-                }
-            }
 
 
 
-        }
-
-        return finalString += " \n }";
-
-    }
     handleEditorChange = async (value) => {
 
 
 
-        if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_json') {
+        if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_json_to_yaml') {
 
-            const res = this.ConvertToJson(value);
+            let conv = new generateYamFromJson();
+            let res = conv.convert(value)
+            console.log("response " + typeof res)
+            if (Array.isArray(res)) {
+                alert("array")
+            } else if (typeof res === 'object' && res !== null) {
+                console.log("response  obj" + JSON.stringify(res))
+                this.setState({ dataFromServer: JSON.stringify(res) })
+            } else if (res == null) {
+                this.setState({ dataFromServer: "Encoutered an error" })
+            } else {
+                this.setState({ dataFromServer: res })
+            }
+
+        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_yaml_to_json') {
+          var  YAML = require('yamljs');
+ 
+            // parse YAML string
+            var res = YAML.parse(value);
+             
+
+            console.log("response " + typeof res)
+            if (Array.isArray(res)) {
+                alert("array")
+            } else if (typeof res === 'object' && res !== null) {
+                console.log("response  obj" + JSON.stringify(res))
+                this.setState({ dataFromServer: JSON.stringify(res) })
+            } else if (res == null) {
+                this.setState({ dataFromServer: "Encoutered an error" })
+            } else {
+                this.setState({ dataFromServer: res })
+            }
+
+        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_markdown_to_html') {
+
+
+            let conv = new generateHtmlFromMarkdown();
+            let res = conv.convert(value)
+            console.log("response " + typeof res)
+            if (Array.isArray(res)) {
+                alert("array")
+            } else if (typeof res === 'object' && res !== null) {
+                console.log("response  obj" + JSON.stringify(res))
+                this.setState({ dataFromServer: JSON.stringify(res) })
+            } else if (res == null) {
+                this.setState({ dataFromServer: "Encoutered an error" })
+            } else {
+                this.setState({ dataFromServer: res })
+            }
+
+
+
+        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json') {
+            let conv = new generateJsonFromSchema();
+            const res = conv.ConvertToJson(value);
             if (res !== null && typeof res === 'object') {
                 this.setState({ dataFromServer: JSON.stringify(res) });
             } else if (res == null) {
@@ -312,7 +194,10 @@ class AppGenerator extends Component {
                     this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage == undefined
                     ? "c#" : this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage;
 
-            const { lines: res } = await this.quicktypeJSON(
+
+            let con = new generateSchemaFromJson();
+
+            const { lines: res } = await con.convert(
                 languageItem,
                 classNameOrNameSpace,
                 value
@@ -328,11 +213,11 @@ class AppGenerator extends Component {
             } else {
                 this.setState({ dataFromServer: JSON.stringify(res) })
             }
-        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_data') {
+        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_json_data_from_schema') {
 
-            alert(" (generate data)")
+            alert(" (generate data) not yet impimented")
 
-        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_json_from_xml') {
+        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml') {
 
             var res = this.state.xmlToJson.convert(value)
             console.log("response " + typeof res)
@@ -343,7 +228,7 @@ class AppGenerator extends Component {
             } else if (res == null) {
                 this.setState({ dataFromServer: "Encoutered an error" })
             } else {
-                this.setState({ dataFromServer: JSON.stringify(res) })
+                this.setState({ dataFromServer: res })
             }
 
         } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json') {
@@ -370,34 +255,6 @@ class AppGenerator extends Component {
     };
 
 
-    quicktypeJSON = async (targetLanguage, typeName, jsonString) => {
-
-        const {
-            quicktype,
-            InputData,
-            jsonInputForTargetLanguage,
-            JSONSchemaInput,
-            JSONSchemaStore
-        } = require("quicktype-core");
-
-        const jsonInput = jsonInputForTargetLanguage(targetLanguage);
-
-        // We could add multiple samples for the same desired
-        // type, or many sources for other types. Here we're
-        // just making one type from one piece of sample JSON.
-        await jsonInput.addSource({
-            name: typeName,
-            samples: [jsonString]
-        });
-
-        const inputData = new InputData();
-        inputData.addInput(jsonInput);
-
-        return await quicktype({
-            inputData,
-            lang: targetLanguage
-        });
-    }
 
 
     render() {
@@ -422,35 +279,6 @@ class AppGenerator extends Component {
                         <div className="row " style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `black` }} >
                             <div ref="myImgContainer" className="col-lg-6 col-md-6 col-xs-12" style={{ margin: `0px`, padding: `0px`, height: `100%`, width: `100%`, backgroundColor: `green` }}  >
 
-                                {/* {this.editor ||
-                                    (this.editor = ( */}
-
-                                {/* <AceEditor
-                                            mode="csharp"
-                                            theme="twilight"
-                                            style={{
-                                                width: `100%`,
-                                                height: `100%`,
-                                                padding: `0`,
-                                                margin: `0`
-                                            }}
-                                            onChange={this.handleEditorChange}
-                                            setOptions={{
-                                                showGutter: true,
-                                                enableBasicAutocompletion: true,
-                                                enableSnippets: true,
-                                                enableLiveAutocompletion: true,
-                                                value: this.state.rawModel,
-                                                // fontFamily: "Sans-serif",
-                                            }}
-                                            name="1"
-                                            editorProps={{
-                                                $blockScrolling: true
-                                            }} */}
-                                {/* /> */}
-                                {/* ))} */}
-
-                                {/* height -64 because of appp bar and footer */}
                                 <MonacoEditor
                                     language="java"
                                     // width="100%"
@@ -462,28 +290,6 @@ class AppGenerator extends Component {
                                 />
                             </div>
                             <div className="col-lg-6 col-md-6 col-xs-12 m-0 p-0">
-                                {/* <AceEditor
-                                    mode="java"
-                                    theme="gruvbox"
-                                    style={{
-                                        width: `100%`,
-                                        height: `100%`,
-                                        padding: `0`,
-                                        margin: `0`
-                                    }}
-                                    setOptions={{
-                                        showGutter: false,
-                                        highlightActiveLine: true,
-                                        readOnly: true,
-                                        value: this.state.dataFromServer
-
-                                    }}
-                                    value={this.state.dataFromServer}
-                                    name="3"
-                                    editorProps={{
-                                        $blockScrolling: true
-                                    }}
-                                /> */}
                                 <MonacoEditor
                                     language="json"
 

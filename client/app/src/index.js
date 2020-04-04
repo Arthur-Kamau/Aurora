@@ -90,7 +90,7 @@ const store = createStore(
             port: 0
         },
         appGeneratorOperations: {
-            appGeneratorOperationsActions: 'convert_to_json',
+            appGeneratorOperationsActions: 'convert_schema_to_json',
             convertToSchemaSettings:{
                 targetLanguage:"C#",
                 classOrNameSpaceName:"App"
