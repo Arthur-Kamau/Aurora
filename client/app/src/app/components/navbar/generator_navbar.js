@@ -66,8 +66,8 @@ class GeneratorNavBar extends Component {
  
   } 
   convertToJsonCheckBox_GenerateData_label = (e) => { 
-    this.props.onappGeneratorOperationsActions('generate_json_data_from_schema');
-    this.setState({action : 'generate_json_data_from_schema'});
+    this.props.onappGeneratorOperationsActions('generate_dummy_json');
+    this.setState({action : 'generate_dummy_json'});
   }
   
 
@@ -157,7 +157,7 @@ runCode = async (e) =>{
             
             " (convert to json)" : this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema' ?
 
-            " (generate schema)" :  this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_json_data_from_schema' ? 
+            " (generate schema)" :  this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json' ? 
 
             " (generate data)" :  this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml' ? 
 
@@ -314,19 +314,19 @@ runCode = async (e) =>{
                     </div>
                   </Dropdown.Item>
 
-                  {/* <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={this.convertToJsonCheckBox_GenerateData_label}   >
+                  <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2" onClick={this.convertToJsonCheckBox_GenerateData_label}   >
 
                     <div className="form-check">
 
                       <label className="form-check-label" >
-                        Generate random data from  schema
+                        Generate  dummy json
                         {
-                        this.state.action   == "generate_json_data_from_schema" ?
+                        this.state.action   == "generate_dummy_json" ?
                         <span className="badge badge-secondary">active</span> : <span></span>
                         }
                       </label>
                     </div>
-                  </Dropdown.Item> */}
+                  </Dropdown.Item>
 
 
                   <Dropdown.Item className="dropdown-item preview-item d-flex align-items-center border-0 mt-2"  onClick={this.convertToJsonCheckBox_ConvertToXmlFromJson_label}  >

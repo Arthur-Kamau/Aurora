@@ -9,7 +9,17 @@ import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/theme-gruvbox";
 import { connect } from 'react-redux';
-import { appInputXmlToJson, appInputJsonToXml, generateSchemaFromJson, generateJsonFromSchema, generateYamFromJson, generateHtmlFromMarkdown, generateJsonFromYaml } from "./generator_tool";
+import {
+    appInputXmlToJson,
+    appInputJsonToXml,
+    generateSchemaFromJson,
+    generateJsonFromSchema,
+    generateYamFromJson,
+    generateHtmlFromMarkdown,
+    generateJsonFromYaml ,
+    generateDummyJson
+} from "./generator_tool";
+
 import MonacoEditor from '@uiw/react-monacoeditor';
 
 class AppGenerator extends Component {
@@ -130,11 +140,9 @@ class AppGenerator extends Component {
             }
 
         } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_yaml_to_json') {
-          var  YAML = require('yamljs');
- 
-            // parse YAML string
-            var res = YAML.parse(value);
-             
+
+            let conv = new generateJsonFromYaml();
+            let res = conv.convert(value)
 
             console.log("response " + typeof res)
             if (Array.isArray(res)) {
@@ -213,9 +221,13 @@ class AppGenerator extends Component {
             } else {
                 this.setState({ dataFromServer: JSON.stringify(res) })
             }
-        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_json_data_from_schema') {
+        } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json') {
 
-            alert(" (generate data) not yet impimented")
+            let gen = new generateDummyJson();
+
+            let res = gen.generate(value)
+
+            this.setState({ dataFromServer: res });
 
         } else if (this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml') {
 

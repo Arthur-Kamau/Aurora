@@ -337,9 +337,23 @@ export class generateYamFromJson {
 
 export class generateJsonFromYaml {
     convert = (yamlString) => {
-        // var yaml2json = require('yaml-to-json');
-        // var res = yaml2json(yamlString);
-        // return res;
-     return "none"
+        var YAML = require('yamljs');
+
+        // parse YAML string
+        var res = YAML.parse(yamlString);
+
+        return res;
     }
-} 
+}
+
+
+
+
+export class generateDummyJson {
+
+    generate = (inputString) => {
+        var dummyjson = require('dummy-json');
+        var result = dummyjson.parse(inputString); // Returns a string
+        return result;
+    }
+}
