@@ -8,7 +8,8 @@ import SharePageComponent from "./settings_components/share_page";
 import BlackSettingsPage from "./settings_components/blank_settings";
 import DocumentationPageInSettings from "./settings_components/documentation";
 import FeedBackPage from "./settings_components/feedback_page";
-
+import {UserProfile} from ".././../../models/profile"
+import {UserSettings} from ".././../../models/settings"
 
 export interface SettingsPageProps {
     
@@ -16,18 +17,35 @@ export interface SettingsPageProps {
  
 export interface SettingsPageState {
     pageActive: string,
-      prof: string,
-      sett: string
+      prof: UserProfile,
+      sett: UserSettings
 }
  
 class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState> {
     constructor(props: SettingsPageProps) {
         super(props);
-        this.state = { :  };
+
+        this.state = { 
+            pageActive :  "",
+prof : {
+    name: "",
+    userId: "",
+    phoneNumber: 0,
+    email: "",
+    country: "",
+    avatarUrl: "",
+},
+sett : {
+    userId: "",
+    theme: "",
+    stats : "",
+    notify: "",
+}
+        };
     }
    
 
-  openSharePage = (event) => {
+  openSharePage = (event : any) => {
     this.setState({
       pageActive: "share"
     });

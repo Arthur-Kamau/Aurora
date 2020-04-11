@@ -36,7 +36,7 @@ class AppRoutes extends Component {
                     </Route>
                     {/* <Route exact path="/project" component={EditorHomePage} /> */}
                     {/* <Route path="/generator" websocket={this.props.websocket} component={AppGenerator} /> */}
-                    <Route path="/generator" component={() => <AppGenerator  websocket={this.props.websocket} />}  />
+                    <Route path="/generator" component={() => <AppGenerator   />}  />
                     <Route exact path="/dump_server" component={DumpServerPage} />
                     <Route exact path="/create_tool" component={ CreateToolPage} />
                     <Route exact path="/connection_tool" component={ConnectionTool} />
