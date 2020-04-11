@@ -1,0 +1,109 @@
+const { mergeWith } = require('docz-utils')
+const fs = require('fs-extra')
+
+let custom = {}
+const hasGatsbyConfig = fs.existsSync('./gatsby-config.custom.js')
+
+if (hasGatsbyConfig) {
+  try {
+    custom = require('./gatsby-config.custom')
+  } catch (err) {
+    console.error(
+      `Failed to load your gatsby-config.js file : `,
+      JSON.stringify(err),
+    )
+  }
+}
+
+const config = {
+  pathPrefix: '/',
+
+  siteMetadata: {
+    title: 'Aurora App',
+    description: 'Api tooling application',
+  },
+  plugins: [
+    {
+      resolve: 'gatsby-theme-docz',
+      options: {
+        themeConfig: {},
+        src: './',
+        gatsbyRoot: null,
+        themesDir: 'src',
+        mdxExtensions: ['.md', '.mdx'],
+        docgenConfig: {},
+        menu: [],
+        mdPlugins: [],
+        hastPlugins: [],
+        ignore: [],
+        typescript: false,
+        ts: false,
+        propsParser: true,
+        'props-parser': true,
+        debug: false,
+        native: false,
+        openBrowser: null,
+        o: null,
+        open: null,
+        'open-browser': null,
+        root: '/home/publisher/Development/Go/src/Aurora/client/app/.docz',
+        base: '/',
+        source: './',
+        'gatsby-root': null,
+        files: '**/*.{md,markdown,mdx}',
+        public: '/public',
+        dest: '.docz/dist',
+        d: '.docz/dist',
+        editBranch: 'master',
+        eb: 'master',
+        'edit-branch': 'master',
+        config: '',
+        title: 'Aurora App',
+        description: 'Api tooling application',
+        host: 'localhost',
+        port: 3000,
+        p: 3000,
+        separator: '-',
+        paths: {
+          root: '/home/publisher/Development/Go/src/Aurora/client/app',
+          templates:
+            '/home/publisher/Development/Go/src/Aurora/client/app/node_modules/docz-core/dist/templates',
+          docz: '/home/publisher/Development/Go/src/Aurora/client/app/.docz',
+          cache:
+            '/home/publisher/Development/Go/src/Aurora/client/app/.docz/.cache',
+          app: '/home/publisher/Development/Go/src/Aurora/client/app/.docz/app',
+          appPackageJson:
+            '/home/publisher/Development/Go/src/Aurora/client/app/package.json',
+          appTsConfig:
+            '/home/publisher/Development/Go/src/Aurora/client/app/tsconfig.json',
+          gatsbyConfig:
+            '/home/publisher/Development/Go/src/Aurora/client/app/gatsby-config.js',
+          gatsbyBrowser:
+            '/home/publisher/Development/Go/src/Aurora/client/app/gatsby-browser.js',
+          gatsbyNode:
+            '/home/publisher/Development/Go/src/Aurora/client/app/gatsby-node.js',
+          gatsbySSR:
+            '/home/publisher/Development/Go/src/Aurora/client/app/gatsby-ssr.js',
+          importsJs:
+            '/home/publisher/Development/Go/src/Aurora/client/app/.docz/app/imports.js',
+          rootJs:
+            '/home/publisher/Development/Go/src/Aurora/client/app/.docz/app/root.jsx',
+          indexJs:
+            '/home/publisher/Development/Go/src/Aurora/client/app/.docz/app/index.jsx',
+          indexHtml:
+            '/home/publisher/Development/Go/src/Aurora/client/app/.docz/app/index.html',
+          db:
+            '/home/publisher/Development/Go/src/Aurora/client/app/.docz/app/db.json',
+        },
+      },
+    },
+  ],
+}
+
+const merge = mergeWith((objValue, srcValue) => {
+  if (Array.isArray(objValue)) {
+    return objValue.concat(srcValue)
+  }
+})
+
+module.exports = merge(config, custom)

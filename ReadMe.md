@@ -13,7 +13,7 @@ Kotlin.(backend)
 ## Frame works.
 
 1. Server ktor.
-2. React(Javascript+typescript+ReasonMl).
+2. React(Javascript).
 
 ## Getting started
 

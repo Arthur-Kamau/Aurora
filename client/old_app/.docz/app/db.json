@@ -1,0 +1,245 @@
+{
+  "config": {
+    "title": "Aurora App",
+    "description": "Api tooling application",
+    "menu": [],
+    "version": "0.1.0",
+    "repository": "https://github.com/Arthur-Kamau/Aurora",
+    "native": false,
+    "themeConfig": {},
+    "separator": "-"
+  },
+  "entries": [
+    {
+      "key": "README.md",
+      "value": {
+        "id": "04c6e90faac2675aa89e2176d2eec7d8",
+        "filepath": "README.md",
+        "fullpath": "/home/publisher/Development/Go/src/Aurora/client/app/README.md",
+        "link": "https://github.com/Arthur-Kamau/Aurora/edit/master/client/app/README.md",
+        "hidden": false,
+        "slug": "readme",
+        "route": "/readme",
+        "name": "Readme",
+        "menu": "",
+        "headings": [
+          {
+            "slug": "aurora-app",
+            "depth": 1,
+            "value": "Aurora App"
+          },
+          {
+            "slug": "get-started",
+            "depth": 2,
+            "value": "Get started"
+          },
+          {
+            "slug": "folder-structure",
+            "depth": 3,
+            "value": "Folder structure"
+          },
+          {
+            "slug": "remove-dist-from-commit",
+            "depth": 3,
+            "value": "Remove dist from commit"
+          }
+        ]
+      }
+    },
+    {
+      "key": "public/ios/README.md",
+      "value": {
+        "id": "ff6e44db01323f55910b7bb0c68b4655",
+        "filepath": "public/ios/README.md",
+        "fullpath": "/home/publisher/Development/Go/src/Aurora/client/app/public/ios/README.md",
+        "link": "https://github.com/Arthur-Kamau/Aurora/edit/master/client/app/public/ios/README.md",
+        "hidden": false,
+        "slug": "public-ios-readme",
+        "route": "/public-ios-readme",
+        "name": "Readme",
+        "menu": "",
+        "headings": [
+          {
+            "slug": "itunesartwork--itunesartwork2x-app-icon-file-extension",
+            "depth": 2,
+            "value": "iTunesArtwork & iTunesArtwork@2x (App Icon) file extension:"
+          },
+          {
+            "slug": "itunesartwork--itunesartwork2x-app-icon-transparency-handling",
+            "depth": 2,
+            "value": "iTunesArtwork & iTunesArtwork@2x (App Icon) transparency handling:"
+          }
+        ]
+      }
+    },
+    {
+      "key": "src/app/components/generator/generator.mdx",
+      "value": {
+        "name": "AppGenerator",
+        "route": "/generator",
+        "id": "f1e918933fd3bea91ad71bf7ab343594",
+        "filepath": "src/app/components/generator/generator.mdx",
+        "fullpath": "/home/publisher/Development/Go/src/Aurora/client/app/src/app/components/generator/generator.mdx",
+        "link": "https://github.com/Arthur-Kamau/Aurora/edit/master/client/app/src/app/components/generator/generator.mdx",
+        "hidden": false,
+        "slug": "src-app-components-generator-generator",
+        "menu": "",
+        "headings": [
+          {
+            "slug": "appgenerator",
+            "depth": 1,
+            "value": "AppGenerator"
+          }
+        ]
+      }
+    }
+  ],
+  "props": [
+    {
+      "key": "src/app/App.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "App",
+          "methods": [
+            {
+              "name": "onChange",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "newValue",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "diplayAppropriateAppBAr",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "starRating",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "onRouteChanged",
+              "docblock": null,
+              "modifiers": [],
+              "params": [],
+              "returns": null
+            }
+          ],
+          "actualName": "App"
+        }
+      ]
+    },
+    {
+      "key": "src/app/components/footer/Footer.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Footer",
+          "methods": [],
+          "actualName": "Footer"
+        }
+      ]
+    },
+    {
+      "key": "src/app/components/navbar/Navbar.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Navbar",
+          "methods": [
+            {
+              "name": "toggleOffcanvas",
+              "docblock": null,
+              "modifiers": [],
+              "params": [],
+              "returns": null
+            }
+          ],
+          "actualName": "Navbar"
+        }
+      ]
+    },
+    {
+      "key": "src/app/components/sidebar/Sidebar.js",
+      "value": [
+        {
+          "description": "",
+          "displayName": "Sidebar",
+          "methods": [
+            {
+              "name": "toggleMenuState",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "menuState",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "ShowNewModal",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "event",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "onRouteChanged",
+              "docblock": null,
+              "modifiers": [],
+              "params": [],
+              "returns": null
+            },
+            {
+              "name": "ShowNewModal",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "event",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            },
+            {
+              "name": "isPathActive",
+              "docblock": null,
+              "modifiers": [],
+              "params": [
+                {
+                  "name": "path",
+                  "optional": false,
+                  "type": null
+                }
+              ],
+              "returns": null
+            }
+          ],
+          "actualName": "Sidebar"
+        }
+      ]
+    }
+  ]
+}
