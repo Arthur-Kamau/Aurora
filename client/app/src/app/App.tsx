@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import { withRouter } from 'react-router-dom';
-// import ReactNotifications from 'react-notifications-component';
+import ReactNotifications from 'react-notifications-component';
 
 import AppRoutes from './AppRoutes';
 // import './App.scss';
@@ -16,15 +16,17 @@ import AppGenerator from './components/generator/generator';
 import GeneratorNavBar from './components/navbar/generator_navbar';
 import JsonGeneratorNavBar from './components/navbar/json_generator_navbar';
 import SchemaGeneratorNavBar from './components/navbar/schema_generetor_navbar';
+import { UserSettings } from '../models/settings';
 
 export interface AppProps {
   
 }
  
 export interface AppState {
-  isFullPageLayout : false,
-  location : string ,
-  appBarStyle : string
+  isFullPageLayout : boolean,
+  location? : Location ,
+  appBarStyle : string,
+  userSettings : UserSettings
 }
  
 class App extends React.Component<AppProps, AppState> {
@@ -33,26 +35,33 @@ class App extends React.Component<AppProps, AppState> {
 
     this.state = { 
       isFullPageLayout : false,
-      location : "" ,
-      appBarStyle : ""
+      location : undefined ,
+      appBarStyle : "",
+      userSettings : {
+        userId: "",
+        theme: "",
+        stats : "",
+        notify: "", 
+      }
+
     };
 }
   componentDidMount() {
     this.onRouteChanged();
-    this.setState({ location: window.location.pathname });
+    this.setState({ location: window.location });
 
   
   
-    console.error("settings  "+ JSON.stringify(this.props.userSettings))
+    // console.error("settings  "+ JSON.stringify(this.props.userSettings))
     
     
     //load css
-    if (this.props.userSettings != null && this.props.userSettings.theme != null && this.props.userSettings.theme === 'light') {
-      console.error("light"+this.props.userSettings)
+    if (this.state.userSettings != null && this.state.userSettings.theme != null && this.state.userSettings.theme === 'light') {
+
       require('./App_light.scss');
       // this.setState({})
     } else {
-      console.error("darkr"+this.props.userSettings)
+    
       require('./App_dark.scss');
     }
 
@@ -123,13 +132,13 @@ class App extends React.Component<AppProps, AppState> {
 
             <div className="main-panel"
 
-            style={this.props.userSettings.theme == "light" ?  {} : {backgroundColor:`#494949`}}
+            style={this.state.userSettings.theme == "light" ?  {} : {backgroundColor:`#494949`}}
             >
               <div className="content-wrapper"
-                style={this.props.userSettings.theme == "light" ?  {} : {backgroundColor:`#494949`}}
+                style={this.state.userSettings.theme == "light" ?  {} : {backgroundColor:`#494949`}}
               >
 
-                <AppRoutes websocket={this.state.ws} />
+                <AppRoutes  />
               </div>
               {footerComponent}
             </div>
@@ -146,8 +155,8 @@ class App extends React.Component<AppProps, AppState> {
     );
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
+  componentDidUpdate(prevProps : any) {
+    if (this.state.location !== prevProps.location) {
       this.onRouteChanged();
     }
   }
@@ -159,17 +168,17 @@ class App extends React.Component<AppProps, AppState> {
       '/register', '/login-personal-details', '/error-pages/error-404', '/error-pages/error-500',
       '/forgot-password', '/forgot-password-key'];
     for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
-      if (this.props.location.pathname === fullPageLayoutRoutes[i]) {
+      if (this.state.location?.pathname === fullPageLayoutRoutes[i]) {
         this.setState({
           isFullPageLayout: true
         })
-        document.querySelector('.page-body-wrapper').classList.add('full-page-wrapper');
+        document.querySelector('.page-body-wrapper')!.classList.add('full-page-wrapper');
         break;
       } else {
         this.setState({
           isFullPageLayout: false
         })
-        document.querySelector('.page-body-wrapper').classList.remove('full-page-wrapper');
+        document.querySelector('.page-body-wrapper')!.classList.remove('full-page-wrapper');
       }
     }
   }

@@ -1,35 +1,57 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal';
 import Dropdown from 'react-dropdown'
+import { AppConnections } from '../../../models/connections';
+import airesAppStore from '../../../store/AuroraStore';
 
 
 export interface ConnectionToolAppBarProps {
-    
+
 }
- 
+
 export interface ConnectionToolAppBarState {
-    modalIsOpen: boolean,
-    connectionMethod: string,
-    connectionProtocol:  string,
-    connectionAddress: string,
-    connectionPort: string
+  modalIsOpen: boolean,
+  connectionMethod: string,
+  connectionProtocol: string,
+  connectionAddress: string,
+  connectionPort: string,
+  connectionTool: AppConnections;
 }
- 
+
 class ConnectionToolAppBar extends React.Component<ConnectionToolAppBarProps, ConnectionToolAppBarState> {
-    constructor(props: ConnectionToolAppBarProps) {
-        super(props);
-        this.state = {       modalIsOpen: false,
-            connectionMethod: '',
-            connectionProtocol: '',
-            connectionAddress: '',
-            connectionPort: '' };
-            this.openModal = this.openModal.bind(this);
-            this.afterOpenModal = this.afterOpenModal.bind(this);
-            this.closeModal = this.closeModal.bind(this);
-            this.createThenCloseModal = this.createThenCloseModal.bind(this);
-        
-    }
-   
+  constructor(props: ConnectionToolAppBarProps) {
+    super(props);
+    this.state = {
+      modalIsOpen: false,
+      connectionMethod: '',
+      connectionProtocol: '',
+      connectionAddress: '',
+      connectionPort: '',
+
+      connectionTool: {
+        connectionMethod: '',
+        connectionProtocol: '',
+        connectionAddress: '',
+        connectionPort: '',
+        connectionTime: '',
+        connectionMethodTopics: [],
+        connectionMethodTopicsMessages: [],
+        connectionMethodLogs: [],
+      }
+    };
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.createThenCloseModal = this.createThenCloseModal.bind(this);
+
+  }
+
+
+  componentDidMount() {
+    let cons = airesAppStore.getConnectionTool();
+    this.setState({ connectionTool: cons });
+  }
+
   openModal() {
     this.setState({ modalIsOpen: true });
   }
@@ -41,42 +63,42 @@ class ConnectionToolAppBar extends React.Component<ConnectionToolAppBarProps, Co
 
   createThenCloseModal() {
     this.setState({ modalIsOpen: false });
-   
-    this.props.onconnectionToolAction({
-      connectionMethod: this.state.connectionMethod,
-      connectionProtocol: this.state.connectionProtocol,
-      connectionAddress: this.state.connectionAddress,
-      connectionPort: this.state.connectionPort,
-      connectionTime: new Date().toLocaleTimeString(),
-      connectionMethodTopics: [],
-      connectionMethodTopicsMessages: [],
-      connectionMethodLogs: [],
 
-    });
+    // this.props.onconnectionToolAction({
+    //   connectionMethod: this.state.connectionMethod,
+    //   connectionProtocol: this.state.connectionProtocol,
+    //   connectionAddress: this.state.connectionAddress,
+    //   connectionPort: this.state.connectionPort,
+    //   connectionTime: new Date().toLocaleTimeString(),
+    //   connectionMethodTopics: [],
+    //   connectionMethodTopicsMessages: [],
+    //   connectionMethodLogs: [],
+
+    // });
   }
   closeModal() {
     this.setState({ modalIsOpen: false });
   }
 
-  onSelectConnectionMethod = ( evt : any ) => {
+  onSelectConnectionMethod = (evt: any) => {
     console.log("evernt platform chosen" + evt.value);
 
     this.setState({ connectionMethod: evt.value });
     this.setState({ connectionProtocol: '' });
   }
 
-  onSelectConnectionProtocol = ( evt : any ) => {
+  onSelectConnectionProtocol = (evt: any) => {
     console.log("evernt platform chosen" + evt.value);
 
     this.setState({ connectionProtocol: evt.value });
   }
 
-  onChangeConnectionAddress = ( evt : any ) => {
+  onChangeConnectionAddress = (evt: any) => {
     console.log('connection address ' + evt.target.value);
     this.setState({ connectionAddress: evt.target.value });
   }
 
-  onChangeConnectionPort = ( evt : any ) => {
+  onChangeConnectionPort = (evt: any) => {
     console.log('connection port ' + evt.target.value);
     this.setState({ connectionPort: evt.target.value });
   }
@@ -119,7 +141,7 @@ class ConnectionToolAppBar extends React.Component<ConnectionToolAppBarProps, Co
           Connection Tool
             </h4>
         <ul className="navbar-nav navbar-nav-right ml-lg-auto">
-          {this.props.connectionTool == null || this.props.connectionTool.connectionMethod.length == 0 ?
+          {this.state.connectionTool == null || this.state.connectionTool.connectionMethod.length == 0 ?
             <button type="submit" className="btn btn-success mb-2  btn-sm " onClick={this.openModal}>
               <i className="mdi mdi-clipboard-plus menu-icon"></i>
               create Connection
@@ -135,7 +157,7 @@ class ConnectionToolAppBar extends React.Component<ConnectionToolAppBarProps, Co
             contentLabel="Example Modal"
           >
 
-            <div class="card-body">
+            <div className="card-body">
               <div className="card-title  ">
                 <div className="row">
                   <div className="col-lg-6">
@@ -228,5 +250,5 @@ class ConnectionToolAppBar extends React.Component<ConnectionToolAppBarProps, Co
     </nav>);
   }
 }
- 
+
 export default ConnectionToolAppBar;

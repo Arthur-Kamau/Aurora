@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Form } from 'react-bootstrap';
-import axios, { post } from 'axios';
+import axios   from 'axios';
+import  post  from 'axios';
+
+import FormData from 'form-data';
+import { request } from 'http';
+import { createReadStream } from 'fs';
 
 export interface FeedBackPageProps {
     
@@ -29,11 +34,14 @@ class FeedBackPage extends React.Component<FeedBackPageProps, FeedBackPageState>
        
     }
 
-    descriptionOnChange = (event) => {
-        this.setState({ description: event.value });
+    onFormSubmit = (e : any) =>{
+        console.log("form submit");
+    }
+    descriptionOnChange = (event : React.ChangeEvent<HTMLTextAreaElement>) => {
+        this.setState({ description: event.target.value });
     }
 
-    submitForm = (e) => {
+    submitForm = (e : React.MouseEvent<HTMLElement>) => {
 e.preventDefault();
         const url = 'https://ptsv2.com/t/plk2f-1582637930/post';
         const formData = new FormData();
@@ -46,27 +54,42 @@ e.preventDefault();
                 'content-type': 'multipart/form-data'
             }
         }
-     post(url, formData, config).then( (response) => {
-        // handle success
-        console.log("response "+response.status);
-        this.setState({ feedBackSubmited: true });
+    //  post(url, formData, config).then( (response: Response) => {
+    //     // handle success
+    //     console.log("response "+response.status);
+    //     this.setState({ feedBackSubmited: true });
         
-      })
-      .catch( (error) => {
-        // handle error
-        console.log(error);
-      }).finally( ()  =>{
-        // always executed
-        // this.setState({ feedBackSubmited: true });
-      }); 
+    //   })
+    //   .catch( (error: Error) => {
+    //     // handle error
+    //     console.log(error);
+    //   }).finally( ()  =>{
+    //     // always executed
+    //     // this.setState({ feedBackSubmited: true });
+    //   }); 
+
+    // const req = request(
+    //     {
+    //       host: 'localhost',
+    //       port: '5000',
+    //       path: new URL('http://www.google.ch') as const ,
+    //       method: 'POST',
+    //       headers: formData.getHeaders(),
+    //     },
+    //    ( response : any) => {
+    //       console.log(response.statusCode); // 200
+    //     }
+    //   );
+       
+    //   form.pipe(req)
     }
 
-    nameOnChange = (event) => {
-        console.log("name " + event.value)
-        this.setState({ name: event.value })
+    nameOnChange = (event:  React.ChangeEvent<HTMLInputElement>) => {
+        console.log("name " + event.target.value)
+        this.setState({ name: event.target.value })
     }
 
-    fileOnChange = (e) => {
+    fileOnChange = (e : any) => {
         this.setState({ file: e.target.files[0] })
     }
 
@@ -103,7 +126,7 @@ e.preventDefault();
 
                                     <Form.Group>
                                         <label htmlFor="exampleTextarea1">Description</label>
-                                        <textarea onChange={this.descriptionOnChange} className="form-control" id="exampleTextarea1" rows="4"></textarea>
+                                        <textarea onChange={this.descriptionOnChange} className="form-control" id="exampleTextarea1" rows={4}></textarea>
                                     </Form.Group>
 
                                     <button type="submit" onClick={this.submitForm} className="btn btn-primary mr-2">Submit</button>

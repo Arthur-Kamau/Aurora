@@ -1,18 +1,25 @@
 import * as React from 'react';
 import { Component } from 'react';
+import airesAppStore from '../../../../store/AuroraStore';
 
 export interface BlackSettingsPageProps {
     
 }
  
 export interface BlackSettingsPageState {
-    
+    authToken : string
 }
  
 class BlackSettingsPage extends React.Component<BlackSettingsPageProps, BlackSettingsPageState> {
     constructor(props: BlackSettingsPageProps) {
         super(props);
-        this.state = {   };
+        this.state = { 
+            authToken : ""
+          };
+    }
+    componentDidMount (){
+        let authToken: string  | null = airesAppStore.getUserToken() ;
+    this.setState({ authToken : authToken! });
     }
     openLoginPage = (event : any) => {
         window.location.href = "/login";
@@ -31,7 +38,7 @@ class BlackSettingsPage extends React.Component<BlackSettingsPageProps, BlackSet
 
 
                 {
-                    this.props.authToken == null || this.props.authToken.length == 0 ?
+                    this.state.authToken == null || this.state.authToken.length == 0 ?
                         <div>
                             <hr></hr>
                             <p>

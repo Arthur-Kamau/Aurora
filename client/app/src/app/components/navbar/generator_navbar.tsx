@@ -11,7 +11,9 @@ export interface GeneratorNavBarState {
     classNameOrNameSpaceNameGenerateSchema : string,
     generatorPopUpShowState : false,
     generatorSchemaPopUpShowState : false,
-    schemaLanguage:  Array<string>   
+    schemaLanguage:  Array<string>    ,
+    appGeneratorOperations: AppGeneratorOptions
+ 
 }
  
 class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNavBarState> {
@@ -23,6 +25,14 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
         classNameOrNameSpaceNameGenerateSchema : "" ,// this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName,
         generatorPopUpShowState : false,
         generatorSchemaPopUpShowState : false,
+        appGeneratorOperations : {
+          appGeneratorOperationsActions: 'convert_schema_to_json',
+          convertToSchemaSettings: {
+              targetLanguage: "C#",
+              classOrNameSpaceName: "App"
+          }
+
+      },
         schemaLanguage:[
           "Dart",
           "C#",
@@ -40,43 +50,44 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
     
       convertToJsonCheckBox_ConvertToJson_label = ( evt : any ) => { 
         this.setState({action : 'convert_schema_to_json'});
-        this.props.onappGeneratorOperationsActions('convert_schema_to_json');
+        // this.props.onappGeneratorOperationsActions('convert_schema_to_json');
       }
     
       convertToJsonCheckBox_GeneratSchema_label = ( evt : any ) => { 
         this.setState({action : 'generate_schema'});
-        this.props.onappGeneratorOperationsActions('generate_schema');
+        // this.props.onappGeneratorOperationsActions('generate_schema');
       }
     
     
       convertJsonToYamlItem = ( evt : any ) => {
         this.setState({action : 'convert_json_to_yaml'});
-        this.props.onappGeneratorOperationsActions('convert_json_to_yaml');
+        // this.props.onappGeneratorOperationsActions('convert_json_to_yaml');
       }
       convertYamlToJsonItem = ( evt : any ) => {
         this.setState({action : 'convert_yaml_to_json'});
-        this.props.onappGeneratorOperationsActions('convert_yaml_to_json');
+        // this.props.onappGeneratorOperationsActions('convert_yaml_to_json');
       }
       convertHtmlToMarkDown = ( evt : any ) => {
         this.setState({action : 'convert_markdown_to_html'});
-        this.props.onappGeneratorOperationsActions('convert_markdown_to_html');
+        // this.props.onappGeneratorOperationsActions('convert_markdown_to_html');
       }
     
     
     
       convertToJsonCheckBox_ConvertToJsonFromXml_label = ( evt : any ) => { 
         this.setState({action : 'convert_schema_to_json_from_xml'});
-        this.props.onappGeneratorOperationsActions('convert_schema_to_json_from_xml');
+        // this.props.onappGeneratorOperationsActions('convert_schema_to_json_from_xml');
     
       } 
       convertToJsonCheckBox_ConvertToXmlFromJson_label = ( evt : any ) => { 
         this.setState({action : 'convert_to_xml_from_json'});
-        this.props.onappGeneratorOperationsActions('convert_to_xml_from_json');
+        // this.props.onappGeneratorOperationsActions('convert_to_xml_from_json');
      
       } 
       convertToJsonCheckBox_GenerateData_label = ( evt : any ) => { 
-        this.props.onappGeneratorOperationsActions('generate_dummy_json');
+       
         this.setState({action : 'generate_dummy_json'});
+        // this.props.onappGeneratorOperationsActions('generate_dummy_json');
       }
       
     
@@ -86,7 +97,7 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
         if(this.state.generatorPopUpShowState){
           this.setState({ generatorPopUpShowState : false});
         }
-        this.setState({ generatorSchemaPopUpShowState : !this.state.generatorSchemaPopUpShowState });
+        // this.setState({ generatorSchemaPopUpShowState : !this.state.generatorSchemaPopUpShowState });
     
       }
       generatorPopUpShow = (event : any) =>{ 
@@ -97,15 +108,15 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
           this.setState({ generatorSchemaPopUpShowState : false});
         }
         
-        this.setState({ generatorPopUpShowState : !this.state.generatorPopUpShowState });
+        // this.setState({ generatorPopUpShowState : !this.state.generatorPopUpShowState });
     
     
-       if(!this.state.generatorPopUpShowState == false){
-        //  alert("add event listener");
-              document.addEventListener('click', this.toggleClosed);
-       }else{
-        document.removeEventListener('click', this.toggleClosed)
-       }
+      //  if(!this.state.generatorPopUpShowState == false){
+      //   //  alert("add event listener");
+      //         document.addEventListener('click', this.toggleClosed);
+      //  }else{
+      //   document.removeEventListener('click', this.toggleClosed)
+      //  }
       }
     
       toggleClosed = () => {
@@ -130,7 +141,7 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
         
       }
     
-      changeClassOrNameSpaceNameGenerateSchema = (event) => {
+      changeClassOrNameSpaceNameGenerateSchema = (event : any ) => {
         event.preventDefault();
         console.log("name " + event.target.value);
         this.setState({ classNameOrNameSpaceNameGenerateSchema: event.target.value });

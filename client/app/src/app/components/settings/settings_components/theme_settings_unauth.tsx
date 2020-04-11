@@ -1,33 +1,38 @@
+import React, { Component } from 'react'
+import airesAppStore from "../../../../store/AuroraStore";
+import { UserSettings } from '../../../../models/settings';
 export interface ThemeSettingsPageAppUnAuthProps {
-    
+
 }
- 
+
 export interface ThemeSettingsPageAppUnAuthState {
-    
+    settings?: UserSettings
 }
- 
+
 class ThemeSettingsPageAppUnAuth extends React.Component<ThemeSettingsPageAppUnAuthProps, ThemeSettingsPageAppUnAuthState> {
     constructor(props: ThemeSettingsPageAppUnAuthProps) {
         super(props);
-        this.state = { theme : ''  };
+        this.state = {
+            settings: {
+                userId: "",
+                theme: "",
+                stats: "",
+                notify: "",
+            }
+        };
     }
     componentDidMount() {
-        try {
-            var theme = window.localStorage.getItem('theme_unauth');
 
-            this.setState({ theme: theme });
+            // let settings = airesAppStore.getUserSettings;
+            // this.setState({ settings: settings! });
 
-            console.error("theme " + theme);
-        } catch (objError) {
-            this.setState({ theme: this.props.userSettings.theme });
-        }
     }
-    changeThemeToLight = (newTheme) => {
+    changeThemeToLight = (newTheme :React.MouseEvent<HTMLElement>) => {
 
 
-        let prevState = this.state.theme;
+        let prevState = this.state.settings!;
 
-        if(prevState == "light"){
+        if (prevState.theme == "light") {
             // store.addNotification({
             //     title: "Already in Light theme",
             //     message: "Theme not changed",
@@ -41,24 +46,24 @@ class ThemeSettingsPageAppUnAuth extends React.Component<ThemeSettingsPageAppUnA
             //       onScreen: true
             //     }
             //   });
-        }else{
-        
-        this.setState({ theme: "light" });
-        window.localStorage.setItem("theme_unauth", "light");
+        } else {
+prevState.theme = "light";
+            this.setState({ settings  :prevState });
+            // window.localStorage.setItem("theme_unauth", "light");
 
-        //redux
-        let profile = this.props.userSettings;
-        profile.theme = "light";
-        this.props.onChangeAppTheme(profile)
-        console.error("chanhge theme light " + JSON.stringify(profile));
-        window.location.reload(true);
+            //redux
+            // let profile = this.props.userSettings;
+            // profile.theme = "light";
+            // this.props.onChangeAppTheme(profile)
+            // console.error("chanhge theme light " + JSON.stringify(profile));
+            // window.location.reload(true);
         }
     }
 
-    changeThemeToDark = (newTheme) => {
+    changeThemeToDark = (e: any) => {
 
-        let prevState = this.state.theme;
-        if(prevState == "dark"){
+        // let prevState = this.state.theme;
+        // if (prevState == "dark") {
             // store.addNotification({
             //     title: "Already in Dark theme",
             //     message: "Theme not changed",
@@ -72,26 +77,26 @@ class ThemeSettingsPageAppUnAuth extends React.Component<ThemeSettingsPageAppUnA
             //       onScreen: true
             //     }
             //   });
-        }else{
-        
-        //local storage
-        this.setState({ theme: "dark" });
-        window.localStorage.setItem("theme_unauth", "dark");
-        //redux
-        let profile = this.props.userSettings;
-        profile.theme = "dark";
-        this.props.onChangeAppTheme(profile);
-        console.error("chanhge theme dark" + JSON.stringify(profile));
-        window.location.reload(true);
-        }
+        // } else {
+
+        //     //local storage
+        //     this.setState({ theme: "dark" });
+        //     window.localStorage.setItem("theme_unauth", "dark");
+        //     //redux
+        //     let profile = this.props.userSettings;
+        //     profile.theme = "dark";
+        //     this.props.onChangeAppTheme(profile);
+        //     console.error("chanhge theme dark" + JSON.stringify(profile));
+        //     window.location.reload(true);
+        // }
     }
 
     render() {
 
         const selectedStyle = { backgroundColor: 'lightgrey', borderColor: `blue`, borderStyle: `solid`, padding: `5px` }
         const normalStyle = { backgroundColor: 'white', padding: `5px` }
-        const lightTheme = this.state.theme == 'light' ? selectedStyle : normalStyle;
-        const darkTheme = this.state.theme == 'dark' ? selectedStyle : normalStyle;
+        const lightTheme = this.state.settings!.theme == 'light' ? selectedStyle : normalStyle;
+        const darkTheme = this.state.settings!.theme == 'dark' ? selectedStyle : normalStyle;
 
         return (<div>
 
@@ -118,5 +123,5 @@ class ThemeSettingsPageAppUnAuth extends React.Component<ThemeSettingsPageAppUnA
         );
     }
 }
- 
+
 export default ThemeSettingsPageAppUnAuth;

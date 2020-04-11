@@ -8,8 +8,9 @@ import SharePageComponent from "./settings_components/share_page";
 import BlackSettingsPage from "./settings_components/blank_settings";
 import DocumentationPageInSettings from "./settings_components/documentation";
 import FeedBackPage from "./settings_components/feedback_page";
-import {UserProfile} from ".././../../models/profile"
-import {UserSettings} from ".././../../models/settings"
+import {UserProfile} from ".././../../models/profile";
+import {UserSettings} from ".././../../models/settings";
+import airesAppStore from "../../../store/AuroraStore";
 
 export interface SettingsPageProps {
     
@@ -18,7 +19,8 @@ export interface SettingsPageProps {
 export interface SettingsPageState {
     pageActive: string,
       prof: UserProfile,
-      sett: UserSettings
+      sett: UserSettings,
+      authToken? : string
 }
  
 class SettingsPage extends React.Component<SettingsPageProps, SettingsPageState> {
@@ -40,10 +42,16 @@ sett : {
     theme: "",
     stats : "",
     notify: "",
-}
+} ,
+authToken:""
         };
     }
    
+componentWillMount(){
+    let authToken: string  | null = airesAppStore.getUserToken() ;
+    this.setState({ authToken : authToken! });
+
+}
 
   openSharePage = (event : any) => {
     this.setState({
@@ -121,7 +129,7 @@ sett : {
               <hr></hr>
 
               {
-                this.props.authToken == null || this.props.authToken.length == 0 ?
+                this.state.authToken == null || this.state.authToken.length == 0 ?
                   <div className="template-demo">
                     <div className="btn btn-light btn-lg" onClick={this.changePageToVersion} >            <i className="mdi mdi-compass icon-sm text-warning"></i> &emsp; App  Version  </div>
 
@@ -181,7 +189,7 @@ sett : {
                             <DocumentationPageInSettings ></DocumentationPageInSettings>
                             : this.state.pageActive == "share" ?
                               <SharePageComponent ></SharePageComponent>
-                              : <BlackSettingsPage authToken={this.props.authToken}></BlackSettingsPage>}
+                              : <BlackSettingsPage ></BlackSettingsPage>}
             </div>
           </div>
         </div>

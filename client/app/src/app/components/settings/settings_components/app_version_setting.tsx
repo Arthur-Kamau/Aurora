@@ -36,18 +36,18 @@ class AppVersion extends React.Component<AppVersionProps, AppVersionState> {
     componentDidMount() {
 
         //please dont touch
-        try {
-          var sett = JSON.parse(window.localStorage.getItem('sett'));
+        // try {
+        //   var sett = JSON.parse(window.localStorage.getItem('sett'));
     
-          this.setState({ sett: sett });
+        //   this.setState({ sett: sett });
     
-          console.error("sett " + JSON.parse(window.localStorage.getItem('sett')).notify);
-        } catch (objError) {
+        //   console.error("sett " + JSON.parse(window.localStorage.getItem('sett')).notify);
+        // } catch (objError) {
     
-          this.setState({ sett: this.props.userSettings });
-          console.error("error " + objError + " \n sett " + this.state.sett);
-          window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
-        }
+        //   this.setState({ sett: this.props.userSettings });
+        //   console.error("error " + objError + " \n sett " + this.state.sett);
+        //   window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
+        // }
     
         var userAgent = navigator.userAgent.toLowerCase();
         if (userAgent.indexOf(' electron/') > -1) {
@@ -119,34 +119,34 @@ class AppVersion extends React.Component<AppVersionProps, AppVersionState> {
     
     
         //local storage
-        var set = this.state.sett;
-        set.stats = e.target.checked;
-        this.setState({ sett: set });
-        window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
-        console.log("app ver  " + window.localStorage.getItem('sett'))
+        // var set = this.state.sett;
+        // set.stats = e.target.checked;
+        // this.setState({ sett: set });
+        // window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
+        // console.log("app ver  " + window.localStorage.getItem('sett'))
     
     
         //redux
-        let settings = this.props.userSettings;
-        settings.stats = e.target.checked;
-        this.props.onChangeAppTheme(settings);
+        // let settings = this.props.userSettings;
+        // settings.stats = e.target.checked;
+        // this.props.onChangeAppTheme(settings);
       }
     
-      notifyAboutMinorVersions = (e) => {
+      notifyAboutMinorVersions = (e:  React.MouseEvent<HTMLElement>) => {
     
         //local storage
-        var set = this.state.sett;
-        set.notify = e.target.checked
-        this.setState({ sett: set });
+        // var set = this.state.sett;
+        // set.notify = e.target.checked
+        // this.setState({ sett: set });
     
-        window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
-        console.log("app ver  " + window.localStorage.getItem('sett'))
+        // window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
+        // console.log("app ver  " + window.localStorage.getItem('sett'))
     
     
         //redux
-        let settings = this.props.userSettings;
-        settings.stats = e.target.checked;
-        this.props.onChangeAppTheme(settings);
+        // let settings = this.props.userSettings;
+        // settings.stats = e.target.checked;
+        // this.props.onChangeAppTheme(settings);
       }
     
     
@@ -155,7 +155,7 @@ class AppVersion extends React.Component<AppVersionProps, AppVersionState> {
           <div>
     
     
-            {this.props.authToken == null || this.props.authToken.length == 0 ?
+            {this.state.authToken == null || this.state.authToken.length == 0 ?
     
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">Araizen Aurora App</li>
