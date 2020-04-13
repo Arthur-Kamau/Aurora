@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { UserAccount } from '../../../../models/account';
-import airesAppStore from '../../../../store/AuroraStore';
+import auroraAppStore from '../../../../store/AuroraStore';
 
 export interface UserBillingProps {
     
@@ -24,8 +24,8 @@ class UserBilling extends React.Component<UserBillingProps, UserBillingState> {
     }
 
     componentDidMount(){
-        let account = airesAppStore.getUserAccount;
-            // this.setState({ account: account! });
+        let account = auroraAppStore.getUserAccount();
+            this.setState({ account: account! });
     }
     render() { 
         return (<div>

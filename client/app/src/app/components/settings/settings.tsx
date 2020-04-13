@@ -10,7 +10,7 @@ import DocumentationPageInSettings from "./settings_components/documentation";
 import FeedBackPage from "./settings_components/feedback_page";
 import {UserProfile} from ".././../../models/profile";
 import {UserSettings} from ".././../../models/settings";
-import airesAppStore from "../../../store/AuroraStore";
+import auroraAppStore from "../../../store/AuroraStore";
 
 export interface SettingsPageProps {
     
@@ -35,7 +35,7 @@ prof : {
     phoneNumber: 0,
     email: "",
     country: "",
-    avatarUrl: "",
+    userAvatar: "",
 },
 sett : {
     userId: "",
@@ -48,8 +48,17 @@ authToken:""
     }
    
 componentWillMount(){
-    let authToken: string  | null = airesAppStore.getUserToken() ;
+  //token
+    let authToken: string  | null = auroraAppStore.getUserToken() ;
     this.setState({ authToken : authToken! });
+
+    //settings
+    let settingsData = auroraAppStore.getUserSettings();
+    this.setState({ sett: settingsData! });
+
+    //profile
+    let prof = auroraAppStore.getUserProfile();
+    this.setState({ prof: prof! });
 
 }
 

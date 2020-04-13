@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import airesAppStore from '../../../../store/AuroraStore';
+import auroraAppStore from '../../../../store/AuroraStore';
 
 export interface BlackSettingsPageProps {
     
@@ -18,7 +18,7 @@ class BlackSettingsPage extends React.Component<BlackSettingsPageProps, BlackSet
           };
     }
     componentDidMount (){
-        let authToken: string  | null = airesAppStore.getUserToken() ;
+        let authToken: string  | null = auroraAppStore.getUserToken() ;
     this.setState({ authToken : authToken! });
     }
     openLoginPage = (event : any) => {

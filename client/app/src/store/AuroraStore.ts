@@ -7,7 +7,7 @@ import { UserAccount } from "../models/account";
 import { AppConnections } from "../models/connections";
 import { AppGeneratorOptions } from "../models/generator_options";
 
-class AiresAppStore extends EventEmitter {
+class AuroraAppStore extends EventEmitter {
     page: { name: string; id: string; };
     authtoken: string | null;
     dumpServer: { isStarted: boolean; ip: string; port: number; };
@@ -41,7 +41,7 @@ class AiresAppStore extends EventEmitter {
 
         };
         this.dumpServerLogs = [],
-            this.connectionTool = {
+        this.connectionTool = {
                 connectionMethod: '',
                 connectionProtocol: '',
                 connectionAddress: '',
@@ -50,7 +50,7 @@ class AiresAppStore extends EventEmitter {
                 connectionMethodTopics: [],
                 connectionMethodTopicsMessages: [],
                 connectionMethodLogs: [],
-            };
+        };
         this.userAccount = {
             accountType: 'free',
             accountBalance: 'None',
@@ -64,11 +64,13 @@ class AiresAppStore extends EventEmitter {
                 stats: "true"
             } : this.getSettings()!;
         this.userProfile = this.getProfile() == null ? {
+            userId : '',
             name: 'name',
             email: 'email',
-            location: 'location',
+            country: 'location',
+            phoneNumber : 0,
             userAvatar: 'https://picsum.photos/536/354',
-
+    
         } : this.getProfile()
     }
 
@@ -154,11 +156,14 @@ class AiresAppStore extends EventEmitter {
     getDumpserverLogs() {
         return this.dumpServerLogs;
     }
-    getConnectionTool (){
+    getConnectionTool() {
         return this.connectionTool;
+    }
+    getAppGeneratorOperations(){
+        return this.appGeneratorOperations;
     }
 }
 
-const airesAppStore = new AiresAppStore();
-dispatcher.register(airesAppStore.handleActions.bind(airesAppStore));
-export default airesAppStore;
+const auroraAppStore = new AuroraAppStore();
+dispatcher.register(auroraAppStore.handleActions.bind(auroraAppStore));
+export default auroraAppStore;

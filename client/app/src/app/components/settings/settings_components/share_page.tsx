@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Form } from 'react-bootstrap';
-
+import { store } from 'react-notifications-component';
 
 export interface SharePageComponentProps {
 
@@ -36,17 +36,21 @@ class SharePageComponent extends React.Component<SharePageComponentProps, ShareP
                 onScreen: true
             }
         });
+    } 
+
+    nameOnChange = (e : any) => {
+        console.log("name change")
     }
-    componentDidMount() {
+     componentDidMount() {
         if (navigator.userAgent.toLowerCase().indexOf(' electron/') > -1) {
             const { desktopCapturer } = window.require('electron');
 
-            desktopCapturer.getSources({ types: ['window', 'screen'] }, (error, sources) => {
+            desktopCapturer.getSources({ types: ['window', 'screen'] }, (error : any, sources : any) => {
                 alert("oka");
-                if (this.error != null) {
+                if (error != null) {
                     alert("erro getting sources");
                 }
-                for (let source of this.sources) {
+                for (let source of sources) {
                     console.log("Name: " + source.name);
                     this.setState({ sources: [source.name, ...this.state.sources] })
                 }

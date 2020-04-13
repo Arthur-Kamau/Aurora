@@ -14,8 +14,5 @@ const AppResponseStatus = {
 
     
 
-
-
-
 }
 module.exports = AppResponseStatus;

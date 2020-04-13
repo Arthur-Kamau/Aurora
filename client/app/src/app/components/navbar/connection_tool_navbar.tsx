@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Modal from 'react-modal';
 import Dropdown from 'react-dropdown'
 import { AppConnections } from '../../../models/connections';
-import airesAppStore from '../../../store/AuroraStore';
+import auroraAppStore from '../../../store/AuroraStore';
 
 
 export interface ConnectionToolAppBarProps {
@@ -48,7 +48,7 @@ class ConnectionToolAppBar extends React.Component<ConnectionToolAppBarProps, Co
 
 
   componentDidMount() {
-    let cons = airesAppStore.getConnectionTool();
+    let cons = auroraAppStore.getConnectionTool();
     this.setState({ connectionTool: cons });
   }
 

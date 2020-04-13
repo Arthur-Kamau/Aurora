@@ -15,29 +15,63 @@ import { connect } from 'react-redux';
 import { Tabs, Tab, TabPanel, TabList } from "react-web-tabs";
 import Modal from 'react-modal';
 import "react-web-tabs/dist/react-web-tabs.css";
+import { AppConnections } from '../../../models/connections';
+import auroraAppStore from '../../../store/AuroraStore';
+import { UserSettings } from '../../../models/settings';
 // import "./styles.css";
 
 export interface ConnectionToolProps {
-    
-}
- 
-export interface ConnectionToolState {
-    activeColumn: string,
-    modalIsOpen: boolean ,
-    changeTopicName : string
 
 }
- 
+
+export interface ConnectionToolState {
+    activeColumn: string,
+    modalIsOpen: boolean,
+    changeTopicName: string,
+    connectionTool: AppConnections,
+    userSettings: UserSettings
+
+}
+
 class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionToolState> {
     constructor(props: ConnectionToolProps) {
         super(props);
-        this.state = { 
-              activeColumn: 'publish',
-        modalIsOpen: false,
-        changeTopicName: '',
-     };
+        this.state = {
+            activeColumn: 'publish',
+            modalIsOpen: false,
+            changeTopicName: '',
+            connectionTool: {
+                connectionMethod: '',
+                connectionProtocol: '',
+                connectionAddress: '',
+                connectionPort: '',
+                connectionTime: '',
+                connectionMethodTopics: [],
+                connectionMethodTopicsMessages: [],
+                connectionMethodLogs: [],
+            },
+            userSettings :  {
+                theme: auroraAppStore.getThemeUnAuth()!,
+                userId: "",
+                notify: "true",
+                stats: "true"
+            } 
+        };
     }
 
+
+
+    componentDidMount() {
+
+        let connectionToolState = auroraAppStore.getConnectionTool();
+        this.setState({ connectionTool: connectionToolState });
+
+
+
+
+        let settingsData = auroraAppStore.getUserSettings();
+        this.setState({ userSettings: settingsData! });
+    }
     changeBodyToPublish = () => {
         this.setState({ activeColumn: 'publish' })
     }
@@ -47,7 +81,7 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
     changeBodyToLogs = () => {
         this.setState({ activeColumn: 'logs' })
     }
-    changeTopicNameToSubscribe = (e) => {
+    changeTopicNameToSubscribe = (e: any) => {
         this.setState({ changeTopicName: e.target.value })
     }
     disconnectAction = () => {
@@ -57,7 +91,7 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
     openModal = () => {
         this.setState({ modalIsOpen: true });
     }
-    closeModal =() => {
+    closeModal = () => {
         this.setState({ modalIsOpen: false });
     }
     afterOpenModal = () => {
@@ -90,9 +124,9 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
         };
         return (
             <div className="card ml-4 mt-2" style={{ height: `88vh` }}>
-                {this.props.connectionTool == null || this.props.connectionTool.connectionMethod.length == 0 ?
+                {this.state.connectionTool == null || this.state.connectionTool.connectionMethod.length == 0 ?
 
-                    <div className="card-body"  style={this.props.userSettings.theme == "light" ?  {} : {backgroundColor:`#494949` , color :`white`}}>
+                    <div className="card-body" style={this.state.userSettings.theme == "light" ? {} : { backgroundColor: `#494949`, color: `white` }}>
                         <h4>No Connection configured</h4>
                     </div>
 
@@ -112,23 +146,25 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
                                     <div className="col-md-10 col-lg-5">
                                         <div className="float-center">
                                             <form >
-                                                <p className="mb-2 mr-4" htmlFor="inlineFormInputName1">Method</p>
-                                                <Form.Control type="text" className="w3-input w3-border mb-2 mr-sm-2 rounded-0" id="inlineFormInputName1" disabled value={this.props.connectionTool.connectionMethod} />
+                                                {/* <p className="mb-2 mr-4" htmlFor="inlineFormInputName1">Method</p> */}
+                                                <p className="mb-2 mr-4" >Method</p>
+                                                <Form.Control type="text" className="w3-input w3-border mb-2 mr-sm-2 rounded-0" id="inlineFormInputName1" disabled value={this.state.connectionTool.connectionMethod} />
 
-                                                <p className="mb-2 mr-4" htmlFor="inlineFormInputName2">Address</p>
-                                                <Form.Control type="text" className="w3-input w3-border mb-2 mr-sm-2 rounded-0" id="inlineFormInputName2" disabled value={this.props.connectionTool.connectionAddress} />
+                                                {/* <p className="mb-2 mr-4" htmlFor="inlineFormInputName2">Address</p> */}
+                                                <p className="mb-2 mr-4" >Address</p>
+                                                <Form.Control type="text" className="w3-input w3-border mb-2 mr-sm-2 rounded-0" id="inlineFormInputName2" disabled value={this.state.connectionTool.connectionAddress} />
 
 
                                                 <label className="mb-2 mr-4 " htmlFor="inlineFormInputGroupUsername3">Port</label>
                                                 <div className="input-group mb-2 mr-sm-2">
-                                                    <Form.Control type="text" className="form-control rounded-0" id="inlineFormInputGroupUsername3" disabled value={this.props.connectionTool.connectionPort} />
+                                                    <Form.Control type="text" className="form-control rounded-0" id="inlineFormInputGroupUsername3" disabled value={this.state.connectionTool.connectionPort} />
                                                 </div>
                                                 <button type="submit" onClick={this.disconnectAction} className="float-right btn btn-danger btn-md mb-2  ">Disconnect</button>
                                             </form>
                                         </div>
                                     </div>
                                     <div className="col-md-2 col-lg-4">
-                                        <p>Connection Time : {this.props.connectionTool.connectionTime}</p>
+                                        <p>Connection Time : {this.state.connectionTool.connectionTime}</p>
                                         <p>Connection Duration :</p>
                                     </div>
 
@@ -148,7 +184,7 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
                                             </Form.Group>
                                             <Form.Group>
                                                 <label htmlFor="exampleTextarea1">Data</label>
-                                                <textarea className="form-control rounded-0" id="exampleTextarea1" rows="4"></textarea>
+                                                <textarea className="form-control rounded-0" id="exampleTextarea1" rows={4}></textarea>
                                             </Form.Group>
                                             <button type="submit" className="btn btn-primary mr-2">Submit</button>
                                         </form>
@@ -174,7 +210,7 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
                                                     contentLabel="Topic Name"
                                                 >
 
-                                                    <div class="card-body">
+                                                    <div className="card-body">
                                                         <div className="card-title  ">
                                                             <div className="row">
                                                                 <div className="col-lg-12">
@@ -213,7 +249,7 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
 
                                                     All Topic Messages </li>
                                                 <br></br>
-                                                {this.props.connectionTool.connectionMethodTopics.map((item, index) => (
+                                                {this.state.connectionTool.connectionMethodTopics.map((item, index) => (
                                                     <li key={index} className="list-group-item list-group-item-action border-top border-bottom">{item}</li>
                                                 ))}
 
@@ -223,8 +259,8 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
 
                                         <div className="col-md-9 col-lg-9">
                                             {
-                                                this.props.connectionTool.connectionMethodTopicsMessages == null ||
-                                                    this.props.connectionTool.connectionMethodTopicsMessages.length == 0 ?
+                                                this.state.connectionTool.connectionMethodTopicsMessages == null ||
+                                                    this.state.connectionTool.connectionMethodTopicsMessages.length == 0 ?
                                                     <div className="mt-1 mb-4">
                                                         <span className="menu-title">Message list </span>
                                                         <i className="mdi mdi-sort-variant menu-icon float-right "></i>
@@ -234,7 +270,7 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
                                                         <span className="menu-title">Subscrbed topics </span>
                                                         <br></br>
                                                         <div className="list-group list-group-flush">
-                                                            {this.props.connectionTool.connectionMethodTopics.map((item, index) => (
+                                                            {this.state.connectionTool.connectionMethodTopics.map((item, index) => (
                                                                 <div className="list-group-item list-group-item-action">item</div>
                                                             ))}
                                                         </div>
@@ -277,5 +313,5 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
         );
     }
 }
- 
+
 export default ConnectionTool;

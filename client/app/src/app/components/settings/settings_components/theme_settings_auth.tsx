@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
-import userProfileAction from '../../../../actions/user_profile_action';
+import { UserSettings } from '../../../../models/settings';
+import auroraAppStore from '../../../../store/AuroraStore';
 const theme = { borderStyle: `solid`, borderColor: `red`, backgroundColor: `lightgrey`, padding: `10px` };
 
 
@@ -9,69 +10,69 @@ export interface ThemeSettingsPageProps {
 }
  
 export interface ThemeSettingsPageState {
- sett :''   
+    settings?: UserSettings
 }
  
 class ThemeSettingsPage extends React.Component<ThemeSettingsPageProps, ThemeSettingsPageState> {
     constructor(props: ThemeSettingsPageProps) {
         super(props);
-        this.state = { sett: ''  };
+        this.state = {   settings: {
+            userId: "",
+            theme: "",
+            stats: "",
+            notify: "",
+        }  };
     }
     componentDidMount() {
-        try{
-         var sett = JSON.parse(window.localStorage.getItem('sett'));
- 
-         this.setState({ sett: sett });
- 
-         console.error("sett " + sett);
-        } catch (objError) { 
-         this.setState({ sett: this.props.userSettings });
+        let settings = auroraAppStore.getUserSettings();
+        this.setState({ settings: settings! });
+
+
      }
-     }
-     changeThemeToLight = (newTheme) => {
+     changeThemeToLight = (e : any) => {
  
  
          //local storage
-         var set = this.state.sett;
-         set.theme = "light"
-         this.setState({ sett: set });
-         window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
-         console.log("p e "+window.localStorage.getItem('sett'))
+        //  var set = this.state.settings;
+        //  set.theme = "light"
+        //  this.setState({ sett: set });
+        //  window.localStorage.setItem("sett", JSON.stringify(this.state.settings));
+        //  console.log("p e "+window.localStorage.getItem('sett'))
  
  // for (var key of Object.keys(window.localStorage.getItem('sett'))) {
  //     console.log("--> "+key + " -> " + window.localStorage.getItem('sett')[key])
  // }
          //redux
-         let profile = this.props.userSettings;
-         profile.theme = "light";
-         this.props.onChangeAppTheme(profile)
+        //  let profile = this.props.userSettings;
+        //  profile.theme = "light";
+        //  this.props.onChangeAppTheme(profile)
  
-         window.location.reload(true);
+        //  window.location.reload(true);
      }
  
-     changeThemeToDark = (newTheme) => {
+     changeThemeToDark = (e : any) => {
  
  
  
          //local storage
-         var set = this.state.sett;
-         set.theme = "dark"
-         this.setState({ sett: set });
-         window.localStorage.setItem("sett", this.state.sett);
-         //redux
-         let profile = this.props.userSettings;
-         profile.theme = "dark";
-         this.props.onChangeAppTheme(profile);
+        //  var set = this.state.settings;
+        //  set.theme = "dark"
+        //  this.setState({ sett: set });
+        //  window.localStorage.setItem("sett", this.state.settings);
+        //  //redux
+        //  let profile = this.props.userSettings;
+        //  profile.theme = "dark";
+        //  this.props.onChangeAppTheme(profile);
  
-         window.location.reload(true);
+        //  window.location.reload(true);
      }
  
      render() {
  
          const selectedStyle = { backgroundColor: 'lightgrey', borderColor: `blue`, borderStyle: `solid`, padding: `5px` }
          const normalStyle = { backgroundColor: 'white', padding: `5px` }
-         const lightTheme = this.state.sett.theme == 'light' ? selectedStyle : normalStyle;
-         const darkTheme = this.state.sett.theme == 'dark' ? selectedStyle : normalStyle;
+         const lightTheme = this.state.settings!.theme == 'light' ? selectedStyle : normalStyle;
+         const darkTheme = this.state.settings!.theme == 'dark' ? selectedStyle : normalStyle;
  
          return (<div>
  

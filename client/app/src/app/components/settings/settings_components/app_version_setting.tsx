@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
+import auroraAppStore from '../../../../store/AuroraStore';
+import { UserSettings } from '../../../../models/settings';
 
 export interface AppVersionProps {
     
@@ -10,11 +12,12 @@ export interface AppVersionState {
     version: string,
     isElectronApp: boolean,
 
-
-    sett: {
-      notify: string,
-      stats: string
-    }
+    authToken : string,
+    userSettings: UserSettings;
+    // sett: {
+    //   notify: string,
+    //   stats: string
+    // }
 }
  
 class AppVersion extends React.Component<AppVersionProps, AppVersionState> {
@@ -25,17 +28,18 @@ class AppVersion extends React.Component<AppVersionProps, AppVersionState> {
             version: "",
             isElectronApp: false,
       
-      
-            sett: {
-              notify: "false",
-              stats: "false"
-            }
+            authToken :'',
+            userSettings : {
+              theme: auroraAppStore.getThemeUnAuth()!,
+              userId: "",
+              notify: "true",
+              stats: "true"
+          } 
           };
     }
   
     componentDidMount() {
 
-        //please dont touch
         // try {
         //   var sett = JSON.parse(window.localStorage.getItem('sett'));
     
@@ -48,7 +52,16 @@ class AppVersion extends React.Component<AppVersionProps, AppVersionState> {
         //   console.error("error " + objError + " \n sett " + this.state.sett);
         //   window.localStorage.setItem("sett", JSON.stringify(this.state.sett));
         // }
-    
+
+
+        let authToken: string  | null = auroraAppStore.getUserToken() ;
+        this.setState({ authToken : authToken! });
+        
+
+        let settingsData = auroraAppStore.getUserSettings();
+        this.setState({ userSettings: settingsData! });
+
+
         var userAgent = navigator.userAgent.toLowerCase();
         if (userAgent.indexOf(' electron/') > -1) {
           this.setState({ isElectronApp: true });
@@ -132,7 +145,7 @@ class AppVersion extends React.Component<AppVersionProps, AppVersionState> {
         // this.props.onChangeAppTheme(settings);
       }
     
-      notifyAboutMinorVersions = (e:  React.MouseEvent<HTMLElement>) => {
+      notifyAboutMinorVersions = (e: any) => {
     
         //local storage
         // var set = this.state.sett;
@@ -185,7 +198,7 @@ class AppVersion extends React.Component<AppVersionProps, AppVersionState> {
                   <li className="list-group-item">
                     <div className="form-check">
                       <label className="form-check-label">
-                        <input type="checkbox" checked={this.state.sett.notify == "true" ? true : false} className="form-check-input" onChange={this.notifyAboutMinorVersions} />
+                        <input type="checkbox" checked={this.state.userSettings.notify == "true" ? true : false} className="form-check-input" onChange={this.notifyAboutMinorVersions} />
                         <i className="input-helper"></i>
                     Do not Get notified of minor versions
                   </label>
@@ -195,7 +208,7 @@ class AppVersion extends React.Component<AppVersionProps, AppVersionState> {
                   <li className="list-group-item">
                     <div className="form-check">
                       <label className="form-check-label">
-                        <input type="checkbox" checked={this.state.sett.stats == "true" ? true : false} className="form-check-input" onChange={this.reportAnonymousStats} />
+                        <input type="checkbox" checked={this.state.userSettings.stats == "true" ? true : false} className="form-check-input" onChange={this.reportAnonymousStats} />
                         <i className="input-helper"></i>
                     Report anonymous statistics
                 </label>
@@ -204,7 +217,8 @@ class AppVersion extends React.Component<AppVersionProps, AppVersionState> {
     
                 {this.state.isElectronApp == true ?
                   <div className="align-content-lg-end">
-                    <div id={style.notification} className={style.hidden}>
+                    {/* <div id={style.notification} className={style.hidden}> */}
+                    <div>
                       <p id="message"></p>
                       <button
                         className="btn btn-success btn-md"

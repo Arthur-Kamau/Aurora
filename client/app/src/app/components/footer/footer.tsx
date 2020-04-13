@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { AppGeneratorOptions } from '../../../models/generator_options';
+import auroraAppStore from '../../../store/AuroraStore';
 
 export interface FooterProps {
     
@@ -6,15 +8,30 @@ export interface FooterProps {
  
 
 export interface FooterState {
-    
+  appGeneratorOperations: AppGeneratorOptions;
 }
  
 
 class Footer extends React.Component<FooterProps, FooterState> {
     constructor(props: FooterProps) {
         super(props);
-        this.state = {  };
+        this.state = {  
+          appGeneratorOperations : {
+            appGeneratorOperationsActions: 'convert_schema_to_json',
+            convertToSchemaSettings: {
+                targetLanguage: "C#",
+                classOrNameSpaceName: "App"
+            }
+
+          }
+        };
     }
+
+    componentDidMount(){
+      let genOptions = auroraAppStore.getAppGeneratorOperations();
+      this.setState({appGeneratorOperations :genOptions })
+    }
+
     render() { 
         return (
             <footer  >
@@ -34,26 +51,26 @@ class Footer extends React.Component<FooterProps, FooterState> {
     
     
                       {
-                        this.props.appGeneratorOperations.appGeneratorOperationsActions == null ||
-                          this.props.appGeneratorOperations.appGeneratorOperationsActions.length == 0 ?
+                        this.state.appGeneratorOperations.appGeneratorOperationsActions == null ||
+                          this.state.appGeneratorOperations.appGeneratorOperationsActions.length == 0 ?
                           ' Action : No Option Selected'
                           :
     
     
-                          this.props.appGeneratorOperations.appGeneratorOperationsActions != null &&
-                            this.props.appGeneratorOperations.appGeneratorOperationsActions == "generate_schema" ?
+                          this.state.appGeneratorOperations.appGeneratorOperationsActions != null &&
+                            this.state.appGeneratorOperations.appGeneratorOperationsActions == "generate_schema" ?
     
                             <div>
-                              <span>Language : {this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage}</span>
+                              <span>Language : {this.state.appGeneratorOperations.convertToSchemaSettings.targetLanguage}</span>
                              &emsp;
-                            <span>Name : {this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName}</span>
+                            <span>Name : {this.state.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName}</span>
                             &emsp;
-                            <span>Action : {this.props.appGeneratorOperations.appGeneratorOperationsActions}</span>
+                            <span>Action : {this.state.appGeneratorOperations.appGeneratorOperationsActions}</span>
                             </div>
                             :
                             <div>
     
-                              Action : {this.props.appGeneratorOperations.appGeneratorOperationsActions}
+                              Action : {this.state.appGeneratorOperations.appGeneratorOperationsActions}
                             </div>
     
     

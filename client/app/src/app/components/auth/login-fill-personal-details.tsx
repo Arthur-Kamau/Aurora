@@ -5,7 +5,7 @@ import {
     GithubLoginButton,
 } from "react-social-login-buttons";
 import AppUrls from "../../../url/url";
-import AppResponseStatus from "../../../url/app_responses";
+import AppResponseStatus from "../../../app_response/app_response";
 import axios from 'axios';
 
 export interface LoginFillPersonalDetailsProps {
@@ -47,9 +47,9 @@ class LoginFillPersonalDetails extends React.Component<LoginFillPersonalDetailsP
     componentDidMount() {
         var mail = window.localStorage.getItem("email");
         console.error("email " + mail)
-        this.setState({ email: mail });
+        this.setState({ email: mail! });
         var keys = window.localStorage.getItem("aurora_key");
-        this.setState({ token: keys });
+        this.setState({ token: keys! });
         // var list = require('../../../data/country_list');
         // this.setState({     country_list: [     ]  });
 

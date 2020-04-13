@@ -2,38 +2,45 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom';
 import { Collapse } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
+import { UserSettings } from '../../../models/settings';
+import auroraAppStore from '../../../store/AuroraStore';
 
 export interface SidebarProps {
     
 }
  
 export interface SidebarState {
-    
+  userSettings: UserSettings,
 }
  
 class Sidebar extends React.Component<SidebarProps, SidebarState> {
     constructor(props: SidebarProps) {
         super(props);
-        this.state = { :  };
+        this.state = { userSettings : {
+          userId: "",
+          theme: "",
+          stats : "",
+          notify: "",
+      } ,  };
     }
 
-    toggleMenuState(menuState) {
-        if (this.state[menuState]) {
-          this.setState({ [menuState]: false });
-        } else if (Object.keys(this.state).length === 0) {
-          this.setState({ [menuState]: true });
-        } else {
-          Object.keys(this.state).forEach(i => {
-            this.setState({ [i]: false });
-          });
-          this.setState({ [menuState]: true });
-        }
+    toggleMenuState(menuState : any) {
+        // if (this.state[menuState]) {
+        //   this.setState({ [menuState]: false });
+        // } else if (Object.keys(this.state).length === 0) {
+        //   this.setState({ [menuState]: true });
+        // } else {
+        //   Object.keys(this.state).forEach(i => {
+        //     this.setState({ [i]: false });
+        //   });
+        //   this.setState({ [menuState]: true });
+        // }
       }
     
       componentDidUpdate(prevProps : any) {
-        if (this.props.location !== prevProps.location) {
-          this.onRouteChanged();
-        }
+        // if (this.props.location !== prevProps.location) {
+        //   this.onRouteChanged();
+        // }
       }
     
     //   ShowNewModal = (event : any) => {
@@ -58,21 +65,21 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
     //   }
     
       onRouteChanged() {
-        document.querySelector('#sidebar').classList.remove('active');
-        Object.keys(this.state).forEach(i => {
-          this.setState({ [i]: false });
-        });
+        document.querySelector('#sidebar')!.classList.remove('active');
+        // Object.keys(this.state).forEach(i => {
+        //   this.setState({ [i]: false });
+        // });
     
         const dropdownPaths = [
           { path: '/generator', state: 'generatorMenuOpen' },
           { path: '/tool', state: 'toolingMenuOpen' },
         ];
     
-        dropdownPaths.forEach((obj => {
-          if (this.isPathActive(obj.path)) {
-            this.setState({ [obj.state]: true })
-          }
-        }));
+        // dropdownPaths.forEach((obj => {
+        //   if (this.isPathActive(obj.path)) {
+        //     this.setState({ [obj.state]: true })
+        //   }
+        // }));
     
       }
     
@@ -102,7 +109,7 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
   render() {
 
       var appStyle =  {
-        backgroundColor :  this.props.userSettings.theme === 'light' ?  `#fff` : `#242424`
+        backgroundColor :  this.state.userSettings.theme === 'light' ?  `#fff` : `#242424`
       } //    
     return (
       <nav className="sidebar sidebar-offcanvas" id="sidebar" 
@@ -118,7 +125,7 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
               <div className="col-md-2" onClick={() => document.body.classList.toggle('sidebar-icon-only')}>
                 <button className="navbar-toggler navbar-toggler  " type="button" > 
                  {/* onClick={() => document.body.classList.toggle('sidebar-icon-only')}> */}
-                  {this.props.userSettings.theme === 'light' ?
+                  {this.state.userSettings.theme === 'light' ?
                     <i className="mdi mdi-menu"></i>
                     :
                     <i className="mdi mdi-menu" style={{ color: `white` }}></i>
@@ -126,7 +133,7 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 </button>
               </div>
               <div className="col-md-9">
-                {this.props.userSettings.theme === 'light' ?
+                {this.state.userSettings.theme === 'light' ?
                   <span className="menu-title"><h3 >Aurora Tool </h3></span>
                   :
                   <span className="menu-title"><h3 style={{ color: `white` }} >Aurora Tool </h3></span>
@@ -136,7 +143,7 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
           </div>
 
           <button className="navbar-toggler navbar-toggler sidebar-brand  brand-logo-mini pt-3" type="button" onClick={() => document.body.classList.toggle('sidebar-icon-only')}>
-            {this.props.userSettings.theme === 'light' ?
+            {this.state.userSettings.theme === 'light' ?
               <i className="mdi mdi-menu"></i>
               :
               <i className="mdi mdi-menu" style={{ color: `white` }}></i>
@@ -204,23 +211,29 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
     );
   }
 
-  isPathActive(path) {
-    return this.props.location.pathname.startsWith(path);
+  isPathActive(path : string) {
+    // return this.props.location.pathname.startsWith(path);
+    return window.location.pathname.startsWith(path);
   }
 
   componentDidMount() {
+
+    let settingsData = auroraAppStore.getUserSettings();
+    this.setState({ userSettings : settingsData! });
+
+
     this.onRouteChanged();
     // add className 'hover-open' to sidebar navitem while hover in sidebar-icon-only menu
     const body = document.querySelector('body');
     document.querySelectorAll('.sidebar .nav-item').forEach((el) => {
 
       el.addEventListener('mouseover', function () {
-        if (body.classList.contains('sidebar-icon-only')) {
+        if (body!.classList.contains('sidebar-icon-only')) {
           el.classList.add('hover-open');
         }
       });
       el.addEventListener('mouseout', function () {
-        if (body.classList.contains('sidebar-icon-only')) {
+        if (body!.classList.contains('sidebar-icon-only')) {
           el.classList.remove('hover-open');
         }
       });

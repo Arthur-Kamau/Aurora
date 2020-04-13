@@ -4,5 +4,5 @@ export interface UserProfile {
     phoneNumber: number,
     email: string,
     country: string,
-    avatarUrl: string,
+    userAvatar: string,
   }

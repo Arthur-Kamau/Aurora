@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react'
-
+import { Dropdown } from 'react-bootstrap';
+import { Form } from "react-bootstrap";
 export interface CreateToolPageProps {
     
 }
@@ -27,7 +28,8 @@ class CreateToolPage extends React.Component<CreateToolPageProps, CreateToolPage
 
 
                             <Dropdown>
-                                <Dropdown.Toggle variant="btn btn-primary btn-sm  btn-block" id="dropdownMenuSizeButton1">
+                                {/* <Dropdown.Toggle variant="btn btn-primary btn-sm  btn-block" id="dropdownMenuSizeButton1"> */}
+                                <Dropdown.Toggle id="dropdownMenuSizeButton1">
                                     Dropdown
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>

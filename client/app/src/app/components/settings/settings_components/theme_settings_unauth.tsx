@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import airesAppStore from "../../../../store/AuroraStore";
+import auroraAppStore from "../../../../store/AuroraStore";
 import { UserSettings } from '../../../../models/settings';
 export interface ThemeSettingsPageAppUnAuthProps {
 
@@ -23,8 +23,8 @@ class ThemeSettingsPageAppUnAuth extends React.Component<ThemeSettingsPageAppUnA
     }
     componentDidMount() {
 
-            // let settings = airesAppStore.getUserSettings;
-            // this.setState({ settings: settings! });
+            let settings = auroraAppStore.getUserSettings();
+            this.setState({ settings: settings! });
 
     }
     changeThemeToLight = (newTheme :React.MouseEvent<HTMLElement>) => {

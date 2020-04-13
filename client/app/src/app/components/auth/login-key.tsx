@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import AppUrls from "../../../url/url";
-import AppResponseStatus from "../../../app_response/app_responses";
+import AppResponseStatus from "../../../app_response/app_response";
 import axios from 'axios';
 export interface LoginKeyProps {
     

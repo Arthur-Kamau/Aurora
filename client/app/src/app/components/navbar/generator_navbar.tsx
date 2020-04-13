@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Dropdown } from 'react-bootstrap';
+import { AppGeneratorOptions } from '../../../models/generator_options';
 
 export interface GeneratorNavBarProps {
     
@@ -21,8 +22,8 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
         super(props);
         this.state = {  
              action : 'generate_schema',
-        targetLanguage: "",   //this.props.appGeneratorOperations.convertToSchemaSettings.targetLanguage,
-        classNameOrNameSpaceNameGenerateSchema : "" ,// this.props.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName,
+        targetLanguage: "",   //this.state.appGeneratorOperations.convertToSchemaSettings.targetLanguage,
+        classNameOrNameSpaceNameGenerateSchema : "" ,// this.state.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName,
         generatorPopUpShowState : false,
         generatorSchemaPopUpShowState : false,
         appGeneratorOperations : {
@@ -133,10 +134,12 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
        
         console.log("language " + event.target.value);
         this.setState({targetLanguage : event.target.value})
-        this.props.onGenerateSchemaConfiguraion({
-          targetLanguage : event.target.value ,
-          classOrNameSpaceName : this.state.classNameOrNameSpaceNameGenerateSchema
-        });
+
+        //todo
+        // this.props.onGenerateSchemaConfiguraion({
+        //   targetLanguage : event.target.value ,
+        //   classOrNameSpaceName : this.state.classNameOrNameSpaceNameGenerateSchema
+        // });
     
         
       }
@@ -145,10 +148,11 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
         event.preventDefault();
         console.log("name " + event.target.value);
         this.setState({ classNameOrNameSpaceNameGenerateSchema: event.target.value });
-        this.props.onGenerateSchemaConfiguraion({
-          targetLanguage : this.state.targetLanguage ,
-          classOrNameSpaceName : event.target.value,
-        });
+        //todo
+        // this.props.onGenerateSchemaConfiguraion({
+        //   targetLanguage : this.state.targetLanguage ,
+        //   classOrNameSpaceName : event.target.value,
+        // });
     }
     
     runCode = async ( evt : any ) =>{
@@ -173,22 +177,22 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
               <h4>
                 Json Operations 
                 
-                {this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json' ?  
+                {this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json' ?  
                 
-                " (convert to json)" : this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema' ?
+                " (convert to json)" : this.state.appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema' ?
     
-                " (generate schema)" :  this.props.appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json' ? 
+                " (generate schema)" :  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json' ? 
     
-                " (generate data)" :  this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml' ? 
+                " (generate data)" :  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml' ? 
     
     
-                " (convert xml to json)" : this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json' ?   
+                " (convert xml to json)" : this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json' ?   
                 
-                " (convert json to xml)":  this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_json_to_yaml' ? 
+                " (convert json to xml)":  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_json_to_yaml' ? 
     
-                " (convert json to yaml)" : this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_yaml_to_json' ?  
+                " (convert json to yaml)" : this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_yaml_to_json' ?  
               
-                " (convert yaml to json)" :  this.props.appGeneratorOperations.appGeneratorOperationsActions == 'convert_markdown_to_html' ?  
+                " (convert yaml to json)" :  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_markdown_to_html' ?  
     
                 " (convert markdown to html) " : 
                 

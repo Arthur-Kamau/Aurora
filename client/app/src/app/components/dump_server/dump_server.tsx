@@ -1,12 +1,18 @@
+import React, { Component } from 'react'
+import { Form } from "react-bootstrap";
+import auroraAppStore from '../../../store/AuroraStore';
+import { DumpServerRequestDetails } from '../../../models/dumpServerRequestDetails';
+import { UserSettings } from '../../../models/settings';
 export interface DumpServerPageProps {
 
 }
 
 export interface DumpServerPageState {
     serverRunning: boolean,
-    serverRequestList: Array<string>,
+    serverRequestList: Array<DumpServerRequestDetails>,
     serverRequestPage: string,
-    serverRequestPageIndex: string
+    serverRequestPageIndex: string,
+    userSettings: UserSettings;
 }
 
 
@@ -17,10 +23,21 @@ class DumpServerPage extends React.Component<DumpServerPageProps, DumpServerPage
             serverRunning: false,
             serverRequestList: [],
             serverRequestPage: 'request_list',
-            serverRequestPageIndex: ''
+            serverRequestPageIndex: '',
+            userSettings :  {
+                theme: auroraAppStore.getThemeUnAuth()!,
+                userId: "",
+                notify: "true",
+                stats: "true"
+            } 
         };
     }
 
+    componentDidMount() {
+
+        let settingsData = auroraAppStore.getUserSettings();
+        this.setState({ userSettings: settingsData! });
+    }
 
     startServer = () => {
         this.setState({ serverRunning: true });
@@ -111,7 +128,7 @@ class DumpServerPage extends React.Component<DumpServerPageProps, DumpServerPage
                 </div>
 
                 <div className="col-md-8 grid-margin stretch-card"
-                    style={this.props.userSettings.theme == "light" ?
+                    style={this.state.userSettings.theme == "light" ?
                         {} :
                         this.state.serverRunning == false ?
                             { color: `black` } :
@@ -146,11 +163,11 @@ class DumpServerPage extends React.Component<DumpServerPageProps, DumpServerPage
                                                 </thead>
                                                 <tbody>
                                                     {this.state.serverRequestList.map((item, key) => (
-                                                        <tr id={key} onClick={this.showRequestDetails}>
+                                                        <tr id={""+key} onClick={this.showRequestDetails}>
                                                             <th scope="row">{key}</th>
                                                             <td>{item.method}</td>
                                                             <td>{item.headers}</td>
-                                                            <td>{item.param}</td>
+                                                            <td>{item.params}</td>
                                                             <td>{item.body}</td>
                                                             <td>{item.time}</td>
                                                         </tr>
