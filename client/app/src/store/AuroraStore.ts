@@ -1,4 +1,4 @@
-import dispatcher from "../../Dispatcher";
+import dispatcher from "../Dispatcher";
 import { EventEmitter } from "events";
 import { AIRES_STUDIO_ACTIONS } from "../actions/actions";
 import { UserSettings } from "../models/settings";
@@ -40,7 +40,8 @@ class AuroraAppStore extends EventEmitter {
             }
 
         };
-        this.dumpServerLogs = [],
+        this.dumpServerLogs = [];
+        this.pageTab = "";
         this.connectionTool = {
                 connectionMethod: '',
                 connectionProtocol: '',
@@ -56,7 +57,7 @@ class AuroraAppStore extends EventEmitter {
             accountBalance: 'None',
             accountExpendture: 'None',
         };
-        this.pageTab = "",
+        
             this.userSettings = this.getSettings()! == null ? {
                 theme: this.getThemeUnAuth()!,
                 userId: "",
@@ -77,7 +78,7 @@ class AuroraAppStore extends EventEmitter {
     getThemeUnAuth = () => {
         let themes: string = window.localStorage.getItem('theme_unauth')!;
         if (themes == null) {
-            "dark";
+          return  "dark";
         } else {
             return themes;
         }

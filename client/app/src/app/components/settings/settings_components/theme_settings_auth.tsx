@@ -82,7 +82,7 @@ class ThemeSettingsPage extends React.Component<ThemeSettingsPageProps, ThemeSet
                      <div className="col-lg-6 col-md-8 col-sm-12 col-xs-12 mx-auto " style={lightTheme} onClick={this.changeThemeToLight}>
  
                          <div  >
-                             <div ><img className=" img-thumbnail " src={require("../../../../assets/images/theme/light_theme.png")} alt="light theme" />
+                             <div ><img className=" img-thumbnail " src={require("../assets/light-theme.png")} alt="light theme" />
                                  <h4>Light theme</h4></div>
                          </div>
                      </div>
@@ -90,7 +90,7 @@ class ThemeSettingsPage extends React.Component<ThemeSettingsPageProps, ThemeSet
                  <div className="row flex-grow">
                      <div className="col-lg-6 col-md-8 col-sm-12 col-xs-12" style={darkTheme} onClick={this.changeThemeToDark}>
  
-                         <img className=" img-thumbnail" src={require("../../../../assets/images/theme/dark_theme.png")} alt="dark theme" />
+                         <img className=" img-thumbnail" src={require("../assets/dark-theme.png")} alt="dark theme" />
                          <h4>Dark theme</h4>
                      </div>
                  </div>

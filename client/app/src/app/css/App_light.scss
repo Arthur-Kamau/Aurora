@@ -1,0 +1,67 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* === Plugin styles === */
+
+
+@import '~react-datepicker/dist/react-datepicker.css';
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/bootstrap";
+
+@import "../../assets/styles_light/variables_light";
+@import "~compass-mixins/lib/compass";
+@import "~compass-mixins/lib/animate";
+@import "../../assets/styles_light/fonts";
+@import "../../assets/styles_light/functions";
+
+/* === Icon fonts === */
+@import "~@mdi/font/scss/materialdesignicons";
+@import "~font-awesome/scss/font-awesome";
+
+
+/* === Template mixins === */
+@import "../../assets/styles_light/mixins/animation";
+@import "../../assets/styles_light/mixins/buttons";
+@import "../../assets/styles_light/mixins/badges";
+@import "../../assets/styles_light/mixins/misc";
+@import "../../assets/styles_light/mixins/color-functions";
+@import "../../assets/styles_light/mixins/cards";
+@import "../../assets/styles_light/mixins/blockqoute";
+
+
+/* === Core Styles === */
+@import "../../assets/styles_light/background";
+@import "../../assets/styles_light/typography";
+@import "../../assets/styles_light/reset";
+@import "../../assets/styles_light/responsive";
+@import "../../assets/styles_light/misc";
+@import "../../assets/styles_light/utilities";
+@import "../../assets/styles_light/demo";
+@import "../../assets/styles_light/spinner";
+@import "../../assets/styles_light/dashboard";
+
+/* === Components === */
+
+@import "../../assets/styles_light/components/forms";
+@import "../../assets/styles_light/components/checkbox-radio";
+@import "../../assets/styles_light/components/icons";
+@import "../../assets/styles_light/components/tables";
+@import "../../assets/styles_light/components/buttons";
+@import "../../assets/styles_light/components/badges";
+@import "../../assets/styles_light/components/cards";
+@import "../../assets/styles_light/components/dropdowns";
+@import "../../assets/styles_light/components/todo-list";
+@import "../../assets/styles_light/components/spinner";
+@import "../../assets/styles_light/components/bootstrap-progress";
+@import "../../assets/styles_light/components/preview";
+
+@import "../../assets/styles_light/components/landing-screens/auth";
+
+/* === Plugin Overrides === */
+
+/* === Layout === */
+@import "../../assets/styles_light/navbar";
+@import "../../assets/styles_light/sidebar";
+@import "../../assets/styles_light/footer";
+@import "../../assets/styles_light/layout";

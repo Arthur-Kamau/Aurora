@@ -47,8 +47,8 @@ class App extends React.Component<AppProps, AppState> {
     };
 }
   componentDidMount() {
-    this.onRouteChanged();
-    this.setState({ location: window.location });
+    // this.onRouteChanged();
+    // this.setState({ location: window.location });
 
   
   
@@ -58,15 +58,15 @@ class App extends React.Component<AppProps, AppState> {
     //load css
     if (this.state.userSettings != null && this.state.userSettings.theme != null && this.state.userSettings.theme === 'light') {
 
-      require('./App_light.scss');
+      require('./css/App_light.scss');
       // this.setState({})
     } else {
     
-      require('./App_dark.scss');
+      require('./css/App_dark.scss');
     }
 
-    window.location.pathname == "/create_tool" ? this.setState({ appBarStyle: "no style" })
-      : this.setState({ appBarStyle: "style" })
+    // window.location.pathname == "/create_tool" ? this.setState({ appBarStyle: "no style" })
+    //   : this.setState({ appBarStyle: "style" })
 
 
 

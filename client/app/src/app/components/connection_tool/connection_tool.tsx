@@ -4,12 +4,12 @@ import { Component } from 'react';
 import { Form } from "react-bootstrap";
 import AceEditor from "react-ace";
 
-import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/mode-csharp";
-import "ace-builds/src-noconflict/theme-github";
-import "ace-builds/src-noconflict/theme-kuroir";
-import "ace-builds/src-noconflict/theme-chrome";
-import "ace-builds/src-noconflict/theme-twilight";
+// import "ace-builds/src-noconflict/mode-java";
+// import "ace-builds/src-noconflict/mode-csharp";
+// import "ace-builds/src-noconflict/theme-github";
+// import "ace-builds/src-noconflict/theme-kuroir";
+// import "ace-builds/src-noconflict/theme-chrome";
+// import "ace-builds/src-noconflict/theme-twilight";
 import { connect } from 'react-redux';
 // import connectionToolAction from '../../../actions/connection_tool_action';
 import { Tabs, Tab, TabPanel, TabList } from "react-web-tabs";
@@ -287,7 +287,7 @@ class ConnectionTool extends React.Component<ConnectionToolProps, ConnectionTool
                                 <AceEditor
 
                                     mode="java"
-                                    theme="twilight"
+                                    // theme="twilight"
                                     style={{
                                         width: `100%`,
                                         height: `100%`,

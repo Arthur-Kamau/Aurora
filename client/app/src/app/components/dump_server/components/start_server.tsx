@@ -11,7 +11,7 @@ export interface StartDumpServerComponentState {
 class StartDumpServerComponent extends React.Component<StartDumpServerComponentProps, StartDumpServerComponentState> {
     constructor(props: StartDumpServerComponentProps) {
         super(props);
-        this.state = { :  };
+        this.state = {   };
     }
     render() { 
         return ( <h2>Start server</h2>  );
