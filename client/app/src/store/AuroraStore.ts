@@ -6,16 +6,18 @@ import { UserProfile } from "../models/profile";
 import { UserAccount } from "../models/account";
 import { AppConnections } from "../models/connections";
 import { AppGeneratorOptions } from "../models/generator_options";
+import { StoreAction } from "../models/store_action";
+import { AppPage } from "../models/app_page";
 
 class AuroraAppStore extends EventEmitter {
-    page: { name: string; id: string; };
+    page: AppPage;
     authtoken: string | null;
     dumpServer: { isStarted: boolean; ip: string; port: number; };
     appGeneratorOperations: AppGeneratorOptions;
     dumpServerLogs: Array<string>;
     connectionTool: AppConnections;
     userAccount: UserAccount;
-    userSettings?: UserSettings;
+    userSettings : UserSettings;
     userProfile: UserProfile;
     pageTab: string;
 
@@ -76,7 +78,7 @@ class AuroraAppStore extends EventEmitter {
     }
 
     getThemeUnAuth = () => {
-        let themes: string = window.localStorage.getItem('theme_unauth')!;
+        let themes: string = window.localStorage.getItem('theme_unauth')!; 
         if (themes == null) {
           return  "dark";
         } else {
@@ -113,23 +115,25 @@ class AuroraAppStore extends EventEmitter {
         return profileVar;
     }
 
-    handleActions(action: any) {
+    handleActions(action: StoreAction |  any) {
         // console.error("handle actions "+ JSON.stringify(action));
         switch (action.type) {
             case AIRES_STUDIO_ACTIONS.CHANGE_PAGE: {
-                this.page = action.value;
+                this.page = action.value as AppPage;
                 this.emit("changePage");
                 break;
             }
             case AIRES_STUDIO_ACTIONS.CHANGE_PAGE_TAB: {
-                this.pageTab = action.value;
+                this.pageTab = action.value as string;
                 this.emit("changePageTab");
                 break;
             }
 
             case AIRES_STUDIO_ACTIONS.CHANGE_APP_THEME: {
-                this.userSettings = action.value;
+                this.userSettings = action.value as UserSettings;
 
+                console.log("app change theme in store paylod " + JSON.stringify(action.value))
+                window.localStorage.setItem("theme_unauth", this.userSettings.theme);
                 this.emit("changeTheme");
                 break;
             }

@@ -15,7 +15,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 900,
         height: 680,
-        icon: path.join(__dirname, '/logo/images.png'),
+        icon: path.join(__dirname, './assets/icon_4.png'),
         webPreferences: {
             nodeIntegration: true,
             webSecurity: false
@@ -38,7 +38,7 @@ function createWindow() {
 
     mainWindow.loadURL(
         isDev ?
-            "http://localhost:3000" :
+            "http://localhost:4040" :
             `file://${path.join(__dirname, "../build/index.html")}`
     );
     //dev tools

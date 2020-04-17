@@ -17,65 +17,80 @@ import GeneratorNavBar from './components/navbar/generator_navbar';
 import JsonGeneratorNavBar from './components/navbar/json_generator_navbar';
 import SchemaGeneratorNavBar from './components/navbar/schema_generetor_navbar';
 import { UserSettings } from '../models/settings';
+import auroraAppStore from '../store/AuroraStore';
 
 export interface AppProps {
-  
+
 }
- 
+
 export interface AppState {
-  isFullPageLayout : boolean,
-  location? : Location ,
-  appBarStyle : string,
-  userSettings : UserSettings
+  isFullPageLayout: boolean,
+  location?: Location,
+  appBarStyle: string,
+  userSettings: UserSettings
 }
- 
+
 class App extends React.Component<AppProps, AppState> {
-  constructor(props : App) {
+  constructor(props: App) {
     super(props);
 
-    this.state = { 
-      isFullPageLayout : false,
-      location : undefined ,
-      appBarStyle : "",
-      userSettings : {
+    this.state = {
+      isFullPageLayout: false,
+      location: undefined,
+      appBarStyle: "",
+      userSettings: {
         userId: "",
-        theme: "",
-        stats : "",
-        notify: "", 
+        theme: "light",
+        stats: "",
+        notify: "",
       }
 
     };
-}
+  }
   componentDidMount() {
     // this.onRouteChanged();
-    // this.setState({ location: window.location });
+    this.setState({ location: window.location });
 
-  
-  
-    // console.error("settings  "+ JSON.stringify(this.props.userSettings))
-    
-    
+    //get  settings from store
+    var sett = auroraAppStore.getUserSettings();
+    this.setState({ userSettings: sett! });
+    console.error("settings  "+ JSON.stringify(this.state.userSettings))
+
+
     //load css
     if (this.state.userSettings != null && this.state.userSettings.theme != null && this.state.userSettings.theme === 'light') {
 
       require('./css/App_light.scss');
-      // this.setState({})
     } else {
-    
+
       require('./css/App_dark.scss');
     }
+    
+    // disable navbar for specific page
+    window.location.pathname == "/create_tool" ? this.setState({ appBarStyle: "no style" })
+      : this.setState({ appBarStyle: "style" });
 
-    // window.location.pathname == "/create_tool" ? this.setState({ appBarStyle: "no style" })
-    //   : this.setState({ appBarStyle: "style" })
+      //listen to theme changes
+    auroraAppStore.on("changeTheme", this.changeTheme);
+  } 
+ 
 
+  changeTheme = () => {
+    var sett = auroraAppStore.getUserSettings();
+    this.setState({ userSettings: sett! });
+    if (this.state.userSettings != null && this.state.userSettings.theme != null && this.state.userSettings.theme === 'light') {
 
+      require('./css/App_light.scss');
+    } else {
 
+      require('./css/App_dark.scss');
+    }
   }
 
-  diplayAppropriateAppBAr = ()  => {
+  diplayAppropriateAppBAr = () => {
     // let navbarOne = !this.state.isFullPageLayout ? <Navbar /> : '';
 
-    let navbarTwo : ReactNode
+    let navbarTwo: ReactNode
 
     if (window.location.pathname == "/aurora/dump_server") {
       navbarTwo = <DumpServerNavbar></DumpServerNavbar>
@@ -106,7 +121,7 @@ class App extends React.Component<AppProps, AppState> {
 
 
   render() {
-    let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar /> : '';
+    let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar  userSettings={this.state.userSettings}/> : '';
     let footerComponent = !this.state.isFullPageLayout ? <Footer /> : '';
     // let appBackground = '';
     // let appContainerBackground = {
@@ -121,6 +136,7 @@ class App extends React.Component<AppProps, AppState> {
     //   appBackground = { backgroundColor: `#494949` }
 
     // } 
+
     return (
       <div className="container-scroller">
         {this.diplayAppropriateAppBAr()}
@@ -132,19 +148,19 @@ class App extends React.Component<AppProps, AppState> {
 
             <div className="main-panel"
 
-            style={this.state.userSettings.theme == "light" ?  {} : {backgroundColor:`#494949`}}
+              style={this.state.userSettings.theme == "light" ? {} : { backgroundColor: `#494949` }}
             >
               <div className="content-wrapper"
-                style={this.state.userSettings.theme == "light" ?  {} : {backgroundColor:`#494949`}}
+                style={this.state.userSettings.theme == "light" ? {} : { backgroundColor: `#494949` }}
               >
 
-                <AppRoutes  />
+                <AppRoutes />
               </div>
               {footerComponent}
             </div>
             :
             <div className="main-panel" style={{ margin: `2px, 0, 0,0`, backgroundColor: `pink` }}  >
-           
+
               <AppGenerator />
               {footerComponent}
             </div>
@@ -153,9 +169,10 @@ class App extends React.Component<AppProps, AppState> {
         </div>
       </div>
     );
+   
   }
 
-  componentDidUpdate(prevProps : any) {
+  componentDidUpdate(prevProps: any) {
     if (this.state.location !== prevProps.location) {
       this.onRouteChanged();
     }
@@ -163,25 +180,25 @@ class App extends React.Component<AppProps, AppState> {
 
   onRouteChanged() {
     console.log("ROUTE CHANGED");
-    window.scrollTo(0, 0);
-    const fullPageLayoutRoutes = ['/logout', '/login', '/reset-password', '/login-key',
-      '/register', '/login-personal-details', '/error-pages/error-404', '/error-pages/error-500',
-      '/forgot-password', '/forgot-password-key'];
-    for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
-      if (this.state.location?.pathname === fullPageLayoutRoutes[i]) {
-        this.setState({
-          isFullPageLayout: true
-        })
-        document.querySelector('.page-body-wrapper')!.classList.add('full-page-wrapper');
-        break;
-      } else {
-        this.setState({
-          isFullPageLayout: false
-        })
-        document.querySelector('.page-body-wrapper')!.classList.remove('full-page-wrapper');
-      }
-    }
+    // window.scrollTo(0, 0);
+    // const fullPageLayoutRoutes = ['/logout', '/login', '/reset-password', '/login-key',
+    //   '/register', '/login-personal-details', '/error-pages/error-404', '/error-pages/error-500',
+    //   '/forgot-password', '/forgot-password-key'];
+    // for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
+    //   if (this.state.location?.pathname === fullPageLayoutRoutes[i]) {
+    //     this.setState({
+    //       isFullPageLayout: true
+    //     })
+    //     document.querySelector('.page-body-wrapper')!.classList.add('full-page-wrapper');
+    //     break;
+    //   } else {
+    //     this.setState({
+    //       isFullPageLayout: false
+    //     })
+    //     document.querySelector('.page-body-wrapper')!.classList.remove('full-page-wrapper');
+    //   }
+    // }
   }
 }
- 
+
 export default App;

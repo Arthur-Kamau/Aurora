@@ -41,11 +41,11 @@ class BlackSettingsPage extends React.Component<BlackSettingsPageProps, BlackSet
                     this.state.authToken == null || this.state.authToken.length == 0 ?
                         <div>
                             <hr></hr>
-                            <p>
+                            <div>
 
-                                <div onClick={this.openLoginPage}>  <i className="mdi  mdi-account icon-sm text-dark"></i> &emsp;Login / register to get new features   &emsp;   </div>
+                                <p onClick={this.openLoginPage}>  <i className="mdi  mdi-account icon-sm text-dark"></i> &emsp;Login / register to get new features   &emsp;   </p>
 
-                            </p>
+                            </div>
                         </div>
                         : <div> </div>
                 }

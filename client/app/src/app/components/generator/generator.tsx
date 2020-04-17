@@ -29,7 +29,7 @@ export interface AppGeneratorState {
     schemaToJson: any,
     width: number,
     height: number,
-    theme: string,
+
     targetLanguage: string,
     targetLanguageNameSpaceOrClassName: string,
     appGeneratorOperations: AppGeneratorOptions,
@@ -49,7 +49,7 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
             schemaToJson: '',
             width: 0,
             height: 0,
-            theme: '',
+
             targetLanguage: '',
             authToken: "",
             targetLanguageNameSpaceOrClassName: '',
@@ -62,10 +62,10 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
 
             },
             userSettings: {
-                theme: auroraAppStore.getThemeUnAuth()!,
                 userId: "",
-                notify: "true",
-                stats: "true"
+                theme: "light",
+                stats: "",
+                notify: "",
             }
         };
     }
@@ -89,7 +89,14 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
 
         // set theme 
         var setts = auroraAppStore.getUserSettings();
-        this.setState({userSettings : setts!});
+        this.setState({ userSettings: setts });
+
+        // alert("change theme set \n state " + JSON.stringify(this.state.userSettings) + "\n recvd " + JSON.stringify(setts));
+
+        //listen to theme changes
+        auroraAppStore.on("changeTheme", this.changeTheme);
+
+
         // if (this.state.authToken == null || this.state.authToken.length == 0) {
         //     try {
         //         var theme = window.localStorage.getItem('theme_unauth');
@@ -149,9 +156,16 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
     updateDimensions = () => {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
     };
-    onChange = (newValue : any, e :any) => {
+    onChange = (newValue: any, e: any) => {
         console.log('onChange', newValue, e);
         this.handleEditorChange(newValue)
+    }
+    changeTheme = () => {
+
+
+        var sett = auroraAppStore.getUserSettings();
+        this.setState({ userSettings: sett! });
+        // alert("change theme" + JSON.stringify(this.state.userSettings));
     }
 
 
@@ -307,15 +321,18 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
 
 
     render() {
+
+        // const parseTmTheme = require('monaco-themes').parseTmTheme;
+
         let editOnlyStyle =
         {
             // theme: 'vs-dark',
-            theme: this.state.theme == "light" ? 'vs' : 'vs-dark',
+            theme:  auroraAppStore.getUserSettings().theme == "light" ? 'vs' : 'vs-dark',
         }
 
         let readOnlyStyle =
         {
-            theme: this.state.theme == "light" ? 'vs' : 'vs-dark',
+            theme: auroraAppStore.getUserSettings().theme == "light" ? 'vs' : 'vs-dark',
             readOnly: true
         }
 

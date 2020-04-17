@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import auroraAppStore from "../../../../store/AuroraStore";
 import { UserSettings } from '../../../../models/settings';
+import { changeAppThemeAction } from '../../../../actions/change_app_theme';
 export interface ThemeSettingsPageAppUnAuthProps {
 
 }
@@ -23,11 +24,17 @@ class ThemeSettingsPageAppUnAuth extends React.Component<ThemeSettingsPageAppUnA
     }
     componentDidMount() {
 
-            let settings = auroraAppStore.getUserSettings();
-            this.setState({ settings: settings! });
+        let settings = auroraAppStore.getUserSettings();
+        this.setState({ settings: settings! });
 
+        auroraAppStore.on("changeTheme", this.changeTheme);
     }
-    changeThemeToLight = (newTheme :React.MouseEvent<HTMLElement>) => {
+    changeTheme = () => {
+        var sett = auroraAppStore.getUserSettings();
+        this.setState({ settings: sett! });
+    }
+
+    changeThemeToLight = (newTheme: React.MouseEvent<HTMLElement>) => {
 
 
         let prevState = this.state.settings!;
@@ -47,9 +54,11 @@ class ThemeSettingsPageAppUnAuth extends React.Component<ThemeSettingsPageAppUnA
             //     }
             //   });
         } else {
-prevState.theme = "light";
-            this.setState({ settings  :prevState });
-            // window.localStorage.setItem("theme_unauth", "light");
+            prevState.theme = "light";
+            this.setState({ settings: prevState });
+
+            changeAppThemeAction(prevState);
+            
 
             //redux
             // let profile = this.props.userSettings;
@@ -62,33 +71,40 @@ prevState.theme = "light";
 
     changeThemeToDark = (e: any) => {
 
-        // let prevState = this.state.theme;
-        // if (prevState == "dark") {
-            // store.addNotification({
-            //     title: "Already in Dark theme",
-            //     message: "Theme not changed",
-            //     type: "success",
-            //     insert: "top",
-            //     container: "top-right",
-            //     animationIn: ["animated", "fadeIn"],
-            //     animationOut: ["animated", "fadeOut"],
-            //     dismiss: {
-            //       duration: 5000,
-            //       onScreen: true
-            //     }
-            //   });
-        // } else {
+        let prevState = this.state.settings!;
+        if (prevState.theme == "dark") {
+        // store.addNotification({
+        //     title: "Already in Dark theme",
+        //     message: "Theme not changed",
+        //     type: "success",
+        //     insert: "top",
+        //     container: "top-right",
+        //     animationIn: ["animated", "fadeIn"],
+        //     animationOut: ["animated", "fadeOut"],
+        //     dismiss: {
+        //       duration: 5000,
+        //       onScreen: true
+        //     }
+        //   });
+        } else {
 
         //     //local storage
-        //     this.setState({ theme: "dark" });
+        //     this.setState({ theme: "" });
         //     window.localStorage.setItem("theme_unauth", "dark");
+
+
+        prevState.theme = "dark";
+        this.setState({ settings: prevState });
+
+        changeAppThemeAction(prevState);
+
         //     //redux
         //     let profile = this.props.userSettings;
         //     profile.theme = "dark";
         //     this.props.onChangeAppTheme(profile);
         //     console.error("chanhge theme dark" + JSON.stringify(profile));
         //     window.location.reload(true);
-        // }
+        }
     }
 
     render() {
