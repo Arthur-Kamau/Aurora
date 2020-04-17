@@ -531,3 +531,6 @@ The following helpers synchronize their values:
 * `firstName`, `lastName`, `username`, `company`, `domain`, `tld`, `email`
 * `country`, `countryCode`
 
+
+### For more information check out.
+[dummy json](https://github.com/webroo/dummy-json/blob/master/README.md)
