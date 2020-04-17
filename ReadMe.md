@@ -3,7 +3,7 @@
 
 # Aurora 
 
-A  http client and dump server, with emphasies on documentation
+A  data conversion tool and data generator
 
 ## Language.
 
@@ -46,7 +46,7 @@ react documentation [here](https://reactjs.org/docs/getting-started.html)
 
 ## Status.
 
-`in active development` 
+[version](https://img.shields.io/badge/version-0.1.0-green)
 
 <br>
 
