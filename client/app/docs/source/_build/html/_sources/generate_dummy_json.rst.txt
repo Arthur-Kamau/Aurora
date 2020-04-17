@@ -1,0 +1,43 @@
+Genrate Dummy Json
+====================
+
+
+Dummy  is a  utility that allows you to generate random JSON data using Handlebars templates. It comes with a built-in collection of Handlebars helpers that return common data values, such as names, numbers, dates, and also allows you to write your own.
+It comes with a built-in collection of Handlebars helpers that return common data values, such as names, numbers, dates.
+
+
+Available helpers
+~~~~~~~~~~~~~~~~~~
+
++++++++++++
+Repeat
++++++++++++
+
+```{{#repeat count [comma=true]}} ... {{/repeat}}```
+
+* `count` The number of times to repeat the content (required)
+* `comma` Adds or removes the separating comma between blocks of content (optional, default is true)
+
+Repeats blocks of content, similar to Handlebars built-in `each`. 
+Can be used anywhere in your template, not just inside arrays. 
+Automatically adds a comma and line break between blocks
+
+.. highlight:: java
+
+:: 
+
+    // Repeat the block 3 times, automatically adding a comma between blocks
+    var messages = [
+        {{#repeat 3}}
+        "hello"
+        {{/repeat}}
+    ];
+
+    // Output
+    var messages = [
+        "hello",
+        "hello",
+        "hello"
+    ];
+
+.. highlight:: none

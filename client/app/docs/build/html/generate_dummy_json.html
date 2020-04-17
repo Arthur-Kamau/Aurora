@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Genrate Dummy Json &mdash; Aurora 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="convert schema to json" href="convert_schema_to_json_from_xml.html" />
+    <link rel="prev" title="Generate Schema From Json" href="generate_schema_from_json.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Aurora
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="generate_schema_from_json.html">Generate Schema From Json</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Genrate Dummy Json</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generate-json-string">Generate JSON string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-from-a-file">Generate from a file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#converting-to-javascript-object">Converting to JavaScript object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-with-a-http-response">Using with a HTTP response</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command-line-iterface">Command line iterface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#available-helpers">Available helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#repeat">Repeat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integer">Integer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#float">Float</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#date">Date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time">Time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boolean">Boolean</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#title">Title</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#first-name">First name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#last-name">Last name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#company">Company</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#domain">Domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tld">TLD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#email">Email</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#street">Street</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#city">City</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#country">Country</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#country-code">Country code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zipcode">Zipcode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#postcode">Postcode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#latitude">Latitude</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#longitude">Longitude</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phone-number">Phone number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#color">Color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hex-color">Hex color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#guid">GUID</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ipv4-address">IPv4 address</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ipv6-address">IPv6 address</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lorem-ipsum">Lorem ipsum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lowercase">Lowercase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uppercase">Uppercase</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#synchronized-helpers">Synchronized helpers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="convert_schema_to_json_from_xml.html">convert schema to json</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convert_json_to_yaml.html">convert json to yaml.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convert_markdown_to_html.html">convert markdown to html</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convert_to_xml_from_json.html">convert xml to json</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convert_yaml_to_json.html">Convert Yaml to Json</a></li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Need Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Disclaimer</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Aurora</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Genrate Dummy Json</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/generate_dummy_json.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="genrate-dummy-json">
+<h1>Genrate Dummy Json<a class="headerlink" href="#genrate-dummy-json" title="Permalink to this headline">¶</a></h1>
+<p>Genrate Dummy Json  is a  utility that allows you to generate random JSON data using Handlebars templates. It comes with a built-in collection of Handlebars helpers that return common data values, such as names, numbers, dates, and also allows you to write your own.
+It comes with a built-in collection of Handlebars helpers that return common data values, such as names, numbers, dates.</p>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>The folowing input generates the son shown below</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>{
+  &quot;users&quot;: [
+    {{#repeat 2}}
+    {
+      &quot;id&quot;: {{@index}},
+      &quot;name&quot;: &quot;{{firstName}} {{lastName}}&quot;,
+      &quot;work&quot;: &quot;{{company}}&quot;,
+      &quot;email&quot;: &quot;{{email}}&quot;,
+      &quot;dob&quot;: &quot;{{date &#39;1900&#39; &#39;2000&#39; &#39;YYYY&#39;}}&quot;,
+      &quot;address&quot;: &quot;{{int 1 100}} {{street}}&quot;,
+      &quot;city&quot;: &quot;{{city}}&quot;,
+      &quot;optedin&quot;: {{boolean}}
+    }
+    {{/repeat}}
+  ],
+  &quot;images&quot;: [
+    {{#repeat 3}}
+    &quot;img{{@index}}.png&quot;
+    {{/repeat}}
+  ],
+  &quot;coordinates&quot;: {
+    &quot;x&quot;: {{float -50 50 &#39;0.00&#39;}},
+    &quot;y&quot;: {{float -25 25 &#39;0.00&#39;}}
+  },
+  &quot;price&quot;: &quot;${{int 0 99999 &#39;0,0&#39;}}&quot;
+}
+</pre></div>
+</div>
+<p>generates the folowing json</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;users&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Adam Carter&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;work&quot;</span><span class="p">:</span> <span class="s2">&quot;Unilogic&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;adam.carter@unilogic.com&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;dob&quot;</span><span class="p">:</span> <span class="s2">&quot;1978&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;83 Warner Street&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Boston&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;optedin&quot;</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Leanne Brier&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;work&quot;</span><span class="p">:</span> <span class="s2">&quot;Connic&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;leanne.brier@connic.org&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;dob&quot;</span><span class="p">:</span> <span class="s2">&quot;13/05/1987&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;9 Coleman Avenue&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Toronto&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;optedin&quot;</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;images&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;img0.png&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;img1.png&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;img2.png&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">{</span>
+  	<span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="mf">35.12</span><span class="p">,</span>
+  	<span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="mf">-21.49</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;$59,395&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="generate-json-string">
+<h3>Generate JSON string<a class="headerlink" href="#generate-json-string" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">dummyjson</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;dummy-json&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="s1">&#39;{\</span>
+<span class="s1">	&quot;name&quot;: {{firstName}},\</span>
+<span class="s1">	&quot;age&quot;: {{int 18 65}}\</span>
+<span class="s1">  }&#39;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">dummyjson</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">template</span><span class="p">);</span> <span class="c1">// Returns a string</span>
+</pre></div>
+</div>
+<p>Note: if you’re using ES6 you can write multi-line strings using <a class="reference external" href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/template_strings">template strings</a>.</p>
+</div>
+<div class="section" id="generate-from-a-file">
+<h3>Generate from a file<a class="headerlink" href="#generate-from-a-file" title="Permalink to this headline">¶</a></h3>
+<p>Instead of writing multi-line strings in Javascript you can load the template from a file using Node’s <code class="docutils literal notranslate"><span class="pre">fs</span></code> utility:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">dummyjson</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./dummy-json&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;template.hbs&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">encoding</span><span class="o">:</span> <span class="s1">&#39;utf8&#39;</span><span class="p">});</span>
+<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">dummyjson</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">template</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="converting-to-javascript-object">
+<h3>Converting to JavaScript object<a class="headerlink" href="#converting-to-javascript-object" title="Permalink to this headline">¶</a></h3>
+<p>If the output string is properly formatted it can be parsed into a JavaScript object:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">dummyjson</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">template</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-with-a-http-response">
+<h3>Using with a HTTP response<a class="headerlink" href="#using-with-a-http-response" title="Permalink to this headline">¶</a></h3>
+<p>A common use of Dummy JSON is to create a mock API service that returns random data. Here’s a quick example using Express:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">dummyjson</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./dummy-json&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;template.hbs&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">encoding</span><span class="o">:</span> <span class="s1">&#39;utf8&#39;</span><span class="p">});</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/people&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s1">&#39;application/json&#39;</span><span class="p">);</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">dummyjson</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">template</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="command-line-iterface">
+<h3>Command line iterface<a class="headerlink" href="#command-line-iterface" title="Permalink to this headline">¶</a></h3>
+<p>If you install the utility globally with <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">-g</span> <span class="pre">dummy-json</span></code> you can use it from the command line to parse files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dummyjson</span> <span class="n">template</span><span class="o">.</span><span class="n">hbs</span> <span class="o">&gt;</span> <span class="n">output</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="available-helpers">
+<h2>Available helpers<a class="headerlink" href="#available-helpers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="repeat">
+<h3>Repeat<a class="headerlink" href="#repeat" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{#repeat</span> <span class="pre">count</span> <span class="pre">[comma=true]}}</span> <span class="pre">...</span> <span class="pre">{{/repeat}}</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">count</span></code> The number of times to repeat the content (required)</li>
+<li><code class="docutils literal notranslate"><span class="pre">comma</span></code> Adds or removes the separating comma between blocks of content (optional, default is true)</li>
+</ul>
+<p>Repeats blocks of content, similar to Handlebars’ built-in <code class="docutils literal notranslate"><span class="pre">each</span></code>. Can be used anywhere in your template, not just inside arrays. Automatically adds a comma and line break between blocks.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span>// Repeat the block 3 times, automatically adding a comma between blocks
+var messages = [
+  {{#repeat 3}}
+  &quot;hello&quot;
+  {{/repeat}}
+];
+
+// Output
+var messages = [
+  &quot;hello&quot;,
+  &quot;hello&quot;,
+  &quot;hello&quot;
+];
+</pre></div>
+</div>
+<p>You can omit the comma and line break by using <code class="docutils literal notranslate"><span class="pre">comma=false</span></code>, for example:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span>{{#repeat 3 comma=false}}hello{{/repeat}} // hellohellohello
+</pre></div>
+</div>
+<p>You can get the iteration position using the standard Handlebars variables <code class="docutils literal notranslate"><span class="pre">&#64;index</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;first</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;last</span></code>. The total number of iterations is available using <code class="docutils literal notranslate"><span class="pre">&#64;total</span></code>.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span>// Repeat the block 3 times using @index to modify the filename
+{{#repeat 3}}
+&quot;img{{@index}}.png&quot;
+{{/repeat}}
+
+// Output
+&quot;img0.png&quot;,
+&quot;img1.png&quot;,
+&quot;img2.png&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="integer">
+<h3>Integer<a class="headerlink" href="#integer" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{int</span> <span class="pre">min</span> <span class="pre">max</span> <span class="pre">[format]</span> <span class="pre">[round=1]}}</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">min</span></code> Minimum value (required)</li>
+<li><code class="docutils literal notranslate"><span class="pre">max</span></code> Maximum value (required)</li>
+<li><code class="docutils literal notranslate"><span class="pre">format</span></code> Formatting string (optional, default is null)</li>
+<li><code class="docutils literal notranslate"><span class="pre">round</span></code> Rounds to the nearest multiple of the given value (optional, default is null - no rounding)</li>
+</ul>
+<p>Generates a random integer from <code class="docutils literal notranslate"><span class="pre">min</span></code> (inclusive) up to and including <code class="docutils literal notranslate"><span class="pre">max</span></code> (inclusive). The optional <code class="docutils literal notranslate"><span class="pre">round</span></code> parameter will round the number to the nearest multiple of the given value.</p>
+<p>The output can be formatted using a numeric format string, provided by numbro. For a complete list of formatting options see <a class="reference external" href="http://numbrojs.com/format.html">http://numbrojs.com/format.html</a>.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Generates a random integer between 0 and 100</span>
+<span class="p">{{</span><span class="kr">int</span> <span class="mi">0</span> <span class="mi">100</span><span class="p">}}</span> <span class="c1">// 43</span>
+
+<span class="c1">// Rounds the random integer to the nearest multiple of 5</span>
+<span class="p">{{</span><span class="kr">int</span> <span class="mi">0</span> <span class="mi">100</span> <span class="nx">round</span><span class="o">=</span><span class="mi">5</span><span class="p">}}</span> <span class="c1">// 65</span>
+
+<span class="c1">// Formats the random integer using numbro</span>
+<span class="p">{{</span><span class="kr">int</span> <span class="mi">10000</span> <span class="mi">50000</span> <span class="s1">&#39;0,0.00&#39;</span><span class="p">}}</span> <span class="c1">// 23,462.00</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="float">
+<h3>Float<a class="headerlink" href="#float" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{float</span> <span class="pre">min</span> <span class="pre">max</span> <span class="pre">[format]</span> <span class="pre">[round=1]}}</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">min</span></code> Minimum value (required)</li>
+<li><code class="docutils literal notranslate"><span class="pre">max</span></code> Maximum value (required)</li>
+<li><code class="docutils literal notranslate"><span class="pre">format</span></code> Formatting string (optional, default is null)</li>
+<li><code class="docutils literal notranslate"><span class="pre">round</span></code> Rounds to the nearest multiple of the given value (optional, default is null - no rounding)</li>
+</ul>
+<p>Generates a random floating point number from <code class="docutils literal notranslate"><span class="pre">min</span></code> (inclusive) up to but excluding <code class="docutils literal notranslate"><span class="pre">max</span></code> (exclusive). The optional <code class="docutils literal notranslate"><span class="pre">round</span></code> parameter will round the number to the nearest multiple of the given value.</p>
+<p>The output can be formatted using a numeric format string, provided by numbro. For a complete list of formatting options see <a class="reference external" href="http://numbrojs.com/format.html">http://numbrojs.com/format.html</a>.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Generates a random float between 0 and 1</span>
+<span class="p">{{</span><span class="kr">float</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">}}</span> <span class="c1">// 0.4319351462490857</span>
+
+<span class="c1">// Rounds the random float to the nearest multiple of 0.1</span>
+<span class="p">{{</span><span class="kr">float</span> <span class="mi">0</span> <span class="mi">1</span> <span class="nx">round</span><span class="o">=</span><span class="mf">0.1</span><span class="p">}}</span> <span class="c1">// 0.4</span>
+
+<span class="c1">// Formats the random float using numbro</span>
+<span class="p">{{</span><span class="kr">float</span> <span class="mi">10000</span> <span class="mi">50000</span> <span class="s1">&#39;0,0.00&#39;</span><span class="p">}}</span> <span class="c1">// 33,127.39</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="date">
+<h3>Date<a class="headerlink" href="#date" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{date</span> <span class="pre">min</span> <span class="pre">max</span> <span class="pre">[format]}}</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">min</span></code> Minimum value (required)</li>
+<li><code class="docutils literal notranslate"><span class="pre">max</span></code> Maximum value (required)</li>
+<li><code class="docutils literal notranslate"><span class="pre">format</span></code> Formatting string (optional, default is null)</li>
+</ul>
+<p>Generates a random date between the two values. Both <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code> can be represented by any string that the <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse">Date.parse()</a> method accepts.</p>
+<p>By default the output uses <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toString">Date.toString()</a>. Alternatively the output can be formatted using a format string provided by fecha. For a complete list of formatting options see <a class="reference external" href="https://github.com/taylorhakes/fecha">https://github.com/taylorhakes/fecha</a></p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Generate a random date between midnight 2010-01-01 and midnight 2015-01-01</span>
+<span class="p">{{</span><span class="nx">date</span> <span class="s1">&#39;2010&#39;</span> <span class="s1">&#39;2015&#39;</span><span class="p">}}</span> <span class="c1">// Thu Jan 26 2012 03:04:15 GMT+0000 (GMT)</span>
+
+<span class="c1">// Generate a random date between more specific values</span>
+<span class="p">{{</span><span class="nx">date</span> <span class="s1">&#39;2015-06-01&#39;</span> <span class="s1">&#39;2015-06-30&#39;</span><span class="p">}}</span> <span class="c1">// Mon Jun 22 2015 01:02:36 GMT+0100 (BST)</span>
+
+<span class="c1">// Generate a random date between even more specific values (inc. time)</span>
+<span class="p">{{</span><span class="nx">date</span> <span class="s1">&#39;2015-06-01T09:00&#39;</span> <span class="s1">&#39;2015-06-30T17:30&#39;</span><span class="p">}}</span> <span class="c1">// Sun Jun 07 2015 23:55:16 GMT+0100 (BST)</span>
+
+<span class="c1">// Format the date using fecha</span>
+<span class="p">{{</span><span class="nx">date</span> <span class="s1">&#39;2010&#39;</span> <span class="s1">&#39;2015&#39;</span> <span class="s1">&#39;DD/MM/YYYY&#39;</span><span class="p">}}</span> <span class="c1">// 16/06/2012</span>
+
+<span class="c1">// Format the date using a unix timestamp</span>
+<span class="p">{{</span><span class="nx">date</span> <span class="s1">&#39;2010&#39;</span> <span class="s1">&#39;2015&#39;</span> <span class="s1">&#39;unix&#39;</span><span class="p">}}</span> <span class="c1">// 1340417344</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="time">
+<h3>Time<a class="headerlink" href="#time" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{time</span> <span class="pre">min</span> <span class="pre">max</span> <span class="pre">[format]}}</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">min</span></code> Minimum value (required)</li>
+<li><code class="docutils literal notranslate"><span class="pre">max</span></code> Maximum value (required)</li>
+<li><code class="docutils literal notranslate"><span class="pre">format</span></code> Formatting string (optional, default is null)</li>
+</ul>
+<p>This is a shorthand helper for generating the time portion of a date, without needing to put the full date into the min and max values. Both <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code> can be represented by any string in the 24h format <code class="docutils literal notranslate"><span class="pre">HH:mm:ss</span></code>, for example <code class="docutils literal notranslate"><span class="pre">17:48:34.</span></code>, or if you want to ignore seconds: <code class="docutils literal notranslate"><span class="pre">17:48</span></code></p>
+<p>By default the output uses <code class="docutils literal notranslate"><span class="pre">HH:mm</span></code>. Alternatively the output can be formatted using a format string provided by fecha. For a complete list of formatting options see <a class="reference external" href="https://github.com/taylorhakes/fecha">https://github.com/taylorhakes/fecha</a></p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Generate a random time</span>
+<span class="p">{{</span><span class="nx">time</span> <span class="s1">&#39;09:00&#39;</span> <span class="s1">&#39;17:30&#39;</span><span class="p">}}</span> <span class="c1">// 14:08</span>
+
+<span class="c1">// Format the time using fecha</span>
+<span class="p">{{</span><span class="nx">time</span> <span class="s1">&#39;09:00&#39;</span> <span class="s1">&#39;17:30&#39;</span> <span class="s1">&#39;h:mm a&#39;</span><span class="p">}}</span> <span class="c1">// 2:08 pm</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="boolean">
+<h3>Boolean<a class="headerlink" href="#boolean" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{boolean}}</span></code></p>
+<p>Generates a random <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code> value.</p>
+</div>
+<div class="section" id="title">
+<h3>Title<a class="headerlink" href="#title" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{title}}</span></code></p>
+<p>Generates a random title prefix, from a predefined list, such as “Mr”, “Mrs”, “Dr”, etc.</p>
+</div>
+<div class="section" id="first-name">
+<h3>First name<a class="headerlink" href="#first-name" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{firstName}}</span></code></p>
+<p>Generates a random first name, from a predefined list. This helper is kept in sync with other name-related helpers, such as username and email - see the section on <a class="reference external" href="#synchronized-helpers">Synchronized helpers</a> for more information.</p>
+</div>
+<div class="section" id="last-name">
+<h3>Last name<a class="headerlink" href="#last-name" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{lastName}}</span></code></p>
+<p>Generates a random last name, from a predefined list. This helper is kept in sync with other name-related helpers, such as username and email - see the section on <a class="reference external" href="#synchronized-helpers">Synchronized helpers</a> for more information.</p>
+</div>
+<div class="section" id="company">
+<h3>Company<a class="headerlink" href="#company" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{company}}</span></code></p>
+<p>Generates a random company name, from a predefined list. This helper is kept in sync with the email and domain helpers, such as username and email - see the section on <a class="reference external" href="#synchronized-helpers">Synchronized helpers</a> for more information.</p>
+</div>
+<div class="section" id="domain">
+<h3>Domain<a class="headerlink" href="#domain" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{domain}}</span></code></p>
+<p>Generates a random domain name in the format “domain.tld”, from a predefined list. This helper is kept in sync with the company and email helpers - see the section on <a class="reference external" href="#synchronized-helpers">Synchronized helpers</a> for more information.</p>
+</div>
+<div class="section" id="tld">
+<h3>TLD<a class="headerlink" href="#tld" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{tld}}</span></code></p>
+<p>Generates a random top-level domain name, from a predefined list. This helper is kept in sync with the email helper - see the section on <a class="reference external" href="#synchronized-helpers">Synchronized helpers</a> for more information.</p>
+</div>
+<div class="section" id="email">
+<h3>Email<a class="headerlink" href="#email" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{email}}</span></code></p>
+<p>Generates a random email address. This helper is kept in sync with other name-related helpers, such as username and email - see the section on <a class="reference external" href="#synchronized-helpers">Synchronized helpers</a> for more information.</p>
+</div>
+<div class="section" id="street">
+<h3>Street<a class="headerlink" href="#street" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{street}}</span></code></p>
+<p>Generates a random street name, from a predefined list.</p>
+</div>
+<div class="section" id="city">
+<h3>City<a class="headerlink" href="#city" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{city}}</span></code></p>
+<p>Generates a random city name, from a predefined list.</p>
+</div>
+<div class="section" id="country">
+<h3>Country<a class="headerlink" href="#country" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{country}}</span></code></p>
+<p>Generates a random country name, from a predefined list based on <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1</a>. This helper is kept in sync with the country code helper - see the section on <a class="reference external" href="#synchronized-helpers">Synchronized helpers</a> for more information.</p>
+<p>If you want to export the entire list then you can use the following snippet in your template:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span>{{#each countries}}
+&quot;name&quot;: &quot;{{this}}&quot;
+{{/each}}
+</pre></div>
+</div>
+</div>
+<div class="section" id="country-code">
+<h3>Country code<a class="headerlink" href="#country-code" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{countryCode}}</span></code></p>
+<p>Generates a random 2-character country code, from a predefined list based on <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_3166-1">ISO 3166-1</a>. This helper is kept in sync with the country helper - see the section on <a class="reference external" href="#synchronized-helpers">Synchronized helpers</a> for more information.</p>
+<p>If you want to export the entire list then you can use the following snippet in your template:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span>{{#each countryCodes}}
+&quot;code&quot;: &quot;{{this}}&quot;
+{{/each}}
+</pre></div>
+</div>
+</div>
+<div class="section" id="zipcode">
+<h3>Zipcode<a class="headerlink" href="#zipcode" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{zipcode}}</span></code></p>
+<p>Generates a random US-style 5 digit zipcode.</p>
+</div>
+<div class="section" id="postcode">
+<h3>Postcode<a class="headerlink" href="#postcode" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{postcode}}</span></code></p>
+<p>Generates a random UK-style postcode in the format <code class="docutils literal notranslate"><span class="pre">AA9</span> <span class="pre">9AA</span></code>.</p>
+</div>
+<div class="section" id="latitude">
+<h3>Latitude<a class="headerlink" href="#latitude" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{lat}}</span></code></p>
+<p>Generates a random latitude from -90 to +90, to 6 decimal places (roughly 10cm of precision).</p>
+</div>
+<div class="section" id="longitude">
+<h3>Longitude<a class="headerlink" href="#longitude" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{long}}</span></code></p>
+<p>Generates a random longitude from -180 to +180, to 6 decimal places (roughly 10cm of precision).</p>
+</div>
+<div class="section" id="phone-number">
+<h3>Phone number<a class="headerlink" href="#phone-number" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{phone</span> <span class="pre">[format]}}</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">format</span></code> Formatting string (optional, default is <code class="docutils literal notranslate"><span class="pre">xxx-xxx-xxxx</span></code>)</li>
+</ul>
+<p>Generates a random phone number in the format <code class="docutils literal notranslate"><span class="pre">xxx-xxx-xxxx</span></code>, for example “123-456-7890”. To use a different format pass a string to the <code class="docutils literal notranslate"><span class="pre">format</span></code> parameter containing a series of lowercase “x” characters for each random integer.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Generate a random phone number in the default format</span>
+<span class="p">{{</span><span class="nx">phone</span><span class="p">}}</span> <span class="c1">// 445-295-1044</span>
+
+<span class="c1">// Generate a random phone number with a custom format</span>
+<span class="p">{{</span><span class="nx">phone</span> <span class="s2">&quot;+64 (x) xxx xxxx&quot;</span><span class="p">}}</span> <span class="c1">// +64 (5) 883 4711</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="color">
+<h3>Color<a class="headerlink" href="#color" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{color}}</span></code></p>
+<p>Generates a random CSS color name, from a predefined list, such as “forestgreen”, “black”, etc</p>
+</div>
+<div class="section" id="hex-color">
+<h3>Hex color<a class="headerlink" href="#hex-color" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{hexColor</span> <span class="pre">[websafe=false]}}</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">websafe</span></code> Generates a websafe color if true (optional, default is false)</li>
+</ul>
+<p>Generates a random hexadecimal color value with leading hash symbol.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Generates a hex color with leading hash symbol</span>
+<span class="p">{{</span><span class="nx">hexColor</span><span class="p">}}</span> <span class="c1">// #34D92C</span>
+
+<span class="c1">// Generates a websafe hex color</span>
+<span class="p">{{</span><span class="nx">hexColor</span> <span class="nx">websafe</span><span class="o">=</span><span class="kc">true</span><span class="p">}}</span> <span class="c1">// #33CC99</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="guid">
+<h3>GUID<a class="headerlink" href="#guid" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{guid}}</span></code></p>
+<p>Generates a random 32 digit GUID.</p>
+</div>
+<div class="section" id="ipv4-address">
+<h3>IPv4 address<a class="headerlink" href="#ipv4-address" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{ipv4}}</span></code></p>
+<p>Generates a random IPv4 address.</p>
+</div>
+<div class="section" id="ipv6-address">
+<h3>IPv6 address<a class="headerlink" href="#ipv6-address" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{ipv6}}</span></code></p>
+<p>Generates a random IPv6 address.</p>
+</div>
+<div class="section" id="lorem-ipsum">
+<h3>Lorem ipsum<a class="headerlink" href="#lorem-ipsum" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{lorem</span> <span class="pre">[wordCount]}}</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">wordcount</span></code> Number of words to generate (optional, default is 25)</li>
+</ul>
+<p>Generates random sentences of lorem ipsum text, with occasional punctuation (commas and periods/full-stops).</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Generates 25 words of lorem ipsum</span>
+<span class="p">{{</span><span class="nx">lorem</span><span class="p">}}</span> <span class="c1">// Amet vel aliquam laoreet accumsan adipiscing velit... etc...</span>
+
+<span class="c1">// Generates 5 words of lorem ipsum</span>
+<span class="p">{{</span><span class="nx">lorem</span> <span class="mi">5</span><span class="p">}}</span> <span class="c1">//  Orci nisi laoreet maximus dictum.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lowercase">
+<h3>Lowercase<a class="headerlink" href="#lowercase" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{lowercase</span> <span class="pre">(helper)}}</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">helper</span></code> Any helper that returns a string (required)</li>
+</ul>
+<p>Converts the output of any string-based helper to lowercase. This uses the Handlebars’ <a class="reference external" href="http://handlebarsjs.com/expressions.html#subexpressions">subexpression syntax</a>.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Change firstName to lowercase</span>
+<span class="p">{{</span><span class="nx">lowercase</span> <span class="p">(</span><span class="nx">firstName</span><span class="p">)}}</span> <span class="c1">// ivan</span>
+
+<span class="c1">// Change city to lowercase</span>
+<span class="p">{{</span><span class="nx">lowercase</span> <span class="p">(</span><span class="nx">city</span><span class="p">)}}</span> <span class="c1">// boston</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="uppercase">
+<h3>Uppercase<a class="headerlink" href="#uppercase" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{{uppercase</span> <span class="pre">(helper)}}</span></code></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">helper</span></code> Any helper that returns a string (required)</li>
+</ul>
+<p>Converts the output of any string-based helper to uppercase. This uses the Handlebars’ <a class="reference external" href="http://handlebarsjs.com/expressions.html#subexpressions">subexpression syntax</a>.</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// Change firstName to uppercase</span>
+<span class="p">{{</span><span class="nx">uppercase</span> <span class="p">(</span><span class="nx">firstName</span><span class="p">)}}</span> <span class="c1">// IVAN</span>
+
+<span class="c1">// Change city to uppercase</span>
+<span class="p">{{</span><span class="nx">uppercase</span> <span class="p">(</span><span class="nx">city</span><span class="p">)}}</span> <span class="c1">// BOSTON</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="synchronized-helpers">
+<h2>Synchronized helpers<a class="headerlink" href="#synchronized-helpers" title="Permalink to this headline">¶</a></h2>
+<p>Several helpers, such as name and email, are linked together in order to synchronize their values. This gives the random data some continuity. Synchronization happens automatically and doesn’t require any additional work, for example:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;firstName&quot;</span><span class="o">:</span> <span class="s2">&quot;{{firstName}}&quot;</span><span class="p">,</span> <span class="c1">// Michael</span>
+<span class="s2">&quot;lastName&quot;</span><span class="o">:</span> <span class="s2">&quot;{{lastName}}&quot;</span><span class="p">,</span>   <span class="c1">// Turner</span>
+<span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;{{email}}&quot;</span>          <span class="c1">// michael.turner@unilogic.com</span>
+</pre></div>
+</div>
+<p>The helpers can be placed in any order and will still synchronize:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;{{email}}&quot;</span>          <span class="c1">// michael.turner@unilogic.com</span>
+<span class="s2">&quot;firstName&quot;</span><span class="o">:</span> <span class="s2">&quot;{{firstName}}&quot;</span><span class="p">,</span> <span class="c1">// Michael</span>
+<span class="s2">&quot;lastName&quot;</span><span class="o">:</span> <span class="s2">&quot;{{lastName}}&quot;</span><span class="p">,</span>   <span class="c1">// Turner</span>
+</pre></div>
+</div>
+<p>The synchronization is reset whenever the same helper is used twice, or in each iteration of a repeat block:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;{{email}}&quot;</span>          <span class="c1">// michael.turner@unilogic.com</span>
+<span class="s2">&quot;firstName&quot;</span><span class="o">:</span> <span class="s2">&quot;{{firstName}}&quot;</span><span class="p">,</span> <span class="c1">// Michael</span>
+<span class="s2">&quot;lastName&quot;</span><span class="o">:</span> <span class="s2">&quot;{{lastName}}&quot;</span><span class="p">,</span>   <span class="c1">// Turner</span>
+<span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;{{email}}&quot;</span>          <span class="c1">// grace.chapman@westgate.org (Note: syncing is reset here)</span>
+<span class="s2">&quot;firstName&quot;</span><span class="o">:</span> <span class="s2">&quot;{{firstName}}&quot;</span><span class="p">,</span> <span class="c1">// Grace</span>
+<span class="s2">&quot;lastName&quot;</span><span class="o">:</span> <span class="s2">&quot;{{lastName}}&quot;</span><span class="p">,</span>   <span class="c1">// Chapman</span>
+</pre></div>
+</div>
+<p>The following helpers synchronize their values:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">firstName</span></code>, <code class="docutils literal notranslate"><span class="pre">lastName</span></code>, <code class="docutils literal notranslate"><span class="pre">username</span></code>, <code class="docutils literal notranslate"><span class="pre">company</span></code>, <code class="docutils literal notranslate"><span class="pre">domain</span></code>, <code class="docutils literal notranslate"><span class="pre">tld</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">country</span></code>, <code class="docutils literal notranslate"><span class="pre">countryCode</span></code></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="convert_schema_to_json_from_xml.html" class="btn btn-neutral float-right" title="convert schema to json" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="generate_schema_from_json.html" class="btn btn-neutral float-left" title="Generate Schema From Json" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Arthur-Kamau
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

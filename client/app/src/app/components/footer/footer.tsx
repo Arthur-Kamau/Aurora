@@ -17,10 +17,10 @@ class Footer extends React.Component<FooterProps, FooterState> {
     super(props);
     this.state = {
       appGeneratorOperations: {
-        appGeneratorOperationsActions: 'convert_schema_to_json',
+        appGeneratorOperationsActions: '',
         convertToSchemaSettings: {
-          targetLanguage: "C#",
-          classOrNameSpaceName: "App"
+          targetLanguage: "",
+          classOrNameSpaceName: ""
         }
 
       }
@@ -63,7 +63,7 @@ class Footer extends React.Component<FooterProps, FooterState> {
 
 
                       this.state.appGeneratorOperations.appGeneratorOperationsActions != null &&
-                        this.state.appGeneratorOperations.appGeneratorOperationsActions == "generate_schema" ?
+                        this.state.appGeneratorOperations.appGeneratorOperationsActions == "generate_schema_from_json" ?
 
                         <div>
                           <span>Language : {this.state.appGeneratorOperations.convertToSchemaSettings.targetLanguage}</span>
@@ -75,7 +75,29 @@ class Footer extends React.Component<FooterProps, FooterState> {
                         :
                         <div>
 
-                          Action : {this.state.appGeneratorOperations.appGeneratorOperationsActions}
+                          Action :
+                          
+
+                           {this.state.appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema_from_json' ?  
+                              
+                              " (convert schema to json)" :  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json' ? 
+                  
+                              " (generate data from json)" :  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml' ? 
+                  
+                              " (convert xml to json)" : this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json' ?   
+                              
+                              " (convert json to xml)":  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_json_to_yaml' ? 
+                  
+                              " (convert json to yaml)" : this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_yaml_to_json' ?  
+                            
+                              " (convert yaml to json)" :  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_markdown_to_html' ?  
+                  
+                              " (convert markdown to html) " : 
+                              
+                              " (option unknown)"
+                  
+                              
+                            }
                         </div>
 
 

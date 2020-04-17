@@ -221,18 +221,20 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
 
 
 
-        } else if (appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json') {
-            let conv = new generateJsonFromSchema();
-            const res = conv.ConvertToJson(value);
-            if (res !== null && typeof res === 'object') {
-                this.setState({ dataFromServer: JSON.stringify(res) });
-            } else if (res == null) {
-                this.setState({ dataFromServer: "Encoutered an error" });
-            } else {
-                this.setState({ dataFromServer: res });
-            }
+        // } else if (appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema_from_json') {
+            // let conv = new generateJsonFromSchema();
+            // const res = conv.ConvertToJson(value);
+            // if (res !== null && typeof res === 'object') {
+            //     this.setState({ dataFromServer: JSON.stringify(res) });
+            // } else if (res == null) {
+            //     this.setState({ dataFromServer: "Encoutered an error" });
+            // } else {
+            //     this.setState({ dataFromServer: res });
+            // }
 
-        } else if (appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema') {
+
+
+        } else if (appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema_from_json') {
 
             // var classNameOrNameSpace = this.state.targetLanguageNameSpaceOrClassName == null || this.state.targetLanguageNameSpaceOrClassName.length == 0 ?
             //     "Aurorora" : this.state.targetLanguageNameSpaceOrClassName

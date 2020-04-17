@@ -34,7 +34,7 @@ class AuroraAppStore extends EventEmitter {
             port: 0
         };
         this.appGeneratorOptions = {
-            appGeneratorOperationsActions: 'convert_schema_to_json',
+            appGeneratorOperationsActions: 'generate_schema_from_json',
             convertToSchemaSettings: {
                 targetLanguage: "C#",
                 classOrNameSpaceName: "App"

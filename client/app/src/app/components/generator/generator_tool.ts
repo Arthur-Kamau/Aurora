@@ -3,12 +3,12 @@ export class appInputXmlToJson {
     constructor() {
         this.xmlToJson = require('xml-to-json-stream');
     }
-    convert = (input : string) => {
+    convert = (input: string) => {
         if (input.length == 0) {
             return input
         } else {
             const parser = this.xmlToJson({ attributeMode: true });
-            return parser.xmlToJson(input, (err : any, json : any) => {
+            return parser.xmlToJson(input, (err: any, json: any) => {
                 if (err) {
                     //error handling
                     return "error " + err
@@ -23,11 +23,11 @@ export class appInputXmlToJson {
 }
 
 export class appInputJsonToXml {
-      jsonToXml : any;
+    jsonToXml: any;
     constructor() {
         this.jsonToXml = require("xml-js");
     }
-    convert = (input : string) => {
+    convert = (input: string) => {
         if (input.length == 0) {
             return input
         } else {
@@ -52,7 +52,7 @@ export class generateSchemaFromJson {
     constructor() {
 
     }
-    convert = async (targetLanguage : string, typeName : string, jsonString : string) => {
+    convert = async (targetLanguage: string, typeName: string, jsonString: string) => {
 
         const {
             quicktype,
@@ -62,23 +62,27 @@ export class generateSchemaFromJson {
             JSONSchemaStore
         } = require("quicktype-core");
 
-        const jsonInput = jsonInputForTargetLanguage(targetLanguage);
+        if (targetLanguage == undefined || typeName == undefined || jsonString == undefined) {
+            return "internal error in schema genrator"
+        } else {
+            const jsonInput = jsonInputForTargetLanguage(targetLanguage);
 
-        // We could add multiple samples for the same desired
-        // type, or many sources for other types. Here we're
-        // just making one type from one piece of sample JSON.
-        await jsonInput.addSource({
-            name: typeName,
-            samples: [jsonString]
-        });
+            // We could add multiple samples for the same desired
+            // type, or many sources for other types. Here we're
+            // just making one type from one piece of sample JSON.
+            await jsonInput.addSource({
+                name: typeName,
+                samples: [jsonString]
+            });
 
-        const inputData = new InputData();
-        inputData.addInput(jsonInput);
+            const inputData = new InputData();
+            inputData.addInput(jsonInput);
 
-        return await quicktype({
-            inputData,
-            lang: targetLanguage
-        });
+            return await quicktype({
+                inputData,
+                lang: targetLanguage
+            });
+        }
     }
 }
 
@@ -102,7 +106,7 @@ export class generateJsonFromSchema {
         return previousWord;
     }
 
-    getNextWord = (wordList: string, currentIndex : number) => {
+    getNextWord = (wordList: string, currentIndex: number) => {
         let nextToken = ""
     }
     // getpreviousWord = (wordsList) => {
@@ -118,7 +122,7 @@ export class generateJsonFromSchema {
     //     console.log("previous word found " + previousWord);
     //     return previousWord;
     // }
-    wordContainsAnyForbiddenCharacters(word : string, characters: Array<string>) {
+    wordContainsAnyForbiddenCharacters(word: string, characters: Array<string>) {
         for (var i = 0; i != characters.length; i++) {
             var charItem = characters[i];
             if (word.indexOf(charItem) != - 1) {
@@ -133,7 +137,7 @@ export class generateJsonFromSchema {
     //  if anything else get the previous word and  check if its a keyword  if it is genrate a key value pair ,
     // if its space , { , } or class ignore .
     // if its unknown return an error 
-    ConvertToJsonLine = (value: string, lineNumber : number, maxLines : number) => {
+    ConvertToJsonLine = (value: string, lineNumber: number, maxLines: number) => {
         let finalStringArray = [];
         let keyWords = ["int", "string", "date", "datetime", "double"];
         let forBiddenCharactersInWords = ["{", "}", "[", "]"];
@@ -222,7 +226,7 @@ export class generateJsonFromSchema {
 
         }
 
-        let sanitizedArray  : Array<string>= []
+        let sanitizedArray: Array<string> = []
         // sanitize the array of characters 
         finalStringArray.forEach((item, index) => {
             console.log("item " + item + " index " + index);
@@ -257,7 +261,7 @@ export class generateJsonFromSchema {
     // split the lines by ;
     // process each word in the line
     // return the result 
-    ConvertToJson = (value : string) => {
+    ConvertToJson = (value: string) => {
         let finalString = "{ \n"
 
         // efghi
@@ -308,7 +312,7 @@ export class generateJsonFromSchema {
 
 export class generateHtmlFromMarkdown {
 
-    convert = (jsonString : string) => {
+    convert = (jsonString: string) => {
         var MarkdownIt = require('markdown-it'),
             md = new MarkdownIt();
         var result = md.render(jsonString); return result
@@ -317,7 +321,7 @@ export class generateHtmlFromMarkdown {
 
 
 export class generateYamFromJson {
-    convert = (jsonString : string) => {
+    convert = (jsonString: string) => {
 
         var YAML = require('json2yaml');
         try {
@@ -337,7 +341,7 @@ export class generateYamFromJson {
 
 
 export class generateJsonFromYaml {
-    convert = (yamlString : string) => {
+    convert = (yamlString: string) => {
         var YAML = require('yamljs');
 
         // parse YAML string
@@ -352,7 +356,7 @@ export class generateJsonFromYaml {
 
 export class generateDummyJson {
 
-    generate = (inputString : string ) => {
+    generate = (inputString: string) => {
         var dummyjson = require('dummy-json');
         var result = dummyjson.parse(inputString); // Returns a string
         return result;

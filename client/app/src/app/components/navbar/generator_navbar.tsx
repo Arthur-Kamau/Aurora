@@ -22,7 +22,7 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
     constructor(props: GeneratorNavBarProps) {
         super(props);
         this.state = {  
-             action : 'generate_schema',
+             action : 'generate_schema_from_json',
         targetLanguage: "",   //appGeneratorOperations.convertToSchemaSettings.targetLanguage,
         classNameOrNameSpaceNameGenerateSchema : "" ,// appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName,
         generatorPopUpShowState : false,
@@ -53,13 +53,13 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
       }
     
       convertToJsonCheckBox_ConvertToJson_label = ( evt : any ) => { 
-        this.setState({action : 'convert_schema_to_json'});
-        changeAppGeneratorOption('convert_schema_to_json');
+        this.setState({action : 'generate_schema_from_json'});
+        changeAppGeneratorOption('generate_schema_from_json');
       }
     
       convertToJsonCheckBox_GeneratSchema_label = ( evt : any ) => { 
-        this.setState({action : 'generate_schema'});
-         changeAppGeneratorOption('generate_schema');
+        this.setState({action : 'generate_schema_from_json'});
+         changeAppGeneratorOption('generate_schema_from_json');
       }
     
     
@@ -205,14 +205,11 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
               <h4>
                 Json Operations 
                 
-                {appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json' ?  
+                {appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema_from_json' ?  
                 
-                " (convert to json)" : appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema' ?
+                " (convert schema to json)" :  appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json' ? 
     
-                " (generate schema)" :  appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json' ? 
-    
-                " (generate data)" :  appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml' ? 
-    
+                " (generate data from json)" :  appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml' ? 
     
                 " (convert xml to json)" : appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json' ?   
                 
@@ -224,7 +221,6 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
     
                 " (convert markdown to html) " : 
                 
-                
                 " (option unknown)"
     
                 
@@ -233,7 +229,7 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
               <ul className="navbar-nav navbar-nav-right ml-lg-auto">
               
     { 
-                            this.state.action   == "generate_schema" ?
+                            this.state.action   == "generate_schema_from_json" ?
                 <li className="nav-item  nav-profile border-0"> 
                 <Dropdown alignRight={true} show={this.state.generatorSchemaPopUpShowState}  >
                   <Dropdown.Toggle id="generatorSchemaPopUpShow" className="nav-link count-indicator bg-transparent" onClick={this.generatorSchemaPopUpShow}>
@@ -287,7 +283,7 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
                           Generate json from  schema
     
                             {
-                            this.state.action   == "convert_schema_to_json" ?
+                            this.state.action   == "generate_schema_from_json" ?
                             <span className="badge badge-secondary">active</span> : <span></span>
                             }
                           </label>
@@ -359,7 +355,7 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
                             Generate schema from json
     
                             {
-                            this.state.action   == "generate_schema" ?
+                            this.state.action   == "generate_schema_from_json" ?
                             <span className="badge badge-secondary">active</span> : <span></span>
                                 }
                           </label>
