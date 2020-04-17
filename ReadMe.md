@@ -46,7 +46,7 @@ react documentation [here](https://reactjs.org/docs/getting-started.html)
 
 ## Status.
 
-[version](https://img.shields.io/badge/version-0.1.0-green)
+<img src="https://img.shields.io/badge/version-0.1.0-blue?style=flat-square" alt="version 0.1.0">
 
 <br>
 
