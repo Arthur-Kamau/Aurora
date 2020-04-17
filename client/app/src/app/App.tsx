@@ -27,7 +27,8 @@ export interface AppState {
   isFullPageLayout: boolean,
   location?: Location,
   appBarStyle: string,
-  userSettings: UserSettings
+  userSettings: UserSettings,
+ 
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -40,10 +41,12 @@ class App extends React.Component<AppProps, AppState> {
       appBarStyle: "",
       userSettings: {
         userId: "",
-        theme: "light",
+        theme: "dark",
         stats: "",
         notify: "",
-      }
+        
+      },
+      
 
     };
   }
@@ -53,12 +56,16 @@ class App extends React.Component<AppProps, AppState> {
 
     //get  settings from store
     var sett = auroraAppStore.getUserSettings();
-    this.setState({ userSettings: sett! });
+    this.setState({ userSettings: sett });
+
+    this.setState({ location: window.location });
+
+    
     console.error("settings  "+ JSON.stringify(this.state.userSettings))
 
-
+    // alert("theme state" + this.state.userSettings.theme + " store " +  sett.theme );
     //load css
-    if (this.state.userSettings != null && this.state.userSettings.theme != null && this.state.userSettings.theme === 'light') {
+    if (sett != null && this.state.userSettings.theme != null && this.state.userSettings.theme === 'light') {
 
       require('./css/App_light.scss');
     } else {
@@ -77,7 +84,9 @@ class App extends React.Component<AppProps, AppState> {
 
   changeTheme = () => {
     var sett = auroraAppStore.getUserSettings();
-    this.setState({ userSettings: sett! });
+    this.setState({ userSettings: sett! }); 
+
+    
     if (this.state.userSettings != null && this.state.userSettings.theme != null && this.state.userSettings.theme === 'light') {
 
       require('./css/App_light.scss');

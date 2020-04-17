@@ -32,9 +32,9 @@ export interface AppGeneratorState {
 
     targetLanguage: string,
     targetLanguageNameSpaceOrClassName: string,
-    appGeneratorOperations: AppGeneratorOptions,
     authToken: string,
-    userSettings: UserSettings
+    userSettings: UserSettings,
+    generatorAction : string 
 }
 
 class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState> {
@@ -53,24 +53,19 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
             targetLanguage: '',
             authToken: "",
             targetLanguageNameSpaceOrClassName: '',
-            appGeneratorOperations: {
-                appGeneratorOperationsActions: 'convert_schema_to_json',
-                convertToSchemaSettings: {
-                    targetLanguage: "C#",
-                    classOrNameSpaceName: "App"
-                }
-
-            },
             userSettings: {
                 userId: "",
                 theme: "light",
                 stats: "",
                 notify: "",
-            }
+            },
+            generatorAction : ""
         };
     }
 
     componentDidMount() {
+
+
 
         //confirm windo location
         if (window.location.pathname != "/aurora/generator") {
@@ -80,8 +75,7 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
         }
 
 
-        let genOptions = auroraAppStore.getAppGeneratorOperations();
-        this.setState({ appGeneratorOperations: genOptions });
+       
 
 
         let authtokenstr = auroraAppStore.getUserToken();
@@ -173,9 +167,9 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
 
     handleEditorChange = async (value: any) => {
 
+       let appGeneratorOperations: AppGeneratorOptions = auroraAppStore.getAppGeneratorOptions()
 
-
-        if (this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_json_to_yaml') {
+        if (appGeneratorOperations.appGeneratorOperationsActions == 'convert_json_to_yaml') {
 
             let conv = new generateYamFromJson();
             let res = conv.convert(value)
@@ -191,7 +185,7 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
                 this.setState({ dataFromServer: res })
             }
 
-        } else if (this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_yaml_to_json') {
+        } else if (appGeneratorOperations.appGeneratorOperationsActions == 'convert_yaml_to_json') {
 
             let conv = new generateJsonFromYaml();
             let res = conv.convert(value)
@@ -208,7 +202,7 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
                 this.setState({ dataFromServer: res })
             }
 
-        } else if (this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_markdown_to_html') {
+        } else if (appGeneratorOperations.appGeneratorOperationsActions == 'convert_markdown_to_html') {
 
 
             let conv = new generateHtmlFromMarkdown();
@@ -227,7 +221,7 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
 
 
 
-        } else if (this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json') {
+        } else if (appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json') {
             let conv = new generateJsonFromSchema();
             const res = conv.ConvertToJson(value);
             if (res !== null && typeof res === 'object') {
@@ -238,21 +232,21 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
                 this.setState({ dataFromServer: res });
             }
 
-        } else if (this.state.appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema') {
+        } else if (appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema') {
 
             // var classNameOrNameSpace = this.state.targetLanguageNameSpaceOrClassName == null || this.state.targetLanguageNameSpaceOrClassName.length == 0 ?
             //     "Aurorora" : this.state.targetLanguageNameSpaceOrClassName
             let classNameOrNameSpace =
-                this.state.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName == null ||
-                    this.state.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName == undefined
+                appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName == null ||
+                    appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName == undefined
                     ? 'App' :
-                    this.state.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName;
+                    appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName;
 
 
             let languageItem =
-                this.state.appGeneratorOperations.convertToSchemaSettings.targetLanguage == null ||
-                    this.state.appGeneratorOperations.convertToSchemaSettings.targetLanguage == undefined
-                    ? "c#" : this.state.appGeneratorOperations.convertToSchemaSettings.targetLanguage;
+                appGeneratorOperations.convertToSchemaSettings.targetLanguage == null ||
+                    appGeneratorOperations.convertToSchemaSettings.targetLanguage == undefined
+                    ? "c#" : appGeneratorOperations.convertToSchemaSettings.targetLanguage;
 
 
             let con = new generateSchemaFromJson();
@@ -273,7 +267,7 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
             } else {
                 this.setState({ dataFromServer: JSON.stringify(res) })
             }
-        } else if (this.state.appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json') {
+        } else if (appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json') {
 
             let gen = new generateDummyJson();
 
@@ -281,7 +275,7 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
 
             this.setState({ dataFromServer: res });
 
-        } else if (this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml') {
+        } else if (appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml') {
 
             var res = this.state.xmlToJson.convert(value)
             console.log("response " + typeof res)
@@ -295,7 +289,7 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
                 this.setState({ dataFromServer: res })
             }
 
-        } else if (this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json') {
+        } else if (appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json') {
 
 
             var res = this.state.jsonToXml.convert(value)
@@ -327,7 +321,7 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
         let editOnlyStyle =
         {
             // theme: 'vs-dark',
-            theme:  auroraAppStore.getUserSettings().theme == "light" ? 'vs' : 'vs-dark',
+            theme: auroraAppStore.getUserSettings().theme == "light" ? 'vs' : 'vs-dark',
         }
 
         let readOnlyStyle =
@@ -335,6 +329,13 @@ class AppGenerator extends React.Component<AppGeneratorProps, AppGeneratorState>
             theme: auroraAppStore.getUserSettings().theme == "light" ? 'vs' : 'vs-dark',
             readOnly: true
         }
+
+        // fetch('./themes/Monokai.json')
+        //     .then(data => data.json())
+        //     .then(data => {
+        //         MonacoEditor.editor.defineTheme('monokai', data);
+        //         MonacoEditor.editor.setTheme('monokai');
+        //     })
 
         console.error("edit olyth theme" + JSON.stringify(editOnlyStyle));
         return (

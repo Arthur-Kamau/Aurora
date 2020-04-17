@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Dropdown } from 'react-bootstrap';
 import { AppGeneratorOptions } from '../../../models/generator_options';
+import auroraAppStore from '../../../store/AuroraStore';
+import { changeAppGeneratorOption } from '../../../actions/app_generator_options';
 
 export interface GeneratorNavBarProps {
     
@@ -10,10 +12,9 @@ export interface GeneratorNavBarState {
     action : string,
     targetLanguage:string,
     classNameOrNameSpaceNameGenerateSchema : string,
-    generatorPopUpShowState : false,
-    generatorSchemaPopUpShowState : false,
+    generatorPopUpShowState : boolean,
+    generatorSchemaPopUpShowState : boolean,
     schemaLanguage:  Array<string>    ,
-    appGeneratorOperations: AppGeneratorOptions
  
 }
  
@@ -22,18 +23,11 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
         super(props);
         this.state = {  
              action : 'generate_schema',
-        targetLanguage: "",   //this.state.appGeneratorOperations.convertToSchemaSettings.targetLanguage,
-        classNameOrNameSpaceNameGenerateSchema : "" ,// this.state.appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName,
+        targetLanguage: "",   //appGeneratorOperations.convertToSchemaSettings.targetLanguage,
+        classNameOrNameSpaceNameGenerateSchema : "" ,// appGeneratorOperations.convertToSchemaSettings.classOrNameSpaceName,
         generatorPopUpShowState : false,
         generatorSchemaPopUpShowState : false,
-        appGeneratorOperations : {
-          appGeneratorOperationsActions: 'convert_schema_to_json',
-          convertToSchemaSettings: {
-              targetLanguage: "C#",
-              classOrNameSpaceName: "App"
-          }
-
-      },
+        
         schemaLanguage:[
           "Dart",
           "C#",
@@ -45,86 +39,118 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
           "C++"
         ] };
     }
+
+    componentDidMount(){
+     
+    }
     toggleOffcanvas() {
         document.querySelector('.sidebar-offcanvas')!.classList.toggle('active');
       }
     
       convertToJsonCheckBox_ConvertToJson_label = ( evt : any ) => { 
         this.setState({action : 'convert_schema_to_json'});
-        // this.props.onappGeneratorOperationsActions('convert_schema_to_json');
+        changeAppGeneratorOption('convert_schema_to_json');
       }
     
       convertToJsonCheckBox_GeneratSchema_label = ( evt : any ) => { 
         this.setState({action : 'generate_schema'});
-        // this.props.onappGeneratorOperationsActions('generate_schema');
+         changeAppGeneratorOption('generate_schema');
       }
     
     
       convertJsonToYamlItem = ( evt : any ) => {
         this.setState({action : 'convert_json_to_yaml'});
-        // this.props.onappGeneratorOperationsActions('convert_json_to_yaml');
+         changeAppGeneratorOption('convert_json_to_yaml');
       }
       convertYamlToJsonItem = ( evt : any ) => {
         this.setState({action : 'convert_yaml_to_json'});
-        // this.props.onappGeneratorOperationsActions('convert_yaml_to_json');
+         changeAppGeneratorOption('convert_yaml_to_json');
       }
       convertHtmlToMarkDown = ( evt : any ) => {
         this.setState({action : 'convert_markdown_to_html'});
-        // this.props.onappGeneratorOperationsActions('convert_markdown_to_html');
+        changeAppGeneratorOption('convert_markdown_to_html');
       }
     
     
     
       convertToJsonCheckBox_ConvertToJsonFromXml_label = ( evt : any ) => { 
         this.setState({action : 'convert_schema_to_json_from_xml'});
-        // this.props.onappGeneratorOperationsActions('convert_schema_to_json_from_xml');
+         changeAppGeneratorOption('convert_schema_to_json_from_xml');
     
       } 
       convertToJsonCheckBox_ConvertToXmlFromJson_label = ( evt : any ) => { 
         this.setState({action : 'convert_to_xml_from_json'});
-        // this.props.onappGeneratorOperationsActions('convert_to_xml_from_json');
+        changeAppGeneratorOption('convert_to_xml_from_json');
      
       } 
       convertToJsonCheckBox_GenerateData_label = ( evt : any ) => { 
        
         this.setState({action : 'generate_dummy_json'});
-        // this.props.onappGeneratorOperationsActions('generate_dummy_json');
+         changeAppGeneratorOption('generate_dummy_json');
       }
       
     
       generatorSchemaPopUpShow = (event : any) =>{ 
     
         event.preventDefault(); 
-        if(this.state.generatorPopUpShowState){
+
+        //check if the geenrate options pop up is showing 
+        // hid it to prevent overlapping
+        if(this.state.generatorPopUpShowState == true){
           this.setState({ generatorPopUpShowState : false});
         }
-        // this.setState({ generatorSchemaPopUpShowState : !this.state.generatorSchemaPopUpShowState });
+        //show /hide generate options pop up
+        this.setState({ generatorSchemaPopUpShowState : !this.state.generatorSchemaPopUpShowState });
+        // listen to any onbody click 
+         // hide the pop up
+        if(this.state.generatorSchemaPopUpShowState == true){
+        
+          document.addEventListener('click', this.toggleClosed);
+        }else{
+          document.removeEventListener('click', this.toggleClosed)
+        }
     
       }
+       
       generatorPopUpShow = (event : any) =>{ 
     
         event.preventDefault(); 
-        
-        if(this.state.generatorSchemaPopUpShowState){
+         //check if the geenrate schema options pop up is showing 
+        // hid it to prevent overlapping
+        if(this.state.generatorSchemaPopUpShowState == true){
           this.setState({ generatorSchemaPopUpShowState : false});
         }
+        //show /hide generate options pop up
+         this.setState({ generatorPopUpShowState : !this.state.generatorPopUpShowState });
+    
+    // listen to any onbody click 
+    // hide the pop up
+       if(this.state.generatorPopUpShowState == true){
         
-        // this.setState({ generatorPopUpShowState : !this.state.generatorPopUpShowState });
-    
-    
-      //  if(!this.state.generatorPopUpShowState == false){
-      //   //  alert("add event listener");
-      //         document.addEventListener('click', this.toggleClosed);
-      //  }else{
-      //   document.removeEventListener('click', this.toggleClosed)
-      //  }
+              document.addEventListener('click', this.toggleClosed);
+       }else{
+        document.removeEventListener('click', this.toggleClosed)
+       }
       }
     
       toggleClosed = () => {
-        this.setState({ generatorPopUpShowState: false}, () => {
-            document.removeEventListener('click', this.toggleClosed)
-        })
-    }
+        //check which pop is showing 
+        // either  generatorPopUpShowState or 
+        // hide the apropriate pop up
+        // remove listener
+        if(this.state.generatorPopUpShowState == true){
+          this.setState({ generatorPopUpShowState: false}, () => {
+              document.removeEventListener('click', this.toggleClosed)
+          });
+        }
+        if(this.state.generatorSchemaPopUpShowState == true){
+            this.setState({ generatorSchemaPopUpShowState: false}, () => {
+              document.removeEventListener('click', this.toggleClosed)
+          });
+        }
+      }
+
+
       languageSchemaOptions = (event : any) =>{
         event.preventDefault(); 
         event.stopPropagation();
@@ -171,28 +197,31 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
     }
     
       render() {
+
+        let appGeneratorOperations  : AppGeneratorOptions = auroraAppStore.getAppGeneratorOptions();
+
         return (
           <nav className="navbar col-lg-12 col-12 p-lg-0 fixed-top d-flex flex-row">
             <div className="navbar-menu-wrapper d-flex align-items-center justify-content-between">
               <h4>
                 Json Operations 
                 
-                {this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json' ?  
+                {appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json' ?  
                 
-                " (convert to json)" : this.state.appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema' ?
+                " (convert to json)" : appGeneratorOperations.appGeneratorOperationsActions == 'generate_schema' ?
     
-                " (generate schema)" :  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json' ? 
+                " (generate schema)" :  appGeneratorOperations.appGeneratorOperationsActions == 'generate_dummy_json' ? 
     
-                " (generate data)" :  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml' ? 
+                " (generate data)" :  appGeneratorOperations.appGeneratorOperationsActions == 'convert_schema_to_json_from_xml' ? 
     
     
-                " (convert xml to json)" : this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json' ?   
+                " (convert xml to json)" : appGeneratorOperations.appGeneratorOperationsActions == 'convert_to_xml_from_json' ?   
                 
-                " (convert json to xml)":  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_json_to_yaml' ? 
+                " (convert json to xml)":  appGeneratorOperations.appGeneratorOperationsActions == 'convert_json_to_yaml' ? 
     
-                " (convert json to yaml)" : this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_yaml_to_json' ?  
+                " (convert json to yaml)" : appGeneratorOperations.appGeneratorOperationsActions == 'convert_yaml_to_json' ?  
               
-                " (convert yaml to json)" :  this.state.appGeneratorOperations.appGeneratorOperationsActions == 'convert_markdown_to_html' ?  
+                " (convert yaml to json)" :  appGeneratorOperations.appGeneratorOperationsActions == 'convert_markdown_to_html' ?  
     
                 " (convert markdown to html) " : 
                 

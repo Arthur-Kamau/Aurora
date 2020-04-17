@@ -13,14 +13,13 @@ class AuroraAppStore extends EventEmitter {
     page: AppPage;
     authtoken: string | null;
     dumpServer: { isStarted: boolean; ip: string; port: number; };
-    appGeneratorOperations: AppGeneratorOptions;
+    appGeneratorOptions: AppGeneratorOptions;
     dumpServerLogs: Array<string>;
     connectionTool: AppConnections;
     userAccount: UserAccount;
-    userSettings : UserSettings;
+    userSettings: UserSettings;
     userProfile: UserProfile;
     pageTab: string;
-
 
     constructor() {
         super();
@@ -34,7 +33,7 @@ class AuroraAppStore extends EventEmitter {
             ip: "",
             port: 0
         };
-        this.appGeneratorOperations = {
+        this.appGeneratorOptions = {
             appGeneratorOperationsActions: 'convert_schema_to_json',
             convertToSchemaSettings: {
                 targetLanguage: "C#",
@@ -45,48 +44,57 @@ class AuroraAppStore extends EventEmitter {
         this.dumpServerLogs = [];
         this.pageTab = "";
         this.connectionTool = {
-                connectionMethod: '',
-                connectionProtocol: '',
-                connectionAddress: '',
-                connectionPort: '',
-                connectionTime: '',
-                connectionMethodTopics: [],
-                connectionMethodTopicsMessages: [],
-                connectionMethodLogs: [],
+            connectionMethod: '',
+            connectionProtocol: '',
+            connectionAddress: '',
+            connectionPort: '',
+            connectionTime: '',
+            connectionMethodTopics: [],
+            connectionMethodTopicsMessages: [],
+            connectionMethodLogs: [],
         };
         this.userAccount = {
             accountType: 'free',
             accountBalance: 'None',
             accountExpendture: 'None',
         };
-        
-            this.userSettings = this.getSettings()! == null ? {
-                theme: this.getThemeUnAuth()!,
-                userId: "",
-                notify: "true",
-                stats: "true"
-            } : this.getSettings()!;
+
+        // this.userSettings  = this.getSettings() == null ? {
+        //     theme: this.getThemeUnAuth()!,
+        //     userId: "",
+        //     notify: "true",
+        //     stats: "true"
+        // } : this.getSettings()!;
+
+
+        this.userSettings = this.authtoken == null ? {
+            theme: this.getThemeUnAuth()!,
+            userId: "",
+            notify: "true",
+            stats: "true"
+        } : this.getSettings();
+
         this.userProfile = this.getProfile() == null ? {
-            userId : '',
+            userId: '',
             name: 'name',
             email: 'email',
             country: 'location',
-            phoneNumber : 0,
+            phoneNumber: 0,
             userAvatar: 'https://picsum.photos/536/354',
-    
+
         } : this.getProfile()
     }
 
     getThemeUnAuth = () => {
-        let themes: string = window.localStorage.getItem('theme_unauth')!; 
-        if (themes == null) {
-          return  "dark";
-        } else {
-            return themes;
-        }
+        let themes: string = window.localStorage.getItem('theme_unauth')!;
+        // if (themes == null) {
+        return "dark";
+        // } else {
+        // return themes;
+        // }
     }
 
-    getSettings = (): UserSettings | null => {
+    getSettings = (): UserSettings => {
         let setVar: UserSettings | null = null;
         try {
 
@@ -98,8 +106,23 @@ class AuroraAppStore extends EventEmitter {
                 console.error(objError.message);
             }
         }
-        return setVar;
+        if (setVar == null) {
+
+            var themes = {
+                theme: this.getThemeUnAuth()!,
+                userId: "",
+                notify: "true",
+                stats: "true"
+            }
+
+            window.localStorage.setItem("sett", JSON.stringify(themes));
+            return themes;
+        } else {
+            return setVar;
+        }
+
     }
+
     getProfile = () => {
         let profileVar = null
         try {
@@ -115,7 +138,7 @@ class AuroraAppStore extends EventEmitter {
         return profileVar;
     }
 
-    handleActions(action: StoreAction |  any) {
+    handleActions(action: StoreAction | any) {
         // console.error("handle actions "+ JSON.stringify(action));
         switch (action.type) {
             case AIRES_STUDIO_ACTIONS.CHANGE_PAGE: {
@@ -128,6 +151,13 @@ class AuroraAppStore extends EventEmitter {
                 this.emit("changePageTab");
                 break;
             }
+            case AIRES_STUDIO_ACTIONS.APP_GENERATOR_OPTION: {
+                this.appGeneratorOptions.appGeneratorOperationsActions = action.value as string;
+                this.emit("changeGenratorOptionsActions");
+                break;
+            }
+
+            
 
             case AIRES_STUDIO_ACTIONS.CHANGE_APP_THEME: {
                 this.userSettings = action.value as UserSettings;
@@ -164,8 +194,8 @@ class AuroraAppStore extends EventEmitter {
     getConnectionTool() {
         return this.connectionTool;
     }
-    getAppGeneratorOperations(){
-        return this.appGeneratorOperations;
+    getAppGeneratorOptions() {
+        return this.appGeneratorOptions;
     }
 }
 

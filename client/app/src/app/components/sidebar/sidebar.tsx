@@ -170,8 +170,8 @@ var customStyleNav = {
           </li>  */}
 
           <li onMouseEnter={()=>{this.mouseOver("settings")}} onMouseLeave={()=>{this.mouseLeave()}} className={this.isPathActive('/settings') ? 'nav-item active' : 'nav-item'}>
-        <Link  className="nav-link" style ={customStyleNav}  to="/settings">
-              <i   style ={customStyleNav}  className="mdi mdi-settings menu-icon"></i>
+        <Link  className="nav-link"  to="/settings">
+              <i    className="mdi mdi-settings menu-icon"></i>
               <span className="menu-title">Settings</span>
             </Link>
           </li>
