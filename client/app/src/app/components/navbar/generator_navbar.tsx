@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Dropdown } from 'react-bootstrap';
 import { AppGeneratorOptions } from '../../../models/generator_options';
 import auroraAppStore from '../../../store/AuroraStore';
-import { changeAppGeneratorOption } from '../../../actions/app_generator_options';
+import { changeAppGeneratorOption , changeAppGeneratorOptionConvertToSchemaSettings} from '../../../actions/app_generator';
 
 export interface GeneratorNavBarProps {
     
@@ -41,8 +41,13 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
     }
 
     componentDidMount(){
-     
+     let genOptions = auroraAppStore.getAppGeneratorOptions();
+
+     this.setState({classNameOrNameSpaceNameGenerateSchema : genOptions.convertToSchemaSettings.classOrNameSpaceName})
+     this.setState({targetLanguage : genOptions.convertToSchemaSettings.targetLanguage})
     }
+
+
     toggleOffcanvas() {
         document.querySelector('.sidebar-offcanvas')!.classList.toggle('active');
       }
@@ -155,17 +160,19 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
         event.preventDefault(); 
         event.stopPropagation();
       }
+
+
       schemaLanguageChange = (event : any) =>{
         event.preventDefault();
        
         console.log("language " + event.target.value);
         this.setState({targetLanguage : event.target.value})
 
-        //todo
-        // this.props.onGenerateSchemaConfiguraion({
-        //   targetLanguage : event.target.value ,
-        //   classOrNameSpaceName : this.state.classNameOrNameSpaceNameGenerateSchema
-        // });
+        let genOptions = auroraAppStore.getAppGeneratorOptions();
+        changeAppGeneratorOptionConvertToSchemaSettings({  
+          targetLanguage: event.target.value,
+          classOrNameSpaceName: genOptions.convertToSchemaSettings.classOrNameSpaceName
+        });
     
         
       }
@@ -174,25 +181,17 @@ class GeneratorNavBar extends React.Component<GeneratorNavBarProps, GeneratorNav
         event.preventDefault();
         console.log("name " + event.target.value);
         this.setState({ classNameOrNameSpaceNameGenerateSchema: event.target.value });
-        //todo
-        // this.props.onGenerateSchemaConfiguraion({
-        //   targetLanguage : this.state.targetLanguage ,
-        //   classOrNameSpaceName : event.target.value,
-        // });
+
+        let genOptions = auroraAppStore.getAppGeneratorOptions();
+        changeAppGeneratorOptionConvertToSchemaSettings({  
+          targetLanguage: genOptions.convertToSchemaSettings.targetLanguage,
+          classOrNameSpaceName: event.target.value
+        });
+        
     }
     
     runCode = async ( evt : any ) =>{
       
-      // let jsonString = '{"age":22}';
-     
-      //   const { lines: swiftPerson } = await this.quicktypeJSON(
-      //     "dart",
-      //     "Person",
-      //     jsonString
-      //   );
-      //   console.log(swiftPerson.join("\n"));
-      
-        
       
     }
     

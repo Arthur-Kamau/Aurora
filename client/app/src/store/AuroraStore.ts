@@ -151,12 +151,16 @@ class AuroraAppStore extends EventEmitter {
                 this.emit("changePageTab");
                 break;
             }
-            case AIRES_STUDIO_ACTIONS.APP_GENERATOR_OPTION: {
+            case AIRES_STUDIO_ACTIONS.APP_GENERATOR_OPERATION_ACTION: {
                 this.appGeneratorOptions.appGeneratorOperationsActions = action.value as string;
                 this.emit("changeGenratorOptionsActions");
                 break;
             }
-
+            case AIRES_STUDIO_ACTIONS.APP_GENERATOR_OPERATION_CONVERT_TO_SCHEMA_SETTINGS: {
+                this.appGeneratorOptions.convertToSchemaSettings = action.value ;
+                this.emit("changeGenratorOptionsConverToSchema");
+                break;
+            }
             
 
             case AIRES_STUDIO_ACTIONS.CHANGE_APP_THEME: {
