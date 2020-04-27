@@ -6,6 +6,12 @@
 *.ipr
 *.iws
 
+# dist / build
+*/dist/*
+/dist/*/**
+
+*/build/*
+/build/*/**
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
